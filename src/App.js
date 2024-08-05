@@ -7,7 +7,7 @@ import './App.css';
 
 function App() {
   return (
-    //   <RecoilRoot>
+    //   <RecoilRoot> 
     <MainApp />
     //    </RecoilRoot>
   );
@@ -42,7 +42,6 @@ function MainApp() {
     </div>
   );
 }
-
 
 export default App;
 
