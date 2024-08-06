@@ -52,7 +52,7 @@ function Community() {
         </tbody>
       </table>
       <div className="flex justify-center mt-6">
-          <button className="sign-button">
+          <button className="sign-button mb-16">
             작성하기
           </button>
       </div>
