@@ -51,14 +51,14 @@ function MainApp() {
                   title='요양 병원 찾기' 
                   text='내가 원하는 전문의가 있는 병원을 찾아보세요.' 
                   handleClick={() => navigate('/find')}/>
-          <ButtonC bcolor="blue" 
-                  title='커뮤니티' 
-                  text='너두 아파? 나두 아파! 함께 이야기 나눠요.' 
-                  handleClick={() => navigate('/community')}/>
           <ButtonC bcolor="purple" 
                   title='건강백과사전'
                   text='아는 만큼 건강해집니다.'
                   handleClick={() => navigate('/health')}/>
+          <ButtonC bcolor="blue" 
+                  title='커뮤니티' 
+                  text='너두 아파? 나두 아파! 함께 이야기 나눠요.' 
+                  handleClick={() => navigate('/community')}/>
           <ButtonC bcolor="teal" 
                   title='Q&A' 
                   text='궁금증 해소하고 한 살 젊어져요.'
