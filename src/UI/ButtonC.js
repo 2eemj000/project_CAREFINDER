@@ -1,34 +1,31 @@
 import {hover} from "@testing-library/user-event/dist/hover"
 
-export default function ButtonC({caption, bcolor, handleClick}){
+export default function ButtonC({title, text, bcolor, handleClick}){
      const colorB={
-          'orange' : 'bg-orange-500',
-          'red' : 'bg-red-500',
-          'green' : 'bg-green-300',
-          'lime' : 'bg-lime-500',
-          'sky' : 'bg-sky-500',
-          'violet' : 'bg-violet-400',
-          'teal' : 'bg-teal-400',
-
+          'sky' : 'bg-sky-600',
+          'blue' : 'bg-blue-600',
+          'purple' : 'bg-violet-400',
+          'teal' : 'bg-teal-500',
      }
 
-     const colorBhover={
-          'orange' : 'hover:bg-orange-800',
-          'red' : 'hover:bg-red-800',
-          'green' : 'hover:bg-green-800',
-          'lime' : 'hover:bg-lime-800',
-          'sky' : 'hover:bg-sky-800',
-          'violet' : 'hover:bg-violet-800',
-          'teal' : 'hover:bg-teal-700',
-     }
+     const colorBhover = {
+          'sky': 'hover:bg-sky-800',
+          'blue': 'hover:bg-blue-800',
+          'purple': 'hover:bg-violet-500',
+          'teal': 'hover:bg-teal-700',
+        };
      
      return (
-          <button className={`flex-shrink-0 justify-center items-center 
-               py-3 px-10 m-2
-                text-white font-bold rounded-md
+    <button
+      className={`flex justify-start items-center py-10 px-10 m-5 text-white font-bold border border-gray-200 rounded shadow
                ${colorB[bcolor]} ${colorBhover[bcolor]}`}
-               onClick={handleClick}>
-          {caption}
-          </button>
-     );
+      onClick={handleClick}
+      style={{ width: '220px', height: '150px' }} 
+    >
+      <div className="flex flex-col items-start text-left h-full justify-center"> {/* 상하 여백을 추가 */}
+        <span className="text-xl mb-2">{title}</span> {/* 위 텍스트에 하단 마진 추가 */}
+        <span className="text-xs font-thin">{text}</span> {/* 아래 텍스트 */}
+      </div>
+    </button>
+  );
 }
