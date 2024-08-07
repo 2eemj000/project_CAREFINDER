@@ -40,7 +40,7 @@ th:nth-child(3), td:nth-child(3) {
   transition: background-color 0.3s ease, color 0.3s ease;
   font-weight: bold;
   color: white;
-}
+}  
 
 .sign-button:hover {
   background-color: #686767; /* hover 시 배경 색상 */

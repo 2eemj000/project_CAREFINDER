@@ -9,7 +9,7 @@ import Health from '../02/Health.js';
 import Community from '../03/Community.js'; 
 import Qna from '../04/Qna.js';
 import MainApp from '../App.js'
-
+  
 function App() {
   return (
     <BrowserRouter>

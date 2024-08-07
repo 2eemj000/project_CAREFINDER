@@ -65,5 +65,5 @@ function ComWrite() {
   </div>
   );
 }
-
+  
 export default ComWrite;

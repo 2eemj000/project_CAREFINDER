@@ -62,4 +62,4 @@ function Qna() {
   );
 }
 
-export default Qna;
+export default Qna;  

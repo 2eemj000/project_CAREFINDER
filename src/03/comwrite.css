@@ -52,7 +52,7 @@ table {
   .list-button { background-color: #9e9e9e; }
   .list-button:hover {background-color: #6c6c6c; font-weight: bold;}
 
-  .reply {
+  .reply{
     background-color: #f2f2f2;
     text-align: center;
   }

@@ -14,7 +14,7 @@ function App() {
     </BrowserRouter>
   );
 }
-
+  
 function Community() {
   const navigate = useNavigate();
   const data = Array.from({ length: 10 }, (_, index) => ({
