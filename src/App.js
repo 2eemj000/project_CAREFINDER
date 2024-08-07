@@ -11,14 +11,12 @@ import Health from './02/Health.js';
 import Community from './03/Community.js'; 
 import Qna from './04/Qna.js';
 
-
-
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<MainApp />} />
-        <Route path="/find/search" element={<Find />} />
+        <Route path="/find" element={<Find />} />
         <Route path="/find/list" element={<List />} />
         <Route path="/find/card/:cardId" element={<CardDetail />} />
         <Route path="/health" element={<Health />} />
