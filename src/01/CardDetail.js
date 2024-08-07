@@ -3,75 +3,42 @@ import { useParams } from 'react-router-dom';
 
 export default function CardDetail() {
     const { cardId } = useParams();
-    const [ cardDetails, setCardDetails] = useState(null);
-    //카드 상세 정보를 딕셔너리처럼 다 가지고 있는 객체임
+    const [cardDetails, setCardDetails] = useState(null);
 
     useEffect(() => {
-        async function fetchCardDetail() {
-            try {
-                const response = await fetch(`주소/card/{cardId}`);
-                const data = await response.json();
-                setCardDetails(data);
-            } catch(error){
-                console.error('패치 실패', error);
-            }
+        if (cardDetails && cardDetails.latitude && cardDetails.longitude) {
+            const { kakao } = window; // Kakao Map API 객체
+
+            // 지도 컨테이너
+            const mapContainer = document.getElementById('map');
+            // 지도 옵션
+            const mapOption = {
+                center: new kakao.maps.LatLng(cardDetails.latitude, cardDetails.longitude), // 중심 좌표
+                level: 3 // 지도의 확대 레벨
+            };
+
+            // 지도 생성
+            const map = new kakao.maps.Map(mapContainer, mapOption);
+
+            // 마커 생성
+            const markerPosition = new kakao.maps.LatLng(cardDetails.latitude, cardDetails.longitude);
+            const marker = new kakao.maps.Marker({
+                position: markerPosition
+            });
+            marker.setMap(map);
         }
+    }, [cardDetails]);
 
-            fetchCardDetail();
-    }, [cardId]);
-
-    const { name, phone, specialists, others, address, latitude, longitude } = hospitalDetails;
+    if (!cardDetails) {
+        return <div>Loading...</div>;
+    }
 
     return (
-          <div className="p-6">
-            <h2 className="text-2xl font-bold mb-4">{name}</h2>
-            <p className="text-lg mb-2">전화번호: {phone}</p>
-
-            <div className="border-t border-gray-300 mt-4 pt-4">
-                <h3 className="text-xl font-semibold mb-2">전문의</h3>
-                <div className="flex flex-wrap mb-4">
-                    {specialists.map((spec, index) => (
-                        <span
-                            key={index}
-                            className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"
-                        >
-                            #{spec}
-                        </span>
-                    ))}
-                </div>
-            </div>
-
-            <div className="border-t border-gray-300 mt-4 pt-4">
-                <h3 className="text-xl font-semibold mb-2">기타 인력</h3>
-                <div className="flex flex-wrap mb-4">
-                    {others.map((other, index) => (
-                        <span
-                            key={index}
-                            className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mb-2"
-                        >
-                            #{other}
-                        </span>
-                    ))}
-                </div>
-            </div>
-
-            <div className="border-t border-gray-300 mt-4 pt-4">
-                <h3 className="text-xl font-semibold mb-2">주소</h3>
-                <p className="text-lg mb-2">{address}</p>
-
-                <div className="w-full h-64">
-                    <iframe
-                        width="100%"
-                        height="100%"
-                        frameBorder="0"
-                        scrolling="no"
-                        marginHeight="0"
-                        marginWidth="0"
-                        title="map"
-                        src={`https://maps.kakao.com/?q=${latitude},${longitude}`}
-                    ></iframe>
-                </div>
-            </div>
+        <div>
+            <h1>{cardDetails.name}</h1>
+            <p>{cardDetails.address}</p>
+            <p>전화번호: {cardDetails.phone}</p>
+            <div id="map" style={{ width: '100%', height: '400px' }}></div>
         </div>
     );
 }

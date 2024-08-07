@@ -1,4 +1,3 @@
-import React from 'react'
 import List from './List.js'
 import Left from '../Compo/Left.js'
 import Right from '../Compo/Right.js'
@@ -7,7 +6,6 @@ import { useNavigate } from 'react-router-dom'
 
 
 export default function Find() {
-    
           const [selectedSpecialist, setSelectedSpecialist] = useState([]);
           const [selectedOther, setSelectedOther] = useState([]);
           const [region1, setRegion1] = useState('');
@@ -30,17 +28,19 @@ export default function Find() {
           
           //TODO: 검색버튼, 누르면 파람스 전달하고/list 페이지로 네비게이트 되도록 함
           const handleSearch = () => {
-                if (region1 || region2 || selectedSpecialist.length || selectedOther.length) {
-                    const queryParams = new URLSearchParams({
-                        region1,
-                        region2,
-                        specialists: selectedSpecialist.join(','),
-                        others: selectedOther.join(','),
-                    }).toString();
-                    
-                    navigate(`/find/list?${queryParams}`); // 검색 후 리스트 화면으로 이동
-                }
-            };
+            if (region1 && region2) {
+                const queryParams = new URLSearchParams({
+                    region1,
+                    region2,
+                    specialists: selectedSpecialist.length ? selectedSpecialist.join(',') : undefined,
+                    others: selectedOther.length ? selectedOther.join(',') : undefined,
+                }).toString();
+                
+                navigate(`/find/list?${queryParams}`); // 검색 후 리스트 화면으로 이동
+            } else {
+                alert('지역을 필수로 선택해야 합니다.');
+            }
+        };
       
           const handleReset = () => {
               setSelectedSpecialist([]);
