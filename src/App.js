@@ -9,6 +9,7 @@ import List from './01/Find.js';
 import CardDetail from './01/CardDetail.js'; 
 import Health from './02/Health.js'; 
 import Community from './03/Community.js'; 
+import ComWrite from './03/ComWrite.js';
 import Qna from './04/Qna.js';
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
         <Route path="/health" element={<Health />} />
         <Route path="/community" element={<Community />} />
         <Route path="/qna" element={<Qna />} />
+        <Route path="/community/write" element={<ComWrite />} />
       </Routes>
     </BrowserRouter>
   );

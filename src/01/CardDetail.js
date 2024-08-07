@@ -6,6 +6,20 @@ export default function CardDetail() {
     const [cardDetails, setCardDetails] = useState(null);
 
     useEffect(() => {
+        async function fetchCardDetails() {
+            try {
+                const response = await fetch(`/api/cards/${cardId}`);
+                const data = await response.json();
+                setCardDetails(data);
+            } catch (error) {
+                console.error('Failed to fetch card details', error);
+            }
+        }
+
+        fetchCardDetails();
+    }, [cardId]);
+
+    useEffect(() => {
         if (cardDetails && cardDetails.latitude && cardDetails.longitude) {
             const { kakao } = window; // Kakao Map API 객체
 

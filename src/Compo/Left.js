@@ -9,7 +9,7 @@ import Health from '../02/Health.js';
 import Community from '../03/Community.js'; 
 import Qna from '../04/Qna.js';
 import MainApp from '../App.js'
-
+  
 function App() {
   return (
     <BrowserRouter>
@@ -31,24 +31,24 @@ function NavigationBar() {
   return (
     <div style={{ width: '20%', height: '100vh', backgroundColor: '#eeeeee', position: 'fixed', padding: 0 }}>
         <ul className="nav-list">
-            <li className="logo">
+            <div className="logo">
                 <img
                   src={logo}
                   alt="carefinder-logo"
                   onClick={() => navigate('/')} // 메인 화면으로 돌아가기
                   style={{ cursor: 'pointer' }}
                 />
-            </li>
-            <li onClick={() => navigate('/find')} style={{ cursor: 'pointer', padding: '10px', borderBottom: '1px solid #ddd' }}>
+            </div>
+            <li onClick={() => navigate('/find')}>
               내 맘에 쏙 병원찾기
             </li>
-            <li onClick={() => navigate('/health')} style={{ cursor: 'pointer', padding: '10px', borderBottom: '1px solid #ddd' }}>
+            <li onClick={() => navigate('/health')}>
               시니어 건강매거진
             </li>
-            <li onClick={() => navigate('/community')} style={{ cursor: 'pointer', padding: '10px', borderBottom: '1px solid #ddd' }}>
+            <li onClick={() => navigate('/community')}>
               너도 아파? 나도 아파!
             </li>
-            <li onClick={() => navigate('/qna')} style={{ cursor: 'pointer', padding: '10px', borderBottom: '1px solid #ddd' }}>
+            <li onClick={() => navigate('/qna')}>
               Q & A
             </li>
         </ul>

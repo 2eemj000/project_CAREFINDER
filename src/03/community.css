@@ -4,14 +4,26 @@ table {
   margin-top: 3rem;
 }
 
+thead {
+  background-color: #f2f2f2;
+}
+
 th, td {
   border: 1px solid #ddd;
   padding: 8px;
   text-align: left;
 }
 
-thead {
-  background-color: #f2f2f2;
+th:nth-child(1), td:nth-child(1) {
+  width: 10%; 
+}
+
+th:nth-child(2), td:nth-child(2) {
+  width: 70%;
+}
+
+th:nth-child(3), td:nth-child(3) {
+  width: 20%;
 }
 
 .sign-button {
@@ -28,7 +40,7 @@ thead {
   transition: background-color 0.3s ease, color 0.3s ease;
   font-weight: bold;
   color: white;
-}
+}  
 
 .sign-button:hover {
   background-color: #686767; /* hover 시 배경 색상 */

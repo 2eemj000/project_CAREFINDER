@@ -2,9 +2,21 @@ import React from 'react';
 import './community.css';
 import Left from '../Compo/Left.js'
 import Right from '../Compo/Right.js'
+import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
+import ComWrite from './ComWrite.js';
 
-
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/community/write" element={<ComWrite />} />
+      </Routes>
+    </BrowserRouter>
+  );
+}
+  
 function Community() {
+  const navigate = useNavigate();
   const data = Array.from({ length: 10 }, (_, index) => ({
     번호: index + 1,
     제목: `제목 ${index + 1}`,
@@ -36,23 +48,23 @@ function Community() {
       <table>
         <thead>
           <tr>
-            <th>번호</th>
-            <th>제목</th>
-            <th>작성자</th>
+            <th className="text-center">번호</th>
+            <th className="text-center">제목</th>
+            <th className="text-center">작성자</th>
           </tr>
         </thead>
         <tbody>
           {data.map((item) => (
             <tr key={item.번호}>
-              <td>{item.번호}</td>
+              <td className="text-center">{item.번호}</td>
               <td>{item.제목}</td>
-              <td>{item.작성자}</td>
+              <td className="text-center">{item.작성자}</td>
             </tr>
           ))}
         </tbody>
       </table>
       <div className="flex justify-center mt-6">
-          <button className="sign-button mb-16">
+          <button className="sign-button mb-16" onClick={() => navigate("/community/write")}>
             작성하기
           </button>
       </div>
