@@ -3,22 +3,20 @@ import List from './List.js'
 import Left from '../Compo/Left.js'
 import Right from '../Compo/Right.js'
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+
 
 export default function Find() {
     
-          const [selectedOption, setSelectedOption] = useState('');
           const [selectedSpecialist, setSelectedSpecialist] = useState([]);
           const [selectedOther, setSelectedOther] = useState([]);
-          const [showList, setShowList] = useState(false);
           const [region1, setRegion1] = useState('');
           const [region2, setRegion2] = useState('');
       
-          const handleSelectChange = (event) => {
-              setSelectedOption(event.target.value);
-          };
+          const navigate = useNavigate();
       
-          const handleSpecialistChange = (event) => {
-              const value = event.target.value;
+          //prev 이때까지 선택된 거(현재상태) 에 확인해가며 넣기로.
+          const handleSpecialistChange = (value) => {
               setSelectedSpecialist(prev => 
                   prev.includes(value) ? prev.filter(item => item !== value) : [...prev, value]
               );
@@ -29,37 +27,38 @@ export default function Find() {
                   prev.includes(value) ? prev.filter(item => item !== value) : [...prev, value]
               );
           };
-      
+          
+          //TODO: 검색버튼, 누르면 파람스 전달하고/list 페이지로 네비게이트 되도록 함
           const handleSearch = () => {
-              if (selectedOption || selectedSpecialist.length || selectedOther.length) {
-                  setShowList(true); // 옵션이 선택되면 리스트를 표시
-              }
-          };
+                if (region1 || region2 || selectedSpecialist.length || selectedOther.length) {
+                    const queryParams = new URLSearchParams({
+                        region1,
+                        region2,
+                        specialists: selectedSpecialist.join(','),
+                        others: selectedOther.join(','),
+                    }).toString();
+                    
+                    navigate(`/find/list?${queryParams}`); // 검색 후 리스트 화면으로 이동
+                }
+            };
       
           const handleReset = () => {
-              setSelectedOption('');
               setSelectedSpecialist([]);
               setSelectedOther([]);
               setRegion1('');
               setRegion2('');
-              setShowList(false); // 초기화 후 리스트 숨김
           };
       
           return (
               <div className="flex h-screen">
-                  {/* 왼쪽 고정 */}
                   <div className="fixed left-0 top-0 w-1/5 h-full bg-gray-200">
                       <Left />
                   </div>
-      
-                  {/* 오른쪽 고정 */}
                   <div className="fixed right-0 top-0 w-1/5 h-full bg-gray-200">
                       <Right />
                   </div>
-      
-                  {/* 중앙 콘텐츠 */}
+                  {/* 메인부분 */}
                   <div className="flex-1 ml-[20%] mr-[20%] p-10">
-                      {!showList ? (
                           <div className="w-full max-w-3xl">
                               <h1 className="text-3xl font-bold mb-4">내 맘에 쏙 병원찾기</h1>
                               <p className="mb-6 text-gray-700">검색 조건을 선택하세요. 각 섹션에서 조건을 선택하면 해당 조건에 맞는 병원 목록이 나타납니다.</p>
@@ -76,7 +75,6 @@ export default function Find() {
                                           <option value="">지역 1 선택</option>
                                           <option value="region1">지역 1</option>
                                           <option value="region2">지역 2</option>
-                                          {/* 더 많은 지역 추가 가능 */}
                                       </select>
                                       <select
                                           value={region2}
@@ -86,12 +84,11 @@ export default function Find() {
                                           <option value="">지역 2 선택</option>
                                           <option value="region1">지역 1</option>
                                           <option value="region2">지역 2</option>
-                                          {/* 더 많은 지역 추가 가능 */}
                                       </select>
                                   </div>
                               </div>
       
-                              {/* 전문의 섹션 */}
+                              {/* 전문의 */}
                               <div className="mb-6">
                                   <h2 className="text-xl font-semibold mb-2">전문의</h2>
                                   <div className="grid grid-cols-2 gap-4 mb-4">
@@ -117,7 +114,7 @@ export default function Find() {
                                               key={item}
                                               onClick={() => handleOtherChange(item)}
                                               className={`px-4 py-2 border rounded-lg ${selectedOther.includes(item) ? 'bg-green-500 text-white' : 'bg-white text-green-500'}`}
-                                          >
+                                          > {/* item 눌러지면 변경된색으로 계속 유지될 수 있도록 함 */}
                                               {item}
                                           </button>
                                       ))}
@@ -141,11 +138,6 @@ export default function Find() {
                                   </button>
                               </div>
                           </div>
-                      ) : (
-                          <div className="w-full max-w-6xl">
-                              <List category={selectedOption} />
-                          </div>
-                      )}
                   </div>
               </div>
         );

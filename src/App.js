@@ -5,10 +5,12 @@ import ButtonC from './UI/ButtonC.js';
 import './App.css';
 import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
 import Find from './01/Find.js';
+import List from './01/Find.js';
 import CardDetail from './01/CardDetail.js'; 
 import Health from './02/Health.js'; 
 import Community from './03/Community.js'; 
 import Qna from './04/Qna.js';
+
 
 
 function App() {
@@ -16,7 +18,8 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<MainApp />} />
-        <Route path="/find" element={<Find />} />
+        <Route path="/find/search" element={<Find />} />
+        <Route path="/find/list" element={<List />} />
         <Route path="/find/card/:cardId" element={<CardDetail />} />
         <Route path="/health" element={<Health />} />
         <Route path="/community" element={<Community />} />
