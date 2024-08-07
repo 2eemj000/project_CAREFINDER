@@ -37,17 +37,17 @@ function Qna() {
       <table>
         <thead>
           <tr>
-            <th>번호</th>
-            <th>제목</th>
-            <th>작성자</th>
+            <th className="text-center">번호</th>
+            <th className="text-center">제목</th>
+            <th className="text-center">작성자</th>
           </tr>
         </thead>
         <tbody>
           {data.map((item) => (
             <tr key={item.번호}>
-              <td>{item.번호}</td>
+              <td className="text-center">{item.번호}</td>
               <td>{item.제목}</td>
-              <td>{item.작성자}</td>
+              <td className="text-center">{item.작성자}</td>
             </tr>
           ))}
         </tbody>

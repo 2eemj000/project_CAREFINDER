@@ -1,26 +1,15 @@
 import React from 'react';
-import './community.css';
+import './comwrite.css';
 import Left from '../Compo/Left.js'
 import Right from '../Compo/Right.js'
-import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
-import ComWrite from './ComWrite.js';
 
-function App() {
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/community/write" element={<ComWrite />} />
-      </Routes>
-    </BrowserRouter>
-  );
-}
 
-function Community() {
-  const navigate = useNavigate();
+function ComWrite() {
   const data = Array.from({ length: 10 }, (_, index) => ({
     번호: index + 1,
     제목: `제목 ${index + 1}`,
     작성자: `작성자 ${index + 1}`,
+    내용: `내용 ${index + 1}`
   }));
 
   return (
@@ -45,32 +34,36 @@ function Community() {
         <h1>- 로그인 후, 게시글을 작성할 수 있습니다.</h1>
         <h1>- 게시글의 작성자 본인 및 관리자만 해당 게시글을 수정 및 삭제할 수 있습니다.</h1>
       </div>
-      <table>
-        <thead>
-          <tr>
-            <th className="text-center">번호</th>
-            <th className="text-center">제목</th>
-            <th className="text-center">작성자</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((item) => (
-            <tr key={item.번호}>
-              <td className="text-center">{item.번호}</td>
-              <td>{item.제목}</td>
-              <td className="text-center">{item.작성자}</td>
+        <table>
+          <thead className="mb-6">
+            <tr>
+              <th className="text-center">제목</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-      <div className="flex justify-center mt-6">
-          <button className="sign-button mb-16" onClick={() => navigate("/community/write")}>
-            작성하기
-          </button>
-      </div>
+          </thead>
+          <tbody>
+                <td>내용</td>
+          </tbody>
+        </table>
+        <div className="m-3 mt-10 text text-xl font-bold">댓글</div>
+        <table className="mt-3">
+          <tbody>
+            {data.map((item) => (
+              <tr key={item.번호}>
+                <td className="reply">{item.작성자}</td>
+                <td className='pl-3 pr-3'>{item.내용}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <div className="flex justify-between mt-6">
+        <button className="action-button comment-button">댓글 달기</button>
+          <button className="action-button edit-button">수정</button>
+          <button className="action-button delete-button">삭제</button>
+          <button className="action-button list-button">목록으로</button>
+        </div>
     </div>
   </div>
   );
 }
 
-export default Community;
+export default ComWrite;
