@@ -1,70 +1,80 @@
-import React from 'react';
-import './comwrite.css';
-import Left from '../Compo/Left.js'
-import Right from '../Compo/Right.js'
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Left from '../Compo/Left';
+import Right from '../Compo/Right';
+import './comwrite.css';
 
 function ComWrite() {
+  const [title, setTitle] = useState('');
+  const [content, setContent] = useState('');
   const navigate = useNavigate();
-  const data = Array.from({ length: 10 }, (_, index) => ({
-    번호: index + 1,
-    제목: `제목 ${index + 1}`,
-    작성자: `작성자 ${index + 1}`,
-    내용: `내용 ${index + 1}`
-  }));
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    
+    const newPost = { title, content };
+
+    fetch('/api/boards', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newPost),
+    })
+    .then(response => response.json())
+    .then(data => {
+      // Redirect to the community page or the new post's detail page
+      navigate('/community');
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+  };
 
   return (
     <div className="flex h-screen">
-    {/* 왼쪽 고정 */}
-    <div className="fixed left-0 top-0 w-1/5 h-full bg-gray-200">
-      <Left />
-    </div>
-
-    {/* 오른쪽 고정 */}
-    <div className="fixed right-0 top-0 w-1/5 h-full bg-gray-200">
-      <Right />
-    </div>
-
-    {/* 중앙 콘텐츠 */}
-    <div className="flex-1 ml-[20%] mr-[20%] p-10">
-      <div className="font-bold text-2xl mt-6">
-      너도 아파? 나도 아파!
+      <div className="fixed left-0 top-0 w-1/5 h-full bg-gray-200">
+        <Left />
       </div>
-      <div className='mt-6'>
-        <h1>- 게시글의 제목을 선택하면 상세정보를 확인하실 수 있습니다.</h1>
-        <h1>- 로그인 후, 게시글을 작성할 수 있습니다.</h1>
-        <h1>- 게시글의 작성자 본인 및 관리자만 해당 게시글을 수정 및 삭제할 수 있습니다.</h1>
+      <div className="fixed right-0 top-0 w-1/5 h-full bg-gray-200">
+        <Right />
       </div>
-        <table>
-          <thead className="mb-6">
-            <tr>
-              <th className="text-center">제목</th>
-            </tr>
-          </thead>
-          <tbody>
-                <td>내용</td>
-          </tbody>
-        </table>
-        <div className="m-3 mt-10 text text-xl font-bold">댓글</div>
-        <table className="mt-3">
-          <tbody>
-            {data.map((item) => (
-              <tr key={item.번호}>
-                <td className="reply">{item.작성자}</td>
-                <td className='pl-3 pr-3'>{item.내용}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-        <div className="flex justify-between mt-6">
-        <button className="action-button comment-button">댓글 달기</button>
-          <button className="action-button edit-button">수정</button>
-          <button className="action-button delete-button">삭제</button>
-          <button className="action-button list-button" onClick={() => navigate("/community")}>목록으로</button>
+      <div className="flex-1 ml-[20%] mr-[20%] p-10">
+        <div className="font-bold text-2xl mt-6">
+          게시글 작성
         </div>
+        <form onSubmit={handleSubmit} className="mt-6">
+          <div className="mb-4">
+            <label htmlFor="title" className="block text-lg font-medium">제목</label>
+            <input
+              type="text"
+              id="title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              className="mt-1 block w-full p-2 border border-gray-300 rounded"
+              required
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="content" className="block text-lg font-medium">내용</label>
+            <textarea
+              id="content"
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              className="mt-1 block w-full p-2 border border-gray-300 rounded"
+              rows="6"
+              required
+            />
+          </div>
+          <div className="flex justify-center mt-6">
+            <button type="submit" className="sign-button mb-16">
+                등록하기
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
-  </div>
   );
 }
-  
+
 export default ComWrite;

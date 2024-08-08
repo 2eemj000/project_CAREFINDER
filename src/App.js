@@ -10,6 +10,7 @@ import CardDetail from './01/CardDetail.js';
 import Health from './02/Health.js'; 
 import Community from './03/Community.js'; 
 import ComWrite from './03/ComWrite.js';
+import ComDetail from './03/ComDetail.js';
 import Qna from './04/Qna.js';
 import QnaWrite from './04/QnaWrite.js';
 import NewsDetail from './02/NewsDetail.js';
@@ -25,6 +26,7 @@ function App() {
         <Route path="/health" element={<Health />} />
         <Route path="/health/:newsId" element={<NewsDetail />} />
         <Route path="/community" element={<Community />} />
+        <Route path="/community/:id" element={<ComDetail />} />
         <Route path="/community/write" element={<ComWrite />} />
         <Route path="/qna" element={<Qna />} />
         <Route path="/qna/write" element={<QnaWrite/>}/>
