@@ -1,19 +1,20 @@
-import Home from './01/Home.js';
+import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
+import './App.css';
 import skyImage from './Img/Sky.jpg';
 import logoImage from './Img/Logo.png';
 import ButtonC from './UI/ButtonC.js';
-import './App.css';
-import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
+import Home from './01/Home.js';
 import Find from './01/Find.js';
 import List from './01/Find.js';
 import CardDetail from './01/CardDetail.js'; 
 import Health from './02/Health.js'; 
+import NewsDetail from './02/NewsDetail.js';
 import Community from './03/Community.js'; 
 import ComWrite from './03/ComWrite.js';
 import ComDetail from './03/ComDetail.js';
 import Qna from './04/Qna.js';
-import QnaWrite from './04/QnaWrite.js';
-import NewsDetail from './02/NewsDetail.js';
+// import QnaWrite from './04/QnaWrite.js';
+import QnaDetail from './04/QnaDetail.js';
 
 function App() {
   return (
@@ -26,10 +27,11 @@ function App() {
         <Route path="/health" element={<Health />} />
         <Route path="/health/:newsId" element={<NewsDetail />} />
         <Route path="/community" element={<Community />} />
-        <Route path="/community/:id" element={<ComDetail />} />
         <Route path="/community/write" element={<ComWrite />} />
+        <Route path="/community/:id" element={<ComDetail />} />
         <Route path="/qna" element={<Qna />} />
-        <Route path="/qna/write" element={<QnaWrite/>}/>
+        {/* <Route path="/qna/write" element={<QnaWrite/>}/> */}
+        <Route path="/qna/:id" element={<QnaDetail />} />
       </Routes>
     </BrowserRouter>
   );
