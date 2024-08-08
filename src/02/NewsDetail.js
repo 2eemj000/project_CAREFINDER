@@ -5,6 +5,7 @@ function NewsDetail() {
     const { newsId } = useParams();
     const [newsDetail, setNewsDetail] = useState(null);
 
+    //TODO:API 활용 신청 대기중
     useEffect(() => {
         const fetchData = async () => {
             try {
