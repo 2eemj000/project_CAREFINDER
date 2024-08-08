@@ -41,7 +41,7 @@ function MainApp() {
   const navigate = useNavigate();
 
   return (
-      <div className="flex flex-col w-full h-screen max-w-screen-lg overflow-y-auto mx-auto">
+      <div className="flex flex-col w-full h-screen ">
         <header className='flex justify-center items-center flex-col'>
           <div className='logo-wrapper'>
             <img src={logoImage} alt="Logo" className="logo-image" />

@@ -58,7 +58,7 @@ export default function Signup() {
             <img src={logoImage} alt="Logo" className="logo-image" />
           </div>
           <div>
-            <label className="text-gray-800 text-xs block mb-1"> 이름 </label>
+            <label className="text-gray-800 block mb-1"> 이름 </label>
             <input
               name="name"
               type="text"
@@ -68,11 +68,11 @@ export default function Signup() {
               onChange={handleInputChange}
               onBlur={() => validateField('name', formData.name)}
             />
-            {errors.name && <span className="text-red-500 text-xs block mt-1">{errors.name}</span>}
+            {errors.name && <span className="text-red-500 text-sm block mt-1">{errors.name}</span>}
           </div>
 
           <div className="mt-8">
-            <label className="text-gray-800 text-xs block mb-1">e-mail</label>
+            <label className="text-gray-800 block mb-1">e-mail</label>
             <input
               name="email"
               type="text"
@@ -82,11 +82,11 @@ export default function Signup() {
               onChange={handleInputChange}
               onBlur={() => validateField('email', formData.email)}
             />
-            {errors.email && <span className="text-red-500 text-xs block mt-1">{errors.email}</span>}
+            {errors.email && <span className="text-red-500 text-sm block mt-1">{errors.email}</span>}
           </div>
 
           <div className="mt-8">
-            <label className="text-gray-800 text-xs block mb-1"> 비밀번호 </label>
+            <label className="text-gray-800 block mb-1"> 비밀번호 </label>
             <input
               name="password"
               type="password"
@@ -96,7 +96,7 @@ export default function Signup() {
               onChange={handleInputChange}
               onBlur={() => validateField('password', formData.password)}
             />
-            {errors.password && <span className="text-red-500 text-xs block mt-1">{errors.password}</span>}
+            {errors.password && <span className="text-red-500 text-sm block mt-1">{errors.password}</span>}
           </div>
 
           <div className="flex items-center mt-8">

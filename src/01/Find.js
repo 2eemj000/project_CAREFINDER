@@ -71,15 +71,20 @@ export default function Find() {
             <div className="fixed right-0 top-0 w-1/5 h-full bg-gray-200">
                 <Right />
             </div>
+
             {/* 메인부분 */}
             <div className="flex-1 ml-[20%] mr-[20%] p-10">
-                <div className="w-full max-w-3xl">
-                    <h1 className="text-3xl font-bold mb-4">내 맘에 쏙 병원찾기</h1>
-                    <p className="mb-6 text-gray-700">검색 조건을 선택하세요. 각 섹션에서 조건을 선택하면 해당 조건에 맞는 병원 목록이 나타납니다.</p>
-
+                <div className="font-bold text-2xl mt-6">
+                내 맘에 쏙 병원찾기
+                </div>
+                <div className='mt-6'>
+                    <h1>- 검색 조건을 선택하세요.</h1>
+                    <h1>- 각 섹션에서 조건을 선택하면 해당 조건에 맞는 병원 목록이 나타납니다.</h1>
+                </div>
+                <div>
                     {/* 지역 섹션 */}
                     <div className="mb-6">
-                        <h2 className="text-xl font-semibold mb-2">지역</h2>
+                        <h2 className="text-xl font-semibold mb-2 mt-10">지역</h2>
                         <div className="flex space-x-4">
                             <select
                                 value={region1}
@@ -103,26 +108,26 @@ export default function Find() {
                     </div>
 
                     {/* 전문의 */}
-                    <div className="mb-6">
+                    <div className="mb-10">
                         <h2 className="text-xl font-semibold mb-2">전문의</h2>
                         <div className="grid grid-cols-5 gap-4 mb-4">
                             {['내과', '외과', '정형외과', '신경과', '정신건강의학과', '재활의학과', '한방내과', '가정의학과', '피부과', '이비인후과'].map((item, index) => (
                                 <button
                                     key={item}
                                     onClick={() => handleSpecialistChange(item)}
-                                    className={`w-full aspect-square border rounded-lg flex flex-col items-center justify-center ${selectedSpecialist.includes(item) ? 'bg-blue-500 text-white' : 'bg-white text-blue-500'} transition-transform transform hover:scale-105`}
+                                    className={`w-full aspect-square border rounded-lg flex flex-col items-center justify-center ${selectedSpecialist.includes(item) ? 'bg-blue-200 text-white font-bold' : 'bg-white text-blue-00'} transition-transform transform hover:scale-105`}
                                     style={{
                                         minWidth: "60px",
                                         minHeight: "80px",  // 높이를 약간 늘려서 이미지와 텍스트가 잘 보이도록 함
-                                        padding: "4px"  // 이미지와 텍스트 사이의 여백
+                                        padding: "2px"  // 이미지와 텍스트 사이의 여백
                                     }}
                                 >
                                     <img
                                         src={images[index]}
                                         alt={item}
-                                        className="w-16 h-16 object-contain mb-2"  // 이미지 크기 조정
+                                        className="w-16 h-16 object-contain mb-4"  // 이미지 크기 조정
                                     />
-                                    <span className="font-bold text-black">{item}</span>  {/* 이미지 아래에 텍스트 위치 */}
+                                    <span className="text-black">{item}</span>  {/* 이미지 아래에 텍스트 위치 */}
                                 </button>
                             ))}
                         </div>
@@ -130,7 +135,7 @@ export default function Find() {
                     </div>
 
                     {/* 기타인력 섹션 */}
-                    <div className="mb-6">
+                    <div className="mb-10">
                         <h2 className="text-xl font-semibold mb-2">기타인력</h2>
                         <div className="flex space-x-4 mb-4">
                             {['물리치료사', '작업치료사', '사회복지사', '약사'].map((item) => (
@@ -147,16 +152,18 @@ export default function Find() {
                     </div>
 
                     {/* 검색과 초기화 버튼 */}
-                    <div className="flex space-x-4">
+                    <div className="flex space-x-4 pb-20">
                         <button
                             onClick={handleSearch}
-                            className="bg-blue-500 text-white px-4 py-2 rounded-lg"
+                            className="flex-1 bg-blue-500 text-white font-bold px-4 py-2 rounded-lg"
+                            style={{borderRadius: '20px'}}
                         >
                             검색
                         </button>
                         <button
                             onClick={handleReset}
-                            className="bg-gray-500 text-white px-4 py-2 rounded-lg"
+                            className="flex-1 bg-gray-500 text-white font-bold px-4 py-2 rounded-lg"
+                            style={{borderRadius: '20px'}}
                         >
                             초기화
                         </button>
