@@ -11,6 +11,7 @@ import Health from './02/Health.js';
 import Community from './03/Community.js'; 
 import ComWrite from './03/ComWrite.js';
 import Qna from './04/Qna.js';
+import QnaWrite from './04/QnaWrite.js';
 
 function App() {
   return (
@@ -22,8 +23,9 @@ function App() {
         <Route path="/find/card/:cardId" element={<CardDetail />} />
         <Route path="/health" element={<Health />} />
         <Route path="/community" element={<Community />} />
-        <Route path="/qna" element={<Qna />} />
         <Route path="/community/write" element={<ComWrite />} />
+        <Route path="/qna" element={<Qna />} />
+        <Route path="/qna/write" element={<QnaWrite/>}/>
       </Routes>
     </BrowserRouter>
   );

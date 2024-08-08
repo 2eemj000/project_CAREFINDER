@@ -2,9 +2,10 @@ import React from 'react';
 import './comwrite.css';
 import Left from '../Compo/Left.js'
 import Right from '../Compo/Right.js'
-
+import { useNavigate } from 'react-router-dom';
 
 function ComWrite() {
+  const navigate = useNavigate();
   const data = Array.from({ length: 10 }, (_, index) => ({
     번호: index + 1,
     제목: `제목 ${index + 1}`,
@@ -59,7 +60,7 @@ function ComWrite() {
         <button className="action-button comment-button">댓글 달기</button>
           <button className="action-button edit-button">수정</button>
           <button className="action-button delete-button">삭제</button>
-          <button className="action-button list-button">목록으로</button>
+          <button className="action-button list-button" onClick={() => navigate("/community")}>목록으로</button>
         </div>
     </div>
   </div>
