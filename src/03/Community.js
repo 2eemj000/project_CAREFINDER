@@ -2,19 +2,8 @@ import React from 'react';
 import './community.css';
 import Left from '../Compo/Left.js'
 import Right from '../Compo/Right.js'
-import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
-import ComWrite from './ComWrite.js';
+import { useNavigate } from 'react-router-dom';
 
-function App() {
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/community/write" element={<ComWrite />} />
-      </Routes>
-    </BrowserRouter>
-  );
-}
-  
 function Community() {
   const navigate = useNavigate();
   const data = Array.from({ length: 10 }, (_, index) => ({

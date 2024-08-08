@@ -2,9 +2,10 @@ import React from 'react';
 import './qna.css';
 import Left from '../Compo/Left.js'
 import Right from '../Compo/Right.js'
-
+import { useNavigate } from 'react-router-dom';
 
 function Qna() {
+  const navigate = useNavigate();
   const data = Array.from({ length: 10 }, (_, index) => ({
     번호: index + 1,
     제목: `제목 ${index + 1}`,
@@ -53,7 +54,7 @@ function Qna() {
         </tbody>
       </table>
       <div className="flex justify-center mt-6">
-          <button className="sign-button mb-16">
+          <button className="sign-button mb-16" onClick={() => navigate("/qna/write")}>
             작성하기
           </button>
       </div>
@@ -62,4 +63,4 @@ function Qna() {
   );
 }
 
-export default Qna;  
+export default Qna;
