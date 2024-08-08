@@ -1,58 +1,21 @@
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 3rem;
-  }
-  
-  thead {
-    background-color: #f2f2f2;
-  }
-  
-  th, td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: left;
-  }
-  
-  th:nth-child(1), td:nth-child(1) {
-    width: 10%; 
-  }
-  
-  th:nth-child(2), td:nth-child(2) {
-    width: 70%;
-  }
-  
-  th:nth-child(3), td:nth-child(3) {
-    width: 20%;
-  }
-  
-  .action-button {
-    flex: 1; /* 버튼이 동일한 너비를 가지도록 설정 */
-    margin: 1rem 0.5rem; /* 버튼 사이에 마진 추가 */
+.sign-button {
+    margin-top: 1rem;
+    font-size: medium;
+    text-decoration: none;
+    display: block; /* 전체 너비 차지 */
     padding: 0.5rem;
+    width: 90%;
     border-radius: 20px; /* 버튼 모서리 둥글게 */
-    background-color: #929292;
-    color: white;
-    font-weight: bold;
-    text-align: center;
     cursor: pointer;
+    justify-content: center;
+    background-color: #929292;
     transition: background-color 0.3s ease, color 0.3s ease;
-  }
+    font-weight: bold;
+    color: white;
+}  
   
-  .comment-button { background-color: #1187cf; }
-  .comment-button:hover { background-color: #125f8f; font-weight: bold;}
-  
-  .edit-button { background-color: #5d6dbe; }
-  .edit-button:hover {  background-color: #3a4eb4; font-weight: bold;}
-  
-  
-  .delete-button { background-color: #2fa599; }
-  .delete-button:hover { background-color: #227f75; font-weight: bold;}
-  
-  .list-button { background-color: #9e9e9e; }
-  .list-button:hover {background-color: #6c6c6c; font-weight: bold;}
-
-  .reply{
-    background-color: #f2f2f2;
-    text-align: center;
-  }
+.sign-button:hover {
+    background-color: #686767; /* hover 시 배경 색상 */
+    font-weight: bold;
+    color: white;
+}
