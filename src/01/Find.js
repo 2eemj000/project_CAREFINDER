@@ -37,7 +37,7 @@ export default function Find() {
 
             navigate(`/find/list?${queryParams}`); // 검색 후 리스트 화면으로 이동
         } else {
-            alert('지역을 필수로 선택해야 합니다.');
+            alert('지역은 필수로 선택해야 합니다.');
         }
     };
 
