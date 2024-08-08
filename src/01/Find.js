@@ -3,6 +3,16 @@ import Left from '../Compo/Left.js'
 import Right from '../Compo/Right.js'
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import image1 from '../Img/medicine.png';
+import image2 from '../Img/wound.png';
+import image3 from '../Img/knee.png';
+import image4 from '../Img/hand.png';
+import image5 from '../Img/mental.png';
+import image6 from '../Img/osteopathy.png';
+import image7 from '../Img/han.png';
+import image8 from '../Img/kit.png';
+import image9 from '../Img/skin.png';
+import image10 from '../Img/ear.png';
 
 export default function Find() {
     const [selectedSpecialist, setSelectedSpecialist] = useState([]);
@@ -11,6 +21,11 @@ export default function Find() {
     const [region2, setRegion2] = useState('');
 
     const navigate = useNavigate();
+
+    const images = [
+        image1, image2, image3, image4, image5,
+        image6, image7, image8, image9, image10
+    ];
 
     // prev 이때까지 선택된 거(현재상태) 에 확인해가며 넣기로.
     const handleSpecialistChange = (value) => {
@@ -90,25 +105,35 @@ export default function Find() {
                     {/* 전문의 */}
                     <div className="mb-6">
                         <h2 className="text-xl font-semibold mb-2">전문의</h2>
-                        <div className="grid grid-cols-2 gap-4 mb-4">
-                            {['전문의 1', '전문의 2', '전문의 3', '전문의 4', '전문의 5', '전문의 6', '전문의 7', '전문의 8', '전문의 9', '전문의 10'].map((item) => (
+                        <div className="grid grid-cols-5 gap-4 mb-4">
+                            {['내과', '외과', '정형외과', '신경과', '정신건강의학과', '재활의학과', '한방내과', '가정의학과', '피부과', '이비인후과'].map((item, index) => (
                                 <button
                                     key={item}
                                     onClick={() => handleSpecialistChange(item)}
-                                    className={`px-4 py-2 border rounded-lg ${selectedSpecialist.includes(item) ? 'bg-blue-500 text-white' : 'bg-white text-blue-500'}`}
+                                    className={`w-full aspect-square border rounded-lg flex flex-col items-center justify-center ${selectedSpecialist.includes(item) ? 'bg-blue-500 text-white' : 'bg-white text-blue-500'} transition-transform transform hover:scale-105`}
+                                    style={{
+                                        minWidth: "60px",
+                                        minHeight: "80px",  // 높이를 약간 늘려서 이미지와 텍스트가 잘 보이도록 함
+                                        padding: "4px"  // 이미지와 텍스트 사이의 여백
+                                    }}
                                 >
-                                    {item}
+                                    <img
+                                        src={images[index]}
+                                        alt={item}
+                                        className="w-16 h-16 object-contain mb-2"  // 이미지 크기 조정
+                                    />
+                                    <span className="font-bold text-black">{item}</span>  {/* 이미지 아래에 텍스트 위치 */}
                                 </button>
                             ))}
                         </div>
-                        <p className="text-gray-700">선택된 전문의: {selectedSpecialist.join(', ')}</p>
+                        <p className="text-gray-700 mt-2">선택된 전문의: {selectedSpecialist.join(', ')}</p>
                     </div>
 
                     {/* 기타인력 섹션 */}
                     <div className="mb-6">
                         <h2 className="text-xl font-semibold mb-2">기타인력</h2>
                         <div className="flex space-x-4 mb-4">
-                            {['기타인력 1', '기타인력 2', '기타인력 3', '기타인력 4'].map((item) => (
+                            {['물리치료사', '작업치료사', '사회복지사', '약사'].map((item) => (
                                 <button
                                     key={item}
                                     onClick={() => handleOtherChange(item)}
