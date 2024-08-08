@@ -1,16 +1,27 @@
-import React from 'react';
-import './qna.css';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Left from '../Compo/Left.js'
 import Right from '../Compo/Right.js'
-import { useNavigate } from 'react-router-dom';
+import './qna.css';
 
 function Qna() {
+  const [qnas, setQnas] = useState([]);
   const navigate = useNavigate();
-  const data = Array.from({ length: 10 }, (_, index) => ({
-    번호: index + 1,
-    제목: `제목 ${index + 1}`,
-    작성자: `작성자 ${index + 1}`,
-  }));
+
+  useEffect(() => {
+    const fetchQnas = async () => {
+      try {
+        const response = await fetch('http://localhost:8080/qna');
+        const data = await response.json();
+        setQnas(data);
+      } catch (error) {
+        console.error('Failed to fetch Q&As:', error);
+      }
+    };
+
+    fetchQnas();
+  }, []);
+
 
   return (
     <div className="flex h-screen">
@@ -41,17 +52,21 @@ function Qna() {
             <th className="text-center">번호</th>
             <th className="text-center">제목</th>
             <th className="text-center">작성자</th>
+            <th className="text-center border border-gray-300 p-2">작성일</th>
           </tr>
         </thead>
         <tbody>
-          {data.map((item) => (
-            <tr key={item.번호}>
-              <td className="text-center">{item.번호}</td>
-              <td>{item.제목}</td>
-              <td className="text-center">{item.작성자}</td>
-            </tr>
-          ))}
-        </tbody>
+            {qnas.map((qna, index) => (
+              <tr key={qna.qnaId} className="cursor-pointer hover:bg-gray-100" onClick={() => navigate(`/qna/${qna.qnaId}`)}>
+                <td className="text-center border border-gray-300 p-2">{index + 1}</td>
+                <td className="text-center border border-gray-300 p-2">{qna.title}</td>
+                <td className="text-center border border-gray-300 p-2">{qna.username}</td>
+                <td className="text-center border border-gray-300 p-2">
+                  {new Date(qna.createDate).toLocaleDateString()} {new Date(qna.createDate).toLocaleTimeString()}
+                </td>
+              </tr>
+            ))}
+          </tbody>
       </table>
       <div className="flex justify-center mt-6">
           <button className="sign-button mb-16" onClick={() => navigate("/qna/write")}>

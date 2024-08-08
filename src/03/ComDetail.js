@@ -7,21 +7,35 @@ import { useParams, useNavigate } from 'react-router-dom';
 function ComDetail() {
   const { id } = useParams();
   const [board, setBoard] = useState(null);
-  const [comments, setComments] = useState([]);
+  const [boardRe, setBoardRe] = useState([]);  // 댓글 데이터
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(`/api/boards/${id}`)
-      .then(response => response.json())
-      .then(data => {
-        setBoard(data);
-        setComments(data.comments || []);
-      });
-  }, [id]);
+    fetch(`http://localhost:8080/community/${id}`)
+    .then(response => response.json())
+    .then(data => setBoard(data))
+
+    fetch(`http://localhost:8080/communityre/${id}`)
+    .then(response => response.json())
+    .then(data => setBoardRe(data));
+}, [id]);
 
   if (!board) {
     return <div>Loading...</div>;
   }
+
+  const handleDelete = () => {
+    fetch(`http://localhost:8080/community/${id}`, {
+      method: 'DELETE'
+    })
+    .then(response => {
+      if (response.ok) {
+        navigate('/community');
+      } else {
+        console.error('Failed to delete the board');
+      }
+    });
+  };
 
   return (
     <div className="flex h-screen">
@@ -41,10 +55,13 @@ function ComDetail() {
         <div className="m-3 mt-10 text-xl font-bold">댓글</div>
         <table className="mt-3">
           <tbody>
-            {comments.map((comment) => (
-              <tr key={comment.commentId}>
+            {boardRe.map((comment) => (
+              <tr key={comment.boardReId}>
                 <td className="reply">{comment.username}</td>
                 <td className='pl-3 pr-3'>{comment.content}</td>
+                <td className='text-center'>
+                  {new Date(comment.createDate).toLocaleDateString()} {new Date(comment.createDate).toLocaleTimeString()}
+                </td>
               </tr>
             ))}
           </tbody>
@@ -52,7 +69,7 @@ function ComDetail() {
         <div className="flex justify-between mt-6">
           <button className="action-button comment-button">댓글 달기</button>
           <button className="action-button edit-button">수정</button>
-          <button className="action-button delete-button">삭제</button>
+          <button className="action-button delete-button" onClick={handleDelete}>삭제</button>
           <button className="action-button list-button" onClick={() => navigate("/community")}>목록으로</button>
         </div>
       </div>

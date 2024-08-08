@@ -14,7 +14,7 @@ function ComWrite() {
     
     const newPost = { title, content };
 
-    fetch('/api/boards', {
+    fetch('http://localhost:8080/community', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -22,8 +22,7 @@ function ComWrite() {
       body: JSON.stringify(newPost),
     })
     .then(response => response.json())
-    .then(data => {
-      // Redirect to the community page or the new post's detail page
+    .then(() => {
       navigate('/community');
     })
     .catch(error => {
