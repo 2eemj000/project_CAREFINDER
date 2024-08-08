@@ -1,103 +1,118 @@
 .sign-list {
-    list-style-type: none; /* 불릿 제거 */
-    margin: 0; 
-    margin-top: 3rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    padding: 1rem;
+  list-style-type: none; /* 불릿 제거 */
+  margin: 0;
+  margin-top: 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 1rem;
 }
 
 .sign-list li {
-    margin-top: 0.5rem;
-    margin-bottom: 0.5rem;
-    display: flex; 
-    justify-content: center;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  justify-content: center;
+  width: 100%;
 }
 
 .sign-list .sign-button {
-    font-size: medium;
-    text-decoration: none;
-    display: block; /* 전체 너비 차지 */
-    padding: 0.5rem;
-    width: 90%;
-    border: 2px solid transparent; /* 기본 테두리 색상 투명으로 설정 */
-    border-radius: 20px; /* 버튼 모서리 둥글게 */
-    cursor: pointer;
+  font-size: medium;
+  text-decoration: none;
+  display: flex; /* 버튼 내 내용 중앙 정렬 */
+  align-items: center; /* 버튼 내 내용 세로 중앙 정렬 */
+  justify-content: center; /* 버튼 내 내용 가로 중앙 정렬 */
+  padding: 10px; /* 버튼 높이 고정 */
+  width: 90%;
+  border: 2px solid transparent; /* 기본 테두리 색상 투명으로 설정 */
+  border-radius: 20px; /* 버튼 모서리 둥글게 */
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
 }
 
-.sign-list .sign-button:hover {
-    font-weight: bold;
+.sign-list .sign-button .icon {
+  font-size: 1.2em; /* 아이콘이 공간을 크게 잡아먹어서 크기 조정 */
+  margin-right: 8px; 
+}
+
+.sign-list .sign-button:nth-child(1):hover { 
+  background-color: #1b4588; 
+}
+
+.sign-list .sign-button:nth-child(3):hover { 
+  background-color: #1b4588; 
+}
+
+.sign-list .sign-button:nth-child(4):hover { 
+  background-color: #6f6f6f;
+}
+
+.sign-list .sign-button:nth-child(5):hover { 
+  background-color: #2d8c2f; 
+}
+
+.sign-list .sign-button:nth-child(6):hover { 
+  background-color: #f1b63f; 
 }
 
 .input-section {
-    display: flex;
-    flex-direction: column;
-    width: 90%;
-    justify-content: flex-start;
-    padding: 0.4rem;
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  padding: 0.4rem;
+  align-items: center; 
 }
 
 .input-field {
-    padding: 0.6rem;
-    border: 1px solid #ccc; 
-    border-radius: 5px; /* 입력 칸 모서리 둥글게 */
-    background-color: #f5f5f5;
-    width: 100%;
+  padding: 10px; 
+  border: 1px solid #ccc;
+  border-radius: 5px; 
+  background-color: #f5f5f5;
+  width: 100%;
+  box-sizing: border-box; /* 패딩과 테두리를 포함하여 너비 계산 */
+  margin-bottom: 0.5rem; 
 }
 
-.sign-button {
-    width: 100%;
-    padding: 10px;
-    margin: 5px 0;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  .input-field {
-    width: calc(100% - 20px);
-    padding: 10px;
-    margin: 5px 0;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-  }
-  
-  .input-section {
-    margin: 10px 0;
-  }
-  
-  .overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
-  }
-  
-  .overlay > div {
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    position: relative;
-    max-width: 600px;
-    width: 100%;
-  }
-  
-  .close-button {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: red;
-    color: white;
-    border: none;
-    padding: 10px;
-    border-radius: 50%;
-    cursor: pointer;
-    font-size: 18px;
-  }
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.overlay > div {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  position: relative;
+  max-width: 600px;
+  width: 100%;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: red;
+  color: white;
+  border: none;
+  width: 30px; 
+  height: 30px; 
+  border-radius: 50%; 
+  cursor: pointer;
+  font-size: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0; 
+}
+
+.close-button:hover {
+  background-color: darkred;
+}

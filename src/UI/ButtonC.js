@@ -20,7 +20,7 @@ export default function ButtonC({title, text, bcolor, handleClick}){
       className={`flex justify-start items-center py-10 px-10 m-5 text-white font-bold border border-gray-200 rounded shadow
                ${colorB[bcolor]} ${colorBhover[bcolor]}`}
       onClick={handleClick}
-      style={{ width: '220px', height: '150px' }} 
+      style={{ width: '250px', height: '180px' }} 
     >
       <div className="flex flex-col items-start text-left h-full justify-center"> {/* 상하 여백을 추가 */}
         <span className="text-xl mb-2">{title}</span> {/* 위 텍스트에 하단 마진 추가 */}

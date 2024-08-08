@@ -2,6 +2,7 @@ table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 3rem;
+  table-layout: fixed; /* 너비 고정 */
 }
 
 thead {
@@ -37,7 +38,7 @@ th:nth-child(4), td:nth-child(4) {
   display: block; /* 전체 너비 차지 */
   padding: 0.5rem;
   width: 90%;
-  border-radius: 20px; /* 버튼 모서리 둥글게 */
+  border-radius: 20px; 
   cursor: pointer;
   justify-content: center;
   background-color: #929292;
@@ -47,7 +48,7 @@ th:nth-child(4), td:nth-child(4) {
 }  
 
 .sign-button:hover {
-  background-color: #686767; /* hover 시 배경 색상 */
+  background-color: #686767;
   font-weight: bold;
   color: white;
 }
