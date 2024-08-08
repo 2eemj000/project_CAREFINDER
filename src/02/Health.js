@@ -10,7 +10,7 @@ export default function Health() {
 
   //여기 fetch는 json 제공 안하고 xml이라서 파싱해서 사용해야함
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchData = async () => { 
       try {
         const response = await fetch('http://api.kdca.go.kr/api/provide/healthInfo?TOKEN=YOUR_SERVICE_KEY');
         const xmlData = await response.text();

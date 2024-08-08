@@ -1,6 +1,7 @@
 import React from 'react'
 
-export default function News({ detail, onClick }) {
+//TODO: 파싱 내용 확인 필요
+export default function News({ detail, onClick }) { 
      return (
        <div onClick={onClick} className="max-w-sm rounded overflow-hidden shadow-lg cursor-pointer">
          <img src="https://source.unsplash.com/featured/?nature,forest" alt="Random Nature or Forest Image" />
