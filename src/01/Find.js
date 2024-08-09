@@ -67,28 +67,39 @@ export default function Find() {
         setRegion2('');
     };
 
-    // 서버에서 지역 데이터 가져오기
-    useEffect(() => {
-        fetch('/api/regions')
+       // 서버에서 지역 데이터 가져오기
+       useEffect(() => {
+        fetch('http://localhost:8080/find/regions')
             .then(response => response.json())
-            .then(data => setRegions(data))
+            .then(data => {
+                // 중복 제거
+                const uniqueRegions = [...new Set(data.map(region => region.code))];
+                const uniqueRegionData = data.filter((region, index, self) =>
+                    index === self.findIndex(r => r.code === region.code)
+                );
+                setRegions(uniqueRegionData);
+            })
             .catch(error => console.error('Error fetching regions:', error));
     }, []);
 
     // 첫 번째 지역 선택 시 하위 지역 데이터 가져오기
     useEffect(() => {
         if (region1) {
-            fetch(`/api/subregions?region1=${region1}`)
+            fetch(`http://localhost:8080/find/subregions?region1=${region1}`)
                 .then(response => response.json())
-                .then(data => setSubregions(prev => ({ ...prev, [region1]: data })))
+                .then(data => {
+                    // 하위 지역 데이터 중복 제거
+                    const uniqueSubregions = data.filter((subregion, index, self) =>
+                        index === self.findIndex(r => r.code === subregion.code)
+                    );
+                    setSubregions(prev => ({ ...prev, [region1]: uniqueSubregions }));
+                })
                 .catch(error => console.error('Error fetching subregions:', error));
         } else {
             setSubregions({});
         }
-        setRegion2(''); // 지역 1 변경 시 지역 2를 초기화
+        setRegion2('');
     }, [region1]);
-
-
 
     return (
         <div className="flex h-screen">
@@ -118,7 +129,7 @@ export default function Find() {
                                 onChange={(e) => setRegion1(e.target.value)}
                                 className="border border-gray-300 rounded-lg p-2 mb-4 w-full"
                             >
-                                <option value="">시/도 선택 </option>
+                                <option value="">시/도 선택</option>
                                 {regions.map(region => (
                                     <option key={region.code} value={region.code}>
                                         {region.name}

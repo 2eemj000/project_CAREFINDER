@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Card from './Card';
 import { useNavigate, useLocation } from 'react-router-dom'; // useNavigate로 변경
 
-export default function List({ category }) {
+export default function List() {
     const [cards, setCards] = useState([]);
     const location = useLocation(); // 현재 위치 정보 가져오기
     const navigate = useNavigate();
@@ -14,7 +14,7 @@ export default function List({ category }) {
    useEffect(() => {
         async function fetchCards() {
             try {
-                const response = await fetch(`https://api.example.com/cards?${location.search}`);
+                const response = await fetch(`http://localhost:8080/find/list?${location.search}`);
                 const data = await response.json();
                 setCards(data);
             } catch (error) {
