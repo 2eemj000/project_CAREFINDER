@@ -10,9 +10,38 @@ function Community() {
 
   useEffect(() => {
     fetch('http://localhost:8080/community')
-      .then(response => response.json())
-      .then(data => setBoards(data));
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => setBoards(data))
+      .catch(error => console.error('Fetch error:', error));
   }, []);
+
+  function formatDate(dateStr) {
+    const dateObj = new Date(dateStr);
+    if (isNaN(dateObj.getTime())) {
+      return 'Unknown Date';
+    }
+    const formattedDate = dateObj.toLocaleDateString('ko-KR', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+    const formattedTime = dateObj.toLocaleTimeString('ko-KR');
+  
+    return `${formattedDate}\n${formattedTime}`;
+  }
+
+  function handleBoardClick(boardId) {
+    if (boardId) {
+      navigate(`/community/${boardId}`);
+    } else {
+      console.error('Invalid board ID');
+    }
+  }
 
   return (
     <div className="flex h-screen">
@@ -37,7 +66,7 @@ function Community() {
               <th className="text-center">번호</th>
               <th className="text-center">제목</th>
               <th className="text-center">작성자</th>
-              <th className="text-center">작성일</th>
+              <th className="text-center">작성 날짜</th>
             </tr>
           </thead>
           <tbody>
@@ -46,12 +75,14 @@ function Community() {
                 <td className="text-center">{index + 1}</td>
                 <td 
                   className="cursor-pointer"
-                  onClick={() => navigate(`/community/${board.boardId}`)}
+                  onClick={() => handleBoardClick(board.boardId)}
                 >
                   {board.title}
                 </td>
-                <td className="text-center">{board.username}</td>
-                <td className="text-center">{new Date(board.createDate).toLocaleDateString()} {new Date(board.createDate).toLocaleTimeString()}</td>
+                <td className="text-center">{board.member.username}</td>
+                <td className="text-center">
+                  {formatDate(board.createDate)}
+                </td>
               </tr>
             ))}
           </tbody>

@@ -1,40 +1,84 @@
 import './comdetail.css';
-import Left from '../Compo/Left.js'
-import Right from '../Compo/Right.js'
+import Left from '../Compo/Left';
+import Right from '../Compo/Right';
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 function ComDetail() {
   const { id } = useParams();
   const [board, setBoard] = useState(null);
-  const [boardRe, setBoardRe] = useState([]);  // 댓글 데이터
+  const [boardRe, setBoardRe] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
+    // 게시글 데이터 가져오기
     fetch(`http://localhost:8080/community/${id}`)
-    .then(response => response.json())
-    .then(data => setBoard(data))
+      .then(response => response.json())
+      .then(data => setBoard(data))
+      .catch(error => console.error('Failed to fetch board:', error));
+    
+    // 댓글 데이터 가져오기
+    fetch(`http://localhost:8080/community/reply/${id}`)
+      .then(response => response.json())
+      .then(data => {
+        // 댓글 데이터가 배열인지 확인 후 상태 업데이트
+        if (Array.isArray(data)) {
+          const comments = data.map(comment => ({
+            boardReId: comment.boardReId,
+            content: comment.content,
+            createDate: comment.createDate,
+            username: comment.member.username
+          }));
+          setBoardRe(comments);
+        } else {
+          console.error('Expected an array of comments');
+        }
+      })
+      .catch(error => console.error('Failed to fetch comments:', error));
+  }, [id]);
 
-    fetch(`http://localhost:8080/communityre/${id}`)
-    .then(response => response.json())
-    .then(data => setBoardRe(data));
-}, [id]);
+  // 디버깅을 위해 상태 확인
+  useEffect(() => {
+    console.log('Board:', board);
+    console.log('Comments:', boardRe);
+  }, [board, boardRe]);
 
   if (!board) {
     return <div>Loading...</div>;
   }
 
+  function formatDate(dateStr) {
+  const dateObj = new Date(dateStr);
+  if (isNaN(dateObj.getTime())) {
+    return 'Unknown Date';
+  }
+
+  const formattedDate = dateObj.toLocaleDateString('ko-KR', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
+
+  const formattedTime = dateObj.toLocaleTimeString('ko-KR', {
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric',
+    hour12: true // 12시간제로 설정하여 오후/오전 표기
+  });
+
+  return `${formattedDate}\n${formattedTime}`;
+}
   const handleDelete = () => {
     fetch(`http://localhost:8080/community/${id}`, {
       method: 'DELETE'
     })
-    .then(response => {
-      if (response.ok) {
-        navigate('/community');
-      } else {
-        console.error('Failed to delete the board');
-      }
-    });
+      .then(response => {
+        if (response.ok) {
+          navigate('/community');
+        } else {
+          console.error('Failed to delete the board');
+        }
+      });
   };
 
   return (
@@ -54,16 +98,29 @@ function ComDetail() {
         </div>
         <div className="m-3 mt-10 text-xl font-bold">댓글</div>
         <table className="mt-3">
+          <thead>
+            <tr>
+              <th className="text-center">작성자</th>
+              <th className="text-center">내용</th>
+              <th className="text-center">작성 날짜</th>
+            </tr>
+          </thead>
           <tbody>
-            {boardRe.map((comment) => (
-              <tr key={comment.boardReId}>
-                <td className="reply">{comment.username}</td>
-                <td className='pl-3 pr-3'>{comment.content}</td>
-                <td className='text-center'>
-                  {new Date(comment.createDate).toLocaleDateString()} {new Date(comment.createDate).toLocaleTimeString()}
-                </td>
+            {boardRe.length > 0 ? (
+              boardRe.map(comment => (
+                <tr key={comment.boardReId}>
+                  <td className="reply">{comment.username}</td>
+                  <td className='pl-3 pr-3'>{comment.content}</td>
+                  <td className='text-center'>
+                    {formatDate(comment.createDate)}
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan="3" className="text-center">댓글이 없습니다.</td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
         <div className="flex justify-between mt-6">

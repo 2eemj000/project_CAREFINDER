@@ -14,7 +14,7 @@ function ComWrite() {
     
     const newPost = { title, content };
 
-    fetch('http://localhost:8080/community', {
+    fetch('http://localhost:3000/community/write', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
