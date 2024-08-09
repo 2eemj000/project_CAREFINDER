@@ -1,15 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import Card from './Card';
-import { useNavigate } from 'react-router-dom'; // useNavigate로 변경
+import { useNavigate, useLocation } from 'react-router-dom'; // useNavigate로 변경
 
 export default function List({ category }) {
     const [cards, setCards] = useState([]);
-    const navigate = useNavigate(); // useNavigate로 변경
+    const location = useLocation(); // 현재 위치 정보 가져오기
+    const navigate = useNavigate();
 
-    useEffect(() => {
+    // 쿼리 파라미터에서 category를 추출
+    const queryParams = new URLSearchParams(location.search);
+    const category = queryParams.get('category');
+
+   useEffect(() => {
         async function fetchCards() {
             try {
-                const response = await fetch(`https://api.example.com/cards?category=${category}`);
+                const response = await fetch(`https://api.example.com/cards?${location.search}`);
                 const data = await response.json();
                 setCards(data);
             } catch (error) {
@@ -20,7 +25,7 @@ export default function List({ category }) {
         if (category) {
             fetchCards();
         }
-    }, [category]);
+    }, [category, location.search]);
 
     const handleCardClick = (cardId) => {
         navigate(`/find/card/${cardId}`); // useNavigate로 페이지 이동

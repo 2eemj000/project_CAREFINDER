@@ -48,7 +48,7 @@ export default function Signup() {
   };
 
   return (
-    <div className="font-[sans-serif] relative">
+    <div className="font-[sans-serif] relative" style={{ zIndex: 10 }}> 
       <div className="h-[240px] font-[sans-serif] w-full">
         <img src={skyImage} alt="Logo" className="w-full object-cover h-full" />
       </div>
