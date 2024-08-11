@@ -28,7 +28,7 @@ function SignBar() {
                 <input type="text" id="userId" className="input-field" placeholder="아이디 또는 전화번호 입력" />
                 <input type="password" id="password" className="input-field" placeholder="비밀번호 입력" />
               </li>
-              <li><button className="sign-button" style={{ backgroundColor: '#2d80f5', color: 'white' }} onClick={handleLogin}>로그인</button></li>
+              <li><button className="sign-button" style={{ backgroundColor: '#2d80f5', color: 'white', marginTop:-9}} onClick={handleLogin}>로그인</button></li>
               <li><button className="sign-button" style={{ backgroundColor: '#c2c2c2', color: 'black' }}><FcGoogle className="icon" /> 구글 계정으로 로그인</button></li>
               <li><button className="sign-button" style={{ backgroundColor: '#34e85b', color: 'black' }}><SiNaver className="icon" /> 네이버 계정으로 로그인</button></li>
               <li><button className="sign-button" style={{ backgroundColor: '#ffec1b', color: 'black' }}><SiKakaotalk className="icon" /> 카카오 계정으로 로그인</button></li>
