@@ -12,7 +12,8 @@
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
   display: flex;
-  justify-content: center;
+  flex-direction: column; /* 내용이 수직으로 정렬되도록 변경 */
+  align-items: center; /* 내용 가운데 정렬 */
   width: 100%;
 }
 
@@ -104,4 +105,11 @@
 
 .close-button:hover {
   background-color: darkred;
+}
+
+/* 로그인 메시지 스타일 */
+.welcome-message {
+  margin-bottom: 1rem; /* 로그인 메시지와 버튼 사이의 간격 추가 */
+  font-size: 1.1rem;
+  color: #333;
 }

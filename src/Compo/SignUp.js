@@ -64,7 +64,7 @@ export default function Signup() {
       }
     } catch (error) {
       console.error('이메일 중복 확인 실패:', error);
-      alert('이메일 중복 확인에 실패했습니다.');
+      alert('이미 등록된 이메일 주소입니다.');
       return false;
     }
   };
@@ -109,14 +109,17 @@ export default function Signup() {
       if (response.ok) {
         setSuccessMessage('회원가입이 완료되었습니다.');
         setFormData({ name: '', email: '', password: '' }); // Clear form
+        setErrors({}); // Clear errors on successful signup
       } else {
         const errorData = await response.json();
         console.error('회원가입 실패:', errorData);
         alert('회원가입에 실패했습니다.');
+        setSuccessMessage(''); // Ensure success message is cleared on failure
       }
     } catch (error) {
       console.error('회원가입 실패:', error);
       alert('회원가입에 실패했습니다.');
+      setSuccessMessage(''); // Ensure success message is cleared on failure
     }
   };
 

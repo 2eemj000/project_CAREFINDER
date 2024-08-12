@@ -14,24 +14,30 @@ import ComDetail from './03/ComDetail.js';
 import Qna from './04/Qna.js';
 // import QnaWrite from './04/QnaWrite.js';
 import QnaDetail from './04/QnaDetail.js';
+import Footer from './Compo/Footer.js';
 
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<MainApp />} />
-        <Route path="/find" element={<Find />} />
-        <Route path="/find/list" element={<List />} />
-        <Route path="/find/card/:cardId" element={<CardDetail />} />
-        <Route path="/health" element={<Health />} />
-        <Route path="/health/:newsId" element={<NewsDetail />} />
-        <Route path="/community" element={<Community />} />
-        <Route path="/community/write" element={<ComWrite />} />
-        <Route path="/community/:id" element={<ComDetail />} />
-        <Route path="/qna" element={<Qna />} />
-        {/* <Route path="/qna/write" element={<QnaWrite/>}/> */}
-        <Route path="/qna/:id" element={<QnaDetail />} />
-      </Routes>
+      <div className='app-container'>
+        <div className="main-content">
+          <Routes>
+            <Route path="/" element={<MainApp />} />
+            <Route path="/find" element={<Find />} />
+            <Route path="/find/list" element={<List />} />
+            <Route path="/find/card/:cardId" element={<CardDetail />} />
+            <Route path="/health" element={<Health />} />
+            <Route path="/health/:newsId" element={<NewsDetail />} />
+            <Route path="/community" element={<Community />} />
+            <Route path="/community/write" element={<ComWrite />} />
+            <Route path="/community/:id" element={<ComDetail />} />
+            <Route path="/qna" element={<Qna />} />
+            {/* <Route path="/qna/write" element={<QnaWrite/>}/> */}
+            <Route path="/qna/:id" element={<QnaDetail />} />
+          </Routes>
+        </div>
+        <Footer />
+      </div>
     </BrowserRouter>
   );
 }
@@ -40,7 +46,7 @@ function MainApp() {
   const navigate = useNavigate();
 
   return (
-      <div className="flex flex-col w-full h-screen ">
+      <div className="flex flex-col w-full h-screen">
         <header className='flex justify-center items-center flex-col'>
           <div className='logo-wrapper'>
             <img src={logoImage} alt="Logo" className="logo-image" />
@@ -76,9 +82,6 @@ function MainApp() {
                   text='궁금증 해소하고 한 살 젊어져요.'
                   handleClick={() => navigate('/qna')}/>
         </main>
-        <footer className='w-full flex justify-center items-center h-20 bg-slate-500 text-purple-50 font-mono'>
-          ⓒ 2024 CAREFINDER, All rights reserved.
-        </footer>
       </div>
   );
 }

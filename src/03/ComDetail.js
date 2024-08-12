@@ -16,8 +16,12 @@ function ComDetail() {
   function formatDate(dateStr) {
     const dateObj = new Date(dateStr);
     if (isNaN(dateObj.getTime())) {
-      return 'Unknown Date';
+      return {
+        date: 'Unknown Date',
+        time: 'Unknown Time'
+      };
     }
+    
     const formattedDate = dateObj.toLocaleDateString('ko-KR', {
       year: 'numeric',
       month: 'long',
@@ -25,7 +29,10 @@ function ComDetail() {
     });
     const formattedTime = dateObj.toLocaleTimeString('ko-KR');
   
-    return `${formattedDate}\n${formattedTime}`;
+    return {
+      date: formattedDate,
+      time: formattedTime
+    };
   }
 
   useEffect(() => {
@@ -184,15 +191,19 @@ function ComDetail() {
           </thead>
           <tbody>
             {boardRe.length > 0 ? (
-              boardRe.map(comment => (
-                <tr key={comment.boardReId}>
-                  <td className="reply text-center">{comment.username}</td>
-                  <td className="pl-3 pr-3">{comment.content}</td>
-                  <td className="text-center">
-                    {formatDate(comment.createDate)}
-                  </td>
-                </tr>
-              ))
+              boardRe.map(comment => {
+                const { date, time } = formatDate(comment.createDate);
+                return (
+                  <tr key={comment.boardReId}>
+                    <td className="reply text-center">{comment.username}</td>
+                    <td className="pl-3 pr-3">{comment.content}</td>
+                    <td className="text-center">
+                      <div>{date}</div>
+                      <div>{time}</div>
+                    </td>
+                  </tr>
+                );
+              })
             ) : (
               <tr>
                 <td colSpan="3" className="text-center">댓글이 없습니다.</td>

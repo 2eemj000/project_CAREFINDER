@@ -23,16 +23,23 @@ function Community() {
   function formatDate(dateStr) {
     const dateObj = new Date(dateStr);
     if (isNaN(dateObj.getTime())) {
-      return 'Unknown Date';
+      return {
+        date: 'Unknown Date',
+        time: 'Unknown Time'
+      };
     }
+    
     const formattedDate = dateObj.toLocaleDateString('ko-KR', {
       year: 'numeric',
       month: 'long',
       day: 'numeric'
     });
     const formattedTime = dateObj.toLocaleTimeString('ko-KR');
-  
-    return `${formattedDate}\n${formattedTime}`;
+
+    return {
+      date: formattedDate,
+      time: formattedTime
+    };
   }
 
   function handleBoardClick(boardId) {
@@ -70,21 +77,25 @@ function Community() {
             </tr>
           </thead>
           <tbody>
-            {boards.map((board, index) => (
-              <tr key={board.boardId}>
-                <td className="text-center">{index + 1}</td>
-                <td 
-                  className="cursor-pointer"
-                  onClick={() => handleBoardClick(board.boardId)}
-                >
-                  {board.title}
-                </td>
-                <td className="text-center">{board.member.username}</td>
-                <td className="text-center">
-                  {formatDate(board.createDate)}
-                </td>
-              </tr>
-            ))}
+            {boards.map((board, index) => {
+              const { date, time } = formatDate(board.createDate);
+              return (
+                <tr key={board.boardId}>
+                  <td className="text-center">{index + 1}</td>
+                  <td 
+                    className="cursor-pointer"
+                    onClick={() => handleBoardClick(board.boardId)}
+                  >
+                    {board.title}
+                  </td>
+                  <td className="text-center">{board.member.username}</td>
+                  <td className="text-center">
+                    <div>{date}</div>
+                    <div>{time}</div>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
         <div className="flex justify-center mt-6">
