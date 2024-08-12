@@ -90,7 +90,7 @@ function Qna() {
                   </td>
               </tr>
               );
-              })}
+              })}  
           </tbody>
       </table>
       <div className="flex justify-center mt-6">
