@@ -25,7 +25,6 @@ export default function Health() {
       { id: '2447', title: '노인 변비', url: 'http://api.kdca.go.kr/api/provide/healthInfo?TOKEN=1910d1a09405&cntntsSn=2447' },
       { id: '6262', title: '노인 부종', url: 'http://api.kdca.go.kr/api/provide/healthInfo?TOKEN=1910d1a09405&cntntsSn=6262' },
     ];
-
     setNewsData(data);
   }, []);
 
@@ -46,7 +45,7 @@ export default function Health() {
           <h2 className="text-3xl font-bold mb-4">아는 만큼 더 건강해집니다.</h2>
           <p className="mb-6 text-gray-700">카드를 누르시면 자세한 정보를 볼 수 있습니다.</p>
         </div>
-        <div className="grid grid-cols-3 gap-10">
+        <div className="grid grid-cols-3 gap-10 p-10">
           {newsData.map(item => (
              <News
              key={item.id}
