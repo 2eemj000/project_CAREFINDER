@@ -8,28 +8,35 @@ const NewsDetail = () => {
   const [newsDetail, setNewsDetail] = useState(null);
 
   useEffect(() => {
-    console.log('Fetched newsId:', newsId); // Debugging line to check newsId
+    console.log('Fetched newsId:', newsId); 
 
     const fetchNewsDetail = async () => {
       try {
         const response = await fetch(`http://api.kdca.go.kr/api/provide/healthInfo?TOKEN=1910d1a09405&cntntsSn=${newsId}`);
+
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-        const xmlData = await response.text();
 
-        // XML 데이터 파싱
+        const xmlData = await response.text();
         const parser = new DOMParser();
         const xmlDoc = parser.parseFromString(xmlData, 'text/xml');
-        const cntnts = xmlDoc.getElementsByTagName('cntntsCl')[0];
 
-        if (cntnts) {
-          setNewsDetail({
-            title: cntnts.getElementsByTagName('CNTNTSSJ')[0].textContent.trim(),
-            content: cntnts.getElementsByTagName('CNTNTS_CL_CN')[0].textContent.trim(),
-          });
+        // Get the <svc> element
+        const svc = xmlDoc.getElementsByTagName('svc')[0];
+
+        if (svc) {
+          // Extracting content from <cntntsCl> elements
+          const cntntsClList = svc.getElementsByTagName('cntntsCl');
+          const contents = Array.from(cntntsClList).map(cntntsCl => ({
+            title: cntntsCl.getElementsByTagName('CNTNTS_CL_NM')[0]?.textContent.trim() || 'No Title',
+            content: cntntsCl.getElementsByTagName('CNTNTS_CL_CN')[0]?.textContent.trim() || 'No Content',
+          }));
+
+          // Assuming you want the first content item for simplicity
+          setNewsDetail(contents[0]);
         } else {
-          console.error('No content found in the response');
+          console.error('No <svc> content found in the response');
         }
       } catch (error) {
         console.error('Error fetching news detail:', error);
