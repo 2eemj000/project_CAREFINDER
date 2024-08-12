@@ -22,6 +22,27 @@ function Qna() {
     fetchQnas();
   }, []);
 
+  function formatDate(dateStr) {
+    const dateObj = new Date(dateStr);
+    if (isNaN(dateObj.getTime())) {
+      return {
+        date: 'Unknown Date',
+        time: 'Unknown Time'
+      };
+    }
+    
+    const formattedDate = dateObj.toLocaleDateString('ko-KR', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+    const formattedTime = dateObj.toLocaleTimeString('ko-KR');
+  
+    return {
+      date: formattedDate,
+      time: formattedTime
+    };
+  }
 
   return (
     <div className="flex h-screen">
@@ -56,16 +77,20 @@ function Qna() {
           </tr>
         </thead>
         <tbody>
-            {qnas.map((qna, index) => (
+            {qnas.map((qna, index) => {
+              const { date, time } = formatDate(qna.createDate);
+              return (
               <tr key={qna.qnaId} className="cursor-pointer hover:bg-gray-100" onClick={() => navigate(`/qna/${qna.qnaId}`)}>
                 <td className="text-center border border-gray-300 p-2">{index + 1}</td>
                 <td className="text-center border border-gray-300 p-2">{qna.title}</td>
                 <td className="text-center border border-gray-300 p-2">{qna.username}</td>
                 <td className="text-center border border-gray-300 p-2">
-                  {new Date(qna.createDate).toLocaleDateString()} {new Date(qna.createDate).toLocaleTimeString()}
-                </td>
+                    <div>{date}</div>
+                    <div>{time}</div>
+                  </td>
               </tr>
-            ))}
+              );
+              })}  
           </tbody>
       </table>
       <div className="flex justify-center mt-6">
