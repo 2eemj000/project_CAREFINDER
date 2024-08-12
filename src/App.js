@@ -3,7 +3,6 @@ import './App.css';
 import skyImage from './Img/Sky.jpg';
 import logoImage from './Img/Logo.png';
 import ButtonC from './UI/ButtonC.js';
-import Home from './01/Home.js';
 import Find from './01/Find.js';
 import List from './01/Find.js';
 import CardDetail from './01/CardDetail.js'; 
@@ -59,14 +58,14 @@ function MainApp() {
             </div>
           </div>
         </header>
-        <main className='grow flex justify-center items-center'>
+        <main className='grow flex justify-center items-center pb-20'>
           <ButtonC bcolor="sky" 
                   title='요양 병원 찾기' 
                   text='내가 원하는 전문의가 있는 병원을 찾아보세요.' 
                   handleClick={() => navigate('/find')}/>
           <ButtonC bcolor="purple" 
                   title='건강백과사전'
-                  text='아는 만큼 건강해집니다.'
+                  text='아는 만큼 건강해져요.'
                   handleClick={() => navigate('/health')}/>
           <ButtonC bcolor="blue" 
                   title='커뮤니티' 
