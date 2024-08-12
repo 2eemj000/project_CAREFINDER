@@ -41,9 +41,11 @@ export default function Health() {
         <Right />
       </div>
       <div className="flex-1 ml-[20%] mr-[20%] p-10">
-        <div className="w-full max-w-3xl">
-          <h2 className="text-3xl font-bold mb-4">아는 만큼 더 건강해집니다.</h2>
-          <p className="mb-6 text-gray-700">카드를 누르시면 자세한 정보를 볼 수 있습니다.</p>
+        <div className="font-bold text-2xl mt-6">
+          아는 만큼 더 건강해집니다.
+        </div>
+        <div className='mt-6 mb-5'>
+          <h1>- 카드를 누르시면 자세한 정보를 볼 수 있습니다.</h1>
         </div>
         <div className="grid grid-cols-3 gap-10 p-10">
           {newsData.map(item => (
