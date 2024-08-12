@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Card from './Card';
-import { useNavigate, useLocation } from 'react-router-dom'; // useNavigate로 변경
+import { useNavigate, useLocation } from 'react-router-dom'; 
 
 export default function List() {
     const [cards, setCards] = useState([]);
@@ -22,10 +22,8 @@ export default function List() {
             }
         }
 
-        if (category) {
-            fetchCards();
-        }
-    }, [category, location.search]);
+        fetchCards();
+    }, [location.search]);
 
     const handleCardClick = (cardId) => {
         navigate(`/find/card/${cardId}`); // useNavigate로 페이지 이동
@@ -43,9 +41,10 @@ export default function List() {
                 {cards.map(card => (
                     <Card
                         key={card.id}
-                        title={card.title}
-                        content={card.content}
+                        name={card.name}
+                        phone={card.phone}
                         onClick={() => handleCardClick(card.id)} // 클릭 시 상세 페이지로 이동
+                        level={card.level || []} // levels 데이터를 전달
                     />
                 ))}
             </div>
