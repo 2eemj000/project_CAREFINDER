@@ -23,8 +23,8 @@ export default function ButtonC({title, text, bcolor, handleClick}){
       style={{ width: '250px', height: '180px' }} 
     >
       <div className="flex flex-col items-start text-left h-full justify-center"> {/* 상하 여백을 추가 */}
-        <span className="text-xl mb-2">{title}</span> {/* 위 텍스트에 하단 마진 추가 */}
-        <span className="text-xs font-thin">{text}</span> {/* 아래 텍스트 */}
+        <span className="text-xl mb-8">{title}</span> {/* 위 텍스트에 하단 마진 추가 */}
+        <span className="text-s font-thin">{text}</span> {/* 아래 텍스트 */}
       </div>
     </button>
   );
