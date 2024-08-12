@@ -2,7 +2,6 @@ import React from 'react';
 import '../NavigationBar.css';
 import logo from '../Img/Logo.png';
 import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
-import Home from '../01/Home.js';
 import Find from '../01/Find.js';
 import CardDetail from '../01/CardDetail.js'; 
 import Health from '../02/Health.js'; 
