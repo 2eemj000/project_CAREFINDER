@@ -5,7 +5,6 @@ export default function CardDetail() {
     const { cardId } = useParams();
     const [cardDetails, setCardDetails] = useState(null);
 
-    
     useEffect(() => {
         async function fetchCardDetails() {
             try {
@@ -24,23 +23,25 @@ export default function CardDetail() {
         if (cardDetails && cardDetails.locx && cardDetails.locy) {
             const { kakao } = window; // Kakao Map API 객체
 
-            // 지도 컨테이너
-            const mapContainer = document.getElementById('map');
-            // 지도 옵션
-            const mapOption = {
-                center: new kakao.maps.LatLng(cardDetails.locy, cardDetails.locx), // 위도, 경도
-                level: 3 // 지도의 확대 레벨
-            };
+            if (kakao && kakao.maps) {
+                // 지도 컨테이너
+                const mapContainer = document.getElementById('map');
+                // 지도 옵션
+                const mapOption = {
+                    center: new kakao.maps.LatLng(cardDetails.locy, cardDetails.locx), // 위도, 경도
+                    level: 3 // 지도의 확대 레벨
+                };
 
-            // 지도 생성
-            const map = new kakao.maps.Map(mapContainer, mapOption);
+                // 지도 생성
+                const map = new kakao.maps.Map(mapContainer, mapOption);
 
-            // 마커 생성
-            const markerPosition = new kakao.maps.LatLng(cardDetails.locy, cardDetails.locx); // 위도, 경도
-            const marker = new kakao.maps.Marker({
-                position: markerPosition
-            });
-            marker.setMap(map);
+                // 마커 생성
+                const markerPosition = new kakao.maps.LatLng(cardDetails.locy, cardDetails.locx); // 위도, 경도
+                const marker = new kakao.maps.Marker({
+                    position: markerPosition
+                });
+                marker.setMap(map);
+            }
         }
     }, [cardDetails]);
 
