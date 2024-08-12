@@ -82,8 +82,8 @@ function SignBar() {
             </>
           ) : (
             <li>
+              <div className="welcome-message">{loginMessage}</div>
               <button className="sign-button" style={{ backgroundColor: '#f44336', color: 'white' }} onClick={handleLogout}>로그아웃</button>
-              <div>{loginMessage}</div>
             </li>
           )}
         </ul>
