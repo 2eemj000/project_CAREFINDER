@@ -37,40 +37,29 @@
 .sign-list .sign-button {
   font-size: medium;
   text-decoration: none;
-  display: flex; /* 버튼 내 내용 중앙 정렬 */
-  align-items: center; /* 버튼 내 내용 세로 중앙 정렬 */
-  justify-content: center; /* 버튼 내 내용 가로 중앙 정렬 */
-  padding: 10px; /* 버튼 높이 고정 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
   width: 90%;
   border: 2px solid transparent; /* 기본 테두리 색상 투명으로 설정 */
-  border-radius: 20px; /* 버튼 모서리 둥글게 */
+  border-radius: 20px;
   cursor: pointer;
   transition: background-color 0.3s, color 0.3s;
+}
+
+.sign-button {
+  transition: background-color 0.3s ease;
+}
+
+/* 버튼에 hover 효과 추가 */
+.sign-button:hover {
+  opacity: 0.8; /* 클릭 시 투명도 변경 */
 }
 
 .sign-list .sign-button .icon {
   font-size: 1.2em; /* 아이콘이 공간을 크게 잡아먹어서 크기 조정 */
   margin-right: 8px; 
-}
-
-.sign-list .sign-button:nth-child(1):hover { 
-  background-color: #1b4588; 
-}
-
-.sign-list .sign-button:nth-child(3):hover { 
-  background-color: #1b4588; 
-}
-
-.sign-list .sign-button:nth-child(4):hover { 
-  background-color: #6f6f6f;
-}
-
-.sign-list .sign-button:nth-child(5):hover { 
-  background-color: #2d8c2f; 
-}
-
-.sign-list .sign-button:nth-child(6):hover { 
-  background-color: #f1b63f; 
 }
 
 .overlay {
