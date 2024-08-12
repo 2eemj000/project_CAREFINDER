@@ -69,11 +69,8 @@ export default function Find() {
         fetch('http://localhost:8080/find/regions')
             .then(response => response.json())
             .then(data => {
-                const uniqueRegions = [...new Set(data.map(region => region.code))];
-                const uniqueRegionData = data.filter((region, index, self) =>
-                    index === self.findIndex(r => r.code === region.code)
-                );
-                setRegions(uniqueRegionData);
+                console.log('Fetched regions:', data); // 데이터 구조 확인
+                setRegions(data); // API에서 받은 데이터 사용
             })
             .catch(error => console.error('Error fetching regions:', error));
     }, []);
@@ -83,20 +80,24 @@ export default function Find() {
             fetch(`http://localhost:8080/find/subregions?region1=${region1}`)
                 .then(response => response.json())
                 .then(data => {
-                    const uniqueSubregions = data.filter((subregion, index, self) =>
-                        index === self.findIndex(r => r.code === subregion.code)
-                    );
-                    setSubregions(prev => ({ ...prev, [region1]: uniqueSubregions }));
+                    console.log('Fetched subregions:', data); // 데이터 구조 확인
+                    setSubregions(prev => ({ ...prev, [region1]: data }));
                 })
                 .catch(error => console.error('Error fetching subregions:', error));
         } else {
             setSubregions({});
         }
-        setRegion2('');
-    }, [region1]);
+        setRegion2(''); //선택된 하위 지역 초기화할려고 
+    }, [region1]); 
+
+    //콘솔 확인용
+    useEffect(() => {
+        console.log('Region1:', region1);
+        console.log('Subregions for Region1:', subregions[region1]);
+    }, [region1, subregions]);
 
     return (
-        <div className="flex h-screen relative">
+        <div className="flex flex-col min-h-screen">
             <div className="fixed left-0 top-0 w-1/5 h-full bg-gray-200 z-10">
                 <Left />
             </div>
@@ -116,7 +117,9 @@ export default function Find() {
                 <div>
                     {/* 지역 섹션 */}
                     <div className="mb-6">
-                        <h2 className="text-xl font-semibold mb-2 mt-10">지역</h2>
+                        <h2 className="text-xl font-semibold mb-2 mt-10">
+                            지역 <span className="text-red-500 text-xl font-bold"> *</span>
+                        </h2>
                         <div className="flex space-x-4">
                             <select
                                 value={region1}
@@ -130,6 +133,7 @@ export default function Find() {
                                     </option>
                                 ))}
                             </select>
+
                             <select
                                 value={region2}
                                 onChange={(e) => setRegion2(e.target.value)}
