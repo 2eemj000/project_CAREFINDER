@@ -19,7 +19,7 @@ export default function Find() {
     const [selectedOther, setSelectedOther] = useState([]);
     const [region1, setRegion1] = useState('');
     const [region2, setRegion2] = useState('');
-    const [regions, setRegions] = useState([]); //region1을 저장할 변수
+    const [regions, setRegions] = useState([]);
     const [subregions, setSubregions] = useState({});
     const navigate = useNavigate();
 
@@ -31,7 +31,6 @@ export default function Find() {
     const specialists = ['내과', '외과', '정형외과', '신경과', '정신건강의학과', '재활의학과', '한방내과', '가정의학과', '피부과', '이비인후과'];
     const otherOptions = ['물리치료사', '작업치료사', '사회복지사', '약사'];
 
-    // prev 이때까지 선택된 거(현재상태) 에 확인해가며 넣기로.
     const handleSpecialistChange = (value) => {
         setSelectedSpecialist(prev =>
             prev.includes(value) ? prev.filter(item => item !== value) : [...prev, value]
@@ -44,17 +43,16 @@ export default function Find() {
         );
     };
 
-    // TODO: 검색버튼, 누르면 파람스 전달하고 /list 페이지로 네비게이트 되도록 함
     const handleSearch = () => {
         if (region1 && region2) {
             const queryParams = new URLSearchParams({
                 sido: region1,
                 sigungu: region2,
-                doctor: selectedSpecialist.join(','), // 선택된 전문의를 콤마로 구분
-                person: selectedOther.join(',') // 선택된 기타인력을 콤마로 구분
+                doctor: selectedSpecialist.join(','),
+                person: selectedOther.join(',')
             }).toString();
 
-            navigate(`/find/list?${queryParams}`); // 검색 후 리스트 화면으로 이동
+            navigate(`/find/list?${queryParams}`);
         } else {
             alert('지역은 필수로 선택해야 합니다.');
         }
@@ -67,12 +65,10 @@ export default function Find() {
         setRegion2('');
     };
 
-       // 서버에서 지역 데이터 가져오기
-       useEffect(() => {
+    useEffect(() => {
         fetch('http://localhost:8080/find/regions')
             .then(response => response.json())
             .then(data => {
-                // 중복 제거
                 const uniqueRegions = [...new Set(data.map(region => region.code))];
                 const uniqueRegionData = data.filter((region, index, self) =>
                     index === self.findIndex(r => r.code === region.code)
@@ -82,13 +78,11 @@ export default function Find() {
             .catch(error => console.error('Error fetching regions:', error));
     }, []);
 
-    // 첫 번째 지역 선택 시 하위 지역 데이터 가져오기
     useEffect(() => {
         if (region1) {
             fetch(`http://localhost:8080/find/subregions?region1=${region1}`)
                 .then(response => response.json())
                 .then(data => {
-                    // 하위 지역 데이터 중복 제거
                     const uniqueSubregions = data.filter((subregion, index, self) =>
                         index === self.findIndex(r => r.code === subregion.code)
                     );
@@ -102,16 +96,16 @@ export default function Find() {
     }, [region1]);
 
     return (
-        <div className="flex h-screen">
-            <div className="fixed left-0 top-0 w-1/5 h-full bg-gray-200">
+        <div className="flex h-screen relative">
+            <div className="fixed left-0 top-0 w-1/5 h-full bg-gray-200 z-10">
                 <Left />
             </div>
-            <div className="fixed right-0 top-0 w-1/5 h-full bg-gray-200">
+            <div className="fixed right-0 top-0 w-1/5 h-full bg-gray-200 z-10">
                 <Right />
             </div>
 
             {/* 메인부분 */}
-            <div className="flex-1 ml-[20%] mr-[20%] p-10">
+            <div className="flex-1 ml-[20%] mr-[20%] p-10 z-0">
                 <div className="font-bold text-2xl mt-6">
                     내 맘에 쏙 병원찾기
                 </div>
@@ -152,9 +146,9 @@ export default function Find() {
                     </div>
 
                     {/* 전문의 섹션 */}
-                    <div className="mb-10 relative" style={{ zIndex: 0 }}>
+                    <div className="mb-10" style={{ zIndex: 0 }}>
                         <h2 className="text-xl font-semibold mb-2">전문의</h2>
-                        <div className="flex justify-center relative">
+                        <div className="flex justify-center">
                             <div className="grid grid-cols-5 gap-8 mb-5 max-w-screen-xl px-4">
                                 {specialists.map((item, index) => (
                                     <button
@@ -162,15 +156,14 @@ export default function Find() {
                                         onClick={() => handleSpecialistChange(item)}
                                         className={`w-full aspect-square border rounded-lg flex flex-col items-center justify-center ${selectedSpecialist.includes(item) ? 'bg-blue-200 text-white font-bold' : 'bg-white text-blue-500'} transition-transform transform hover:scale-105`}
                                         style={{
-                                            width: "140px", // 버튼 너비
-                                            minHeight: "140px", // 버튼 높이
-                                            padding: "2px", // 버튼 안쪽 여백
-                                            position: 'relative', // position 설정
-                                            zIndex: 1, // z-index 설정
+                                            width: "140px",
+                                            minHeight: "140px",
+                                            padding: "2px",
+                                            zIndex: 1,
                                         }}
                                     >
                                         <img
-                                            src={images[index % images.length]} // 이미지 배열 순환 사용
+                                            src={images[index % images.length]}
                                             alt={item}
                                             className="w-16 h-16 object-contain mb-4"
                                         />
@@ -183,9 +176,9 @@ export default function Find() {
                     </div>
 
                     {/* 기타인력 섹션 */}
-                    <div className="mb-10 relative" style={{ zIndex: 0 }}>
+                    <div className="mb-10" style={{ zIndex: 0 }}>
                         <h2 className="text-xl font-semibold mb-2">기타인력</h2>
-                        <div className="flex flex-wrap justify-center gap-4 mb-4 relative">
+                        <div className="flex flex-wrap justify-center gap-4 mb-4">
                             {otherOptions.map((item) => (
                                 <button
                                     key={item}
@@ -194,8 +187,7 @@ export default function Find() {
                                     style={{
                                         width: '150px',
                                         height: '50px',
-                                        position: 'relative', // position 설정
-                                        zIndex: 1, // z-index 설정
+                                        zIndex: 1,
                                     }}
                                 >
                                     {item}
