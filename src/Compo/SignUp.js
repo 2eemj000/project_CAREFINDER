@@ -1,7 +1,6 @@
-import React from 'react'
+import React, { useState } from 'react';
 import skyImage from '../Img/Sky.jpg';
 import logoImage from '../Img/Logo.png';
-import { useState } from 'react';
 
 export default function Signup() {
   const [formData, setFormData] = useState({
@@ -10,6 +9,8 @@ export default function Signup() {
     password: ''
   });
   const [errors, setErrors] = useState({});
+  const [successMessage, setSuccessMessage] = useState('');
+  const [isChecked, setIsChecked] = useState(false); // 체크박스 상태를 관리하는 상태 변수
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -33,10 +34,10 @@ export default function Signup() {
         if (!value) errorMsg = '이름을 입력하세요.';
         break;
       case 'email':
-        if (!value.includes('@')) errorMsg = '5~50자 이내의 유효한 이메일 주소를 입력하세요.';
+        if (!value.includes('@')) errorMsg = '유효한 이메일 주소를 입력하세요.';
         break;
       case 'password':
-        if (value.length < 8) errorMsg = '비밀번호: 8~16자의 영문 대/소문자, 숫자, 특수문자를 사용해 주세요.';
+        if (value.length < 8) errorMsg = '비밀번호는 8자 이상이어야 합니다.';
         break;
       default:
         break;
@@ -47,14 +48,86 @@ export default function Signup() {
     }));
   };
 
+  const checkEmailExists = async (email) => {
+    try {
+      const response = await fetch(`http://localhost:8080/check-email?email=${encodeURIComponent(email)}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        return data.exists; // Assume the server returns { exists: true } or { exists: false }
+      } else {
+        throw new Error('이메일 중복 확인 실패');
+      }
+    } catch (error) {
+      console.error('이메일 중복 확인 실패:', error);
+      alert('이메일 중복 확인에 실패했습니다.');
+      return false;
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Validate fields
+    Object.keys(formData).forEach(key => validateField(key, formData[key]));
+
+    // Check if there are any validation errors
+    if (Object.values(errors).some(error => error)) {
+      return;
+    }
+
+    // Check if the checkbox is checked
+    if (!isChecked) {
+      alert('개인 정보 수집 및 이용에 동의해야 회원가입이 가능합니다.');
+      return;
+    }
+
+    // Check if email already exists
+    const emailExists = await checkEmailExists(formData.email);
+    if (emailExists) {
+      alert('이미 등록된 이메일 주소입니다.');
+      return;
+    }
+
+    try {
+      const response = await fetch('http://localhost:8080/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: formData.name, // Use name as username
+          password: formData.password, // Directly use password
+          role: 'member' // Default role
+        }),
+      });
+
+      if (response.ok) {
+        setSuccessMessage('회원가입이 완료되었습니다.');
+        setFormData({ name: '', email: '', password: '' }); // Clear form
+      } else {
+        const errorData = await response.json();
+        console.error('회원가입 실패:', errorData);
+        alert('회원가입에 실패했습니다.');
+      }
+    } catch (error) {
+      console.error('회원가입 실패:', error);
+      alert('회원가입에 실패했습니다.');
+    }
+  };
+
   return (
     <div className="font-[sans-serif] relative" style={{ zIndex: 10 }}> 
       <div className="h-[240px] font-[sans-serif] w-full">
-        <img src={skyImage} alt="Logo" className="w-full object-cover h-full" />
+        <img src={skyImage} alt="Sky" className="w-full object-cover h-full" />
       </div>
       <div className="relative -mt-40 m-4">
-        <form className="bg-white max-w-xl w-full mx-auto shadow-[0_2px_10px_-3px_rgba(6,81,237,0.3)] p-8 rounded-2xl">
-        <div className="flex justify-center items-center mb-12">
+        <form className="bg-white max-w-xl w-full mx-auto shadow-[0_2px_10px_-3px_rgba(6,81,237,0.3)] p-8 rounded-2xl" onSubmit={handleSubmit}>
+          <div className="flex justify-center items-center mb-12">
             <img src={logoImage} alt="Logo" className="logo-image" />
           </div>
           <div>
@@ -100,16 +173,24 @@ export default function Signup() {
           </div>
 
           <div className="flex items-center mt-8">
-            <input id="remember-me" name="remember-me" type="checkbox" className="h-4 w-4 shrink-0 rounded" />
+            <input
+              id="remember-me"
+              name="remember-me"
+              type="checkbox"
+              className="h-4 w-4 shrink-0 rounded"
+              checked={isChecked}
+              onChange={(e) => setIsChecked(e.target.checked)}
+            />
             <label htmlFor="remember-me" className="ml-3 block text-sm">
               CAREFINDER의 개인 정보 수집 및 이용에 동의합니다.
             </label>
           </div>
 
           <div className="mt-8">
-            <button type="button" className="w-full shadow-xl py-2.5 px-5 text-sm font-semibold tracking-wider rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none transition-all">
+            <button type="submit" className="w-full shadow-xl py-2.5 px-5 text-sm font-semibold tracking-wider rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none transition-all">
               회원가입
             </button>
+            {successMessage && <div className="mt-4 text-green-500">{successMessage}</div>}
           </div>
         </form>
       </div>

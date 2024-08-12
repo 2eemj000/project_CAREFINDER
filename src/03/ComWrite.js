@@ -11,7 +11,17 @@ function ComWrite() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    
+
+    // 세션에서 member 정보 가져오기
+    const member = JSON.parse(sessionStorage.getItem("member"));
+
+    // member가 없으면 경고창 띄우기
+    if (!member || !member.username) {
+      alert("로그인이 필요합니다.");
+      navigate('/signin');  // 로그인 페이지로 이동
+      return;
+    }
+
     const newPost = { title, content };
 
     fetch('http://localhost:3000/community/write', {
@@ -67,7 +77,7 @@ function ComWrite() {
           </div>
           <div className="flex justify-center mt-6">
             <button type="submit" className="sign-button mb-16">
-                등록하기
+              등록하기
             </button>
           </div>
         </form>
