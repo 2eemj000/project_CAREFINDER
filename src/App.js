@@ -11,7 +11,7 @@ import Community from './03/Community.js';
 import ComWrite from './03/ComWrite.js';
 import ComDetail from './03/ComDetail.js';
 import Qna from './04/Qna.js';
-// import QnaWrite from './04/QnaWrite.js';
+import QnaWrite from './04/QnaWrite.js';
 import QnaDetail from './04/QnaDetail.js';
 import Footer from './Compo/Footer.js';
 
@@ -30,7 +30,7 @@ function App() {
             <Route path="/community/write" element={<ComWrite />} />
             <Route path="/community/:id" element={<ComDetail />} />
             <Route path="/qna" element={<Qna />} />
-            {/* <Route path="/qna/write" element={<QnaWrite/>}/> */}
+            <Route path="/qna/write" element={<QnaWrite/>}/>
             <Route path="/qna/:id" element={<QnaDetail />} />
           </Routes>
         </div>
