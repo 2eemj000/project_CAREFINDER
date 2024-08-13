@@ -10,12 +10,12 @@ export default function Card({ name, phone, onClick, level }) {
             <h5 className="text-lg font-semibold mb-2">{name}</h5>
             <p className="text-sm text-gray-700">{phone}</p>
             <div className="px-2 pt-2 pb-4 flex flex-wrap">
-                {level.map((lvl, index) => (
+                {level.map((level, index) => (
                     <span
                         key={index}
                         className="inline-block bg-gray-200 rounded-full px-2 py-1 text-xs font-semibold text-gray-700 mr-1 mb-1"
                     >
-                        {lvl}
+                        {level}
                     </span>
                 ))}
             </div>

@@ -1,53 +1,39 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useLocation } from 'react-router-dom';
 import Left from '../Compo/Left';
 import Right from '../Compo/Right';
 
 const NewsDetail = () => {
-  const { newsId } = useParams();
-  const [newsDetail, setNewsDetail] = useState(null);
+  const { id } = useParams();
+  const location = useLocation();
+  const query = new URLSearchParams(location.search);
+  const title = query.get('title') || 'No title available';
+  const [newsItem, setNewsItem] = useState({ content: '' });
 
   useEffect(() => {
-    console.log('Fetched newsId:', newsId); 
-
     const fetchNewsDetail = async () => {
+      console.log('Fetching data for id:', id); // Debugging line
       try {
-        const response = await fetch(`http://api.kdca.go.kr/api/provide/healthInfo?TOKEN=1910d1a09405&cntntsSn=${newsId}`);
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        const xmlData = await response.text();
+        const response = await fetch(`/data/${id}.xml`);
+        const xmlText = await response.text();
         const parser = new DOMParser();
-        const xmlDoc = parser.parseFromString(xmlData, 'text/xml');
+        const xmlDoc = parser.parseFromString(xmlText, "text/xml");
+        // 상위 <svc> 요소 접근
+        const svc = xmlDoc.getElementsByTagName("svc")[0];
+        const content = svc.getElementsByTagName("cntntsCl")[0]?.getElementsByTagName("CNTNTS_CL_CN")[0]?.textContent || 'No content available';
 
-        // Get the <svc> element
-        const svc = xmlDoc.getElementsByTagName('svc')[0];
-
-        if (svc) {
-          // Extracting content from <cntntsCl> elements
-          const cntntsClList = svc.getElementsByTagName('cntntsCl');
-          const contents = Array.from(cntntsClList).map(cntntsCl => ({
-            title: cntntsCl.getElementsByTagName('CNTNTS_CL_NM')[0]?.textContent.trim() || 'No Title',
-            content: cntntsCl.getElementsByTagName('CNTNTS_CL_CN')[0]?.textContent.trim() || 'No Content',
-          }));
-
-          // Assuming you want the first content item for simplicity
-          setNewsDetail(contents[0]);
-        } else {
-          console.error('No <svc> content found in the response');
-        }
+        setNewsItem({ content });
       } catch (error) {
-        console.error('Error fetching news detail:', error);
+        console.error('Error fetching or parsing XML:', error);
+        setNewsItem({ content: 'Error fetching content' });
       }
     };
 
     fetchNewsDetail();
-  }, [newsId]);
+  }, [id]);
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen bg-white">
       <div className="fixed left-0 top-0 w-1/5 h-full bg-gray-200">
         <Left />
       </div>
@@ -55,15 +41,10 @@ const NewsDetail = () => {
         <Right />
       </div>
       <div className="flex-1 ml-[20%] mr-[20%] p-10">
-        <div className="w-full max-w-3xl">
-          {newsDetail ? (
-            <>
-              <h2 className="text-3xl font-bold mb-4">{newsDetail.title}</h2>
-              <p className="text-gray-700">{newsDetail.content}</p>
-            </>
-          ) : (
-            <p>Loading...</p>
-          )}
+        <div className="w-full max-w-3xl mx-auto bg-white p-8 border border-gray-300 mt-12">
+          <h2 className="text-3xl font-bold mb-4 text-gray-800">{title}</h2>
+          <div className="border-b-2 border-gray-300 mb-6"></div>
+          <p className="text-gray-700 leading-relaxed">{newsItem.content}</p>
         </div>
       </div>
     </div>

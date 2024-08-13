@@ -20,7 +20,7 @@ export default function Find() {
     const [region1, setRegion1] = useState('');
     const [region2, setRegion2] = useState('');
     const [regions, setRegions] = useState([]);
-    const [subregions, setSubregions] = useState({});
+    const [subregions, setSubregions] = useState([]);
     const navigate = useNavigate();
 
     const images = [
@@ -78,23 +78,24 @@ export default function Find() {
     useEffect(() => {
         if (region1) {
             fetch(`http://localhost:8080/find/subregions?region1=${region1}`)
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
                 .then(data => {
                     console.log('Fetched subregions:', data); // 데이터 구조 확인
-                    setSubregions(prev => ({ ...prev, [region1]: data }));
+                    const subregionList = data[region1] || []; 
+                    setSubregions(subregionList); // 수정된 하위 지역 상태 설정
                 })
                 .catch(error => console.error('Error fetching subregions:', error));
         } else {
-            setSubregions({});
+            setSubregions([]); // region1이 비어있을 경우 하위 지역 상태를 비움
         }
-        setRegion2(''); //선택된 하위 지역 초기화할려고 
-    }, [region1]); 
 
-    //콘솔 확인용
-    useEffect(() => {
-        console.log('Region1:', region1);
-        console.log('Subregions for Region1:', subregions[region1]);
-    }, [region1, subregions]);
+        setRegion2(''); // 선택된 하위 지역 초기화
+    }, [region1]); // region1이 변경될 때마다 이 효과 실행
 
     return (
         <div className="flex flex-col min-h-screen">
@@ -140,7 +141,7 @@ export default function Find() {
                                 className="border border-gray-300 rounded-lg p-2 mb-4 w-full"
                             >
                                 <option value="">시/군/구 선택</option>
-                                {region1 && subregions[region1] && subregions[region1].map(subregion => (
+                                {subregions && subregions.map(subregion => (
                                     <option key={subregion.code} value={subregion.code}>
                                         {subregion.name}
                                     </option>
@@ -187,7 +188,7 @@ export default function Find() {
                                 <button
                                     key={item}
                                     onClick={() => handleOtherChange(item)}
-                                    className={`flex items-center justify-center border rounded-lg ${selectedOther.includes(item) ? 'bg-blue-500 text-white' : 'bg-white text-blue-500'} transition-transform transform hover:scale-105`}
+                                    className={`flex items-center justify-center border rounded-lg ${selectedOther.includes(item) ? 'bg-blue-200 text-black font-bold' : 'bg-white text-black-500'} transition-transform transform hover:scale-105`}
                                     style={{
                                         width: '150px',
                                         height: '50px',
