@@ -6,7 +6,9 @@ import News from './News.js';
 
 export default function Health() {
   const [newsData, setNewsData] = useState([]);
-  const navigate = useNavigate();
+  const [selectedNews, setSelectedNews] = useState(null); // 선택된 뉴스 상태
+  const [animationState, setAnimationState] = useState(''); // 애니메이션 상태
+
 
   useEffect(() => {
     const loadNewsData = async () => {
@@ -22,7 +24,7 @@ export default function Health() {
       { id: '5489', title: '노인성난청' },
       { id: '5345', title: '노인의 영양' },
       { id: '2447', title: '노인 변비' },
-      { id: '6262', title: '노인 부종' },
+      { id: '5829', title: '노인 운동' },
     ];
 
 
@@ -36,7 +38,9 @@ export default function Health() {
         const parser = new DOMParser();
         const xmlDoc = parser.parseFromString(xmlText, "text/xml");
 
-        const content = xmlDoc.getElementsByTagName("content")[0]?.textContent || 'No content available';
+        // Get the content as in NewsDetail component
+        const svc = xmlDoc.getElementsByTagName("svc")[0];
+        const content = svc.getElementsByTagName("cntntsCl")[0]?.getElementsByTagName("CNTNTS_CL_CN")[0]?.textContent || 'No content available';
 
         return { ...item, content };
       } catch (error) {
@@ -51,12 +55,22 @@ export default function Health() {
   loadNewsData();
 }, []);
 
-const handleCardClick = (id, title) => {
-  navigate(`/health/${id}?title=${encodeURIComponent(title)}`);
+const handleCardClick = (item) => {
+  setSelectedNews(item);
+  setAnimationState('fade-in');
 };
 
+useEffect(() => {
+  if (selectedNews) {
+    setAnimationState('fade-in');
+    setTimeout(() => {
+      setAnimationState(''); 
+    }, 500); 
+  }
+}, [selectedNews]);
+
 return (
-  <div className="flex h-screen">
+  <div className="flex h-screen bg-gray-50">
     <div className="fixed left-0 top-0 w-1/5 h-full bg-gray-200">
       <Left />
     </div>
@@ -68,17 +82,27 @@ return (
         아는 만큼 더 건강해집니다.
       </div>
       <div className='mt-6 mb-5'>
-        <h1>- 카드를 누르시면 자세한 정보를 볼 수 있습니다.</h1>
+        <h1>- 자세한 정보를 보시려면 클릭하세요.</h1>
       </div>
-      <div className="grid grid-cols-3 gap-10 p-10">
+      <div className="grid grid-cols-6 gap-8">
         {newsData.map(item => (
           <News
             key={item.id}
             title={item.title}
             id={item.id}
-            onClick={() => handleCardClick(item.id, item.title)}
+            onClick={() => handleCardClick(item)}
           />
         ))}
+      </div>
+      {/* 디테일 영역 */}
+      <div className={`transition-all duration-500 ease-in-out ${animationState} ${selectedNews ? 'max-h-screen' : 'max-h-0 overflow-hidden'}`}>
+        {selectedNews && (
+          <div className="w-full max-w-3xl mx-auto bg-white p-8 border border-gray-300 rounded-lg shadow-md mt-10">
+            <h2 className="text-3xl font-bold mb-4 text-gray-800">{selectedNews.title}</h2>
+            <div className="border-b-2 border-gray-300 mb-6"></div>
+            <p className="text-gray-700 leading-relaxed">{selectedNews.content}</p>
+          </div>
+        )}
       </div>
     </div>
   </div>

@@ -7,7 +7,6 @@ import Find from './01/Find.js';
 import List from './01/Find.js';
 import CardDetail from './01/CardDetail.js'; 
 import Health from './02/Health.js'; 
-import NewsDetail from './02/NewsDetail.js';
 import Community from './03/Community.js'; 
 import ComWrite from './03/ComWrite.js';
 import ComDetail from './03/ComDetail.js';
@@ -27,7 +26,6 @@ function App() {
             <Route path="/find/list" element={<List />} />
             <Route path="/find/card/:cardId" element={<CardDetail />} />
             <Route path="/health" element={<Health />} />
-            <Route path="/health/:id" element={<NewsDetail />} />
             <Route path="/community" element={<Community />} />
             <Route path="/community/write" element={<ComWrite />} />
             <Route path="/community/:id" element={<ComDetail />} />
