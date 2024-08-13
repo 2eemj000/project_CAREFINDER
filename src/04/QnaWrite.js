@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Left from '../Compo/Left';
 import Right from '../Compo/Right';
-import './comwrite.css';
+import './qnawrite.css';
 
-function ComWrite() {
+function QnaWrite() {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const navigate = useNavigate();
@@ -28,7 +28,7 @@ function ComWrite() {
       username: member.username // 작성자 정보 추가
     };
 
-    fetch('http://localhost:3000/community/write', {
+    fetch('http://localhost:3000/qna/write', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -37,7 +37,7 @@ function ComWrite() {
     })
     .then(response => response.json())
     .then(() => {
-      navigate('/community');
+      navigate('/qna');
     })
     .catch(error => {
       console.error('Error:', error);
@@ -54,7 +54,7 @@ function ComWrite() {
       </div>
       <div className="flex-1 ml-[20%] mr-[20%] p-10">
         <div className="font-bold text-2xl mt-6">
-          게시글 작성
+            질문 작성
         </div>
         <form onSubmit={handleSubmit} className="mt-6">
           <div className="mb-4">
@@ -90,4 +90,4 @@ function ComWrite() {
   );
 }
 
-export default ComWrite;
+export default QnaWrite;

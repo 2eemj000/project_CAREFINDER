@@ -1,7 +1,7 @@
 import './comdetail.css';
 import Left from '../Compo/Left';
 import Right from '../Compo/Right';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 function ComDetail() {
@@ -11,14 +11,16 @@ function ComDetail() {
   const [newComment, setNewComment] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const [editedContent, setEditedContent] = useState("");
+  const [author, setAuthor] = useState(""); // 게시글 작성자 정보
   const navigate = useNavigate();
+  const textareaRef = useRef(null); // 수정 시 커서 위치 조정
 
   function formatDate(dateStr) {
     const dateObj = new Date(dateStr);
     if (isNaN(dateObj.getTime())) {
       return {
-        date: 'Unknown Date',
-        time: 'Unknown Time'
+        date: '알 수 없는 날짜',
+        time: '알 수 없는 시간'
       };
     }
     
@@ -36,14 +38,17 @@ function ComDetail() {
   }
 
   useEffect(() => {
+    // 게시글 데이터 가져오기
     fetch(`http://localhost:8080/community/${id}`)
       .then(response => response.json())
       .then(data => {
         setBoard(data);
         setEditedContent(data.content);
+        setAuthor(data.username); // 게시글 작성자 정보 저장
       })
-      .catch(error => console.error('Failed to fetch board:', error));
+      .catch(error => console.error('게시글 가져오기 실패:', error));
     
+    // 댓글 데이터 가져오기
     fetch(`http://localhost:8080/community/reply/${id}`)
       .then(response => response.json())
       .then(data => {
@@ -56,10 +61,10 @@ function ComDetail() {
           }));
           setBoardRe(comments);
         } else {
-          console.error('Expected an array of comments');
+          console.error('댓글 데이터 형식 오류');
         }
       })
-      .catch(error => console.error('Failed to fetch comments:', error));
+      .catch(error => console.error('댓글 가져오기 실패:', error));
   }, [id]);
 
   const handleDelete = () => {
@@ -67,7 +72,11 @@ function ComDetail() {
 
     if (!member || !member.username) {
       alert("로그인이 필요합니다.");
-      navigate('/login');
+      return;
+    }
+
+    if (member.username !== author) {
+      alert("해당 게시글의 작성자만 게시글 삭제가 가능합니다.");
       return;
     }
 
@@ -78,7 +87,7 @@ function ComDetail() {
         if (response.ok) {
           navigate('/community');
         } else {
-          console.error('Failed to delete the board');
+          console.error('게시글 삭제 실패');
         }
       });
   };
@@ -88,7 +97,6 @@ function ComDetail() {
 
     if (!member || !member.username) {
       alert("로그인이 필요합니다.");
-      navigate('/login');
       return;
     }
 
@@ -102,7 +110,7 @@ function ComDetail() {
           setNewComment("");
           window.location.reload();
         } else {
-          console.error('Failed to post comment');
+          console.error('댓글 작성 실패');
         }
       });
   };
@@ -112,11 +120,20 @@ function ComDetail() {
 
     if (!member || !member.username) {
       alert("로그인이 필요합니다.");
-      navigate('/login');
       return;
     }
 
-    setIsEditing(!isEditing);
+    if (member.username === author) {
+      setIsEditing(!isEditing);
+      if (!isEditing) {
+        // 수정 모드로 전환되면 커서가 textarea에 위치하도록 설정
+        setTimeout(() => {
+          textareaRef.current?.focus();
+        }, 0);
+      }
+    } else {
+      alert("해당 게시글의 작성자만 게시글 수정이 가능합니다.");
+    }
   };
 
   const handleEditSubmit = () => {
@@ -124,7 +141,11 @@ function ComDetail() {
 
     if (!member || !member.username) {
       alert("로그인이 필요합니다.");
-      navigate('/signin');
+      return;
+    }
+
+    if (member.username !== author) {
+      alert("해당 게시글의 작성자만 게시글 수정이 가능합니다.");
       return;
     }
 
@@ -138,13 +159,13 @@ function ComDetail() {
           setIsEditing(false);
           setBoard({ ...board, content: editedContent });
         } else {
-          console.error('Failed to update the board');
+          console.error('게시글 수정 실패');
         }
       });
   };
 
   if (!board) {
-    return <div>Loading...</div>;
+    return <div>로딩 중...</div>;
   }
 
   return (
@@ -168,6 +189,7 @@ function ComDetail() {
                 <td className="bg-white p-4">
                   {isEditing ? (
                     <textarea
+                      ref={textareaRef}
                       className="w-full p-2 border border-gray-300"
                       value={editedContent}
                       onChange={(e) => setEditedContent(e.target.value)}
@@ -219,7 +241,6 @@ function ComDetail() {
             onChange={(e) => setNewComment(e.target.value)}
             placeholder="댓글을 입력하세요..."
           />
-          
         </div>
         <div className="flex justify-between mt-6">
           <button className="action-button comment-button mt-2" onClick={handleCommentSubmit}>댓글 달기</button>

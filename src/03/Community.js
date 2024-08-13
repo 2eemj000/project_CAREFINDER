@@ -6,18 +6,31 @@ import './community.css';
 
 function Community() {
   const [boards, setBoards] = useState([]);
+  const [user, setUser] = useState(null); // 로그인된 사용자 정보를 상태로 저장
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch('http://localhost:8080/community')
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
+    // 로그인 상태 확인
+    fetch('http://localhost:8080/auth/status', {
+      credentials: 'include', // 쿠키를 포함하여 요청
+    })
+    .then(response => {
+      if (response.ok) {
         return response.json();
-      })
-      .then(data => setBoards(data))
-      .catch(error => console.error('Fetch error:', error));
+      } else {
+        throw new Error('Not logged in');
+      }
+    })
+    .then(data => setUser(data))
+    .catch(error => console.error('Login check error:', error));
+
+    // 게시글 데이터 가져오기
+    fetch('http://localhost:8080/community',{
+      credentials: 'include', // 쿠키를 포함하여 요청
+    })
+    .then(response => response.json())
+    .then(data => setBoards(data))
+    .catch(error => console.error('Fetch error:', error));
   }, []);
 
   function formatDate(dateStr) {
@@ -47,6 +60,14 @@ function Community() {
       navigate(`/community/${boardId}`);
     } else {
       console.error('Invalid board ID');
+    }
+  }
+
+  function handleWriteClick() {
+    if (user) {
+      navigate("/community/write");
+    } else {
+      alert("로그인 후에 게시글을 작성할 수 있습니다.");
     }
   }
 
@@ -99,7 +120,7 @@ function Community() {
           </tbody>
         </table>
         <div className="flex justify-center mt-6">
-          <button className="sign-button mb-16" onClick={() => navigate("/community/write")}>
+          <button className="sign-button mb-16" onClick={handleWriteClick}>
             작성하기
           </button>
         </div>

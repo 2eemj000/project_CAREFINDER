@@ -44,6 +44,14 @@ function Qna() {
     };
   }
 
+  function handleQnaClick(qnaId) {
+    if (qnaId) {
+      navigate(`/qna/${qnaId}`);
+    } else {
+      console.error('Invalid qna ID');
+    }
+  }
+
   return (
     <div className="flex h-screen">
     {/* 왼쪽 고정 */}
@@ -65,7 +73,6 @@ function Qna() {
         <h1>- 게시글의 제목을 선택하면 상세정보를 확인하실 수 있습니다.</h1>
         <h1>- 로그인 후, 게시글을 작성할 수 있습니다.</h1>
         <h1>- 게시글은 수정 및 삭제할 수 없습니다. </h1>
-        <h1>- 관리자만 답변등록 및 수정, 삭제할 수 있습니다. </h1>
       </div>
       <table>
         <thead>
@@ -73,18 +80,23 @@ function Qna() {
             <th className="text-center">번호</th>
             <th className="text-center">제목</th>
             <th className="text-center">작성자</th>
-            <th className="text-center border border-gray-300 p-2">작성일</th>
+            <th className="text-center">작성일</th>
           </tr>
         </thead>
         <tbody>
             {qnas.map((qna, index) => {
               const { date, time } = formatDate(qna.createDate);
               return (
-              <tr key={qna.qnaId} className="cursor-pointer hover:bg-gray-100" onClick={() => navigate(`/qna/${qna.qnaId}`)}>
-                <td className="text-center border border-gray-300 p-2">{index + 1}</td>
-                <td className="text-center border border-gray-300 p-2">{qna.title}</td>
-                <td className="text-center border border-gray-300 p-2">{qna.username}</td>
-                <td className="text-center border border-gray-300 p-2">
+              <tr key={qna.qnaId}>
+                <td className="text-center">{index + 1}</td>
+                <td 
+                    className="cursor-pointer"
+                    onClick={() => handleQnaClick(qna.qnaId)}
+                  >
+                    {qna.title}
+                  </td>
+                <td className="text-center">{qna.member.username}</td>
+                <td className="text-center">
                     <div>{date}</div>
                     <div>{time}</div>
                   </td>

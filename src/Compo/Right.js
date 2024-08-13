@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../SignBar.css';
 import { FcGoogle } from "react-icons/fc";
 import { SiNaver, SiKakaotalk } from "react-icons/si";
@@ -12,38 +12,65 @@ function SignBar() {
   const [password, setPassword] = useState('');
   const [loginMessage, setLoginMessage] = useState('');
 
+  // 세션 상태를 확인하는 useEffect 훅
+  useEffect(() => {
+    const checkSession = async () => {
+        try {
+            const response = await fetch('http://localhost:8080/checkSession', {
+                credentials: 'include', // 세션 쿠키를 포함
+            });
+            if (response.ok) {
+                const data = await response.json();
+                sessionStorage.setItem('user', JSON.stringify(data)); // 로그인 정보를 세션 스토리지에 저장
+                setIsLoggedIn(true);
+                setUsername(data.username);
+                setLoginMessage(`${data.username}님, 반갑습니다!`);
+            } else {
+                setIsLoggedIn(false);
+            }
+        } catch (error) {
+            console.error('세션 확인 실패:', error);
+            setIsLoggedIn(false);
+        }
+    };
+    checkSession();
+}, []);
+
   // 로그인 핸들러
   const handleLogin = async () => {
     try {
-      const response = await fetch('http://localhost:8080/signin', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, password }),
-      });
+        const response = await fetch('http://localhost:8080/signin', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ username, password }),
+            credentials: 'include', // 세션 쿠키를 포함
+        });
 
-      if (response.ok) {
-        const { username } = await response.json();
-        setIsLoggedIn(true);
-        setLoginMessage(`${username}님, 반갑습니다!`);
-      } else {
-        const errorMessage = await response.text();
-        if (window.confirm(`${errorMessage}. 회원가입 하시겠습니까?`)) {
-          setShowSignup(true);
+        console.log(response.status);  // 서버 응답 상태 코드 출력
+
+        if (response.ok) {
+            setIsLoggedIn(true);
+            setLoginMessage(`${username}님, 반갑습니다!`);
+        } else {
+            const errorMessage = '로그인에 실패했습니다.';
+            if (window.confirm(`${errorMessage}. 회원가입 하시겠습니까?`)) {
+                setShowSignup(true);
+            }
         }
-      }
     } catch (error) {
-      console.error('로그인 실패:', error);
-      alert('로그인에 실패했습니다.');
+        console.error('로그인 실패:', error);
+        alert('로그인에 실패했습니다.');
     }
-  };
+};
 
   // 회원가입 창 열기
   const handleSignup = () => setShowSignup(true);
 
   // 로그아웃 핸들러
   const handleLogout = () => {
+    sessionStorage.removeItem('user'); // 세션 스토리지에서 사용자 정보 삭제
     setIsLoggedIn(false);
     setUsername('');
     setPassword('');
