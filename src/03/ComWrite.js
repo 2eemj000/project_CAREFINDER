@@ -18,11 +18,15 @@ function ComWrite() {
     // member가 없으면 경고창 띄우기
     if (!member || !member.username) {
       alert("로그인이 필요합니다.");
-      navigate('/signin');  // 로그인 페이지로 이동
       return;
     }
 
-    const newPost = { title, content };
+    const newPost = {
+      title,
+      content,
+      createDate: new Date().toISOString(), // 현재 시간 추가
+      username: member.username // 작성자 정보 추가
+    };
 
     fetch('http://localhost:3000/community/write', {
       method: 'POST',
