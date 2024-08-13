@@ -27,7 +27,7 @@ function App() {
             <Route path="/find/list" element={<List />} />
             <Route path="/find/card/:cardId" element={<CardDetail />} />
             <Route path="/health" element={<Health />} />
-            <Route path="/health/:newsId" element={<NewsDetail />} />
+            <Route path="/health/:id" element={<NewsDetail />} />
             <Route path="/community" element={<Community />} />
             <Route path="/community/write" element={<ComWrite />} />
             <Route path="/community/:id" element={<ComDetail />} />
