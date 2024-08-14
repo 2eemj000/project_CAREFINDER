@@ -36,7 +36,7 @@
 }
 
 .sign-list .sign-button {
-  font-size: medium;
+  font-size: 0.8rem;
   text-decoration: none;
   display: flex;
   align-items: center;
@@ -59,7 +59,7 @@
 }
 
 .sign-list .sign-button .icon {
-  font-size: 1.2em; /* 아이콘이 공간을 크게 잡아먹어서 크기 조정 */
+  font-size: 0.8em; /* 아이콘이 공간을 크게 잡아먹어서 크기 조정 */
   margin-right: 8px; 
 }
 
