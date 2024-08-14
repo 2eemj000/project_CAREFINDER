@@ -1,47 +1,73 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { mockCardDetails } from '../data/mockCardData'; // 목업 데이터 테스트용
+import Left from '../Compo/Left.js'
+import Right from '../Compo/Left.js'
 
 export default function CardDetail() {
     const { cardId } = useParams();
     const [cardDetails, setCardDetails] = useState(null);
 
+    // useEffect(() => {
+    //     async function fetchCardDetails() {
+    //         try {
+    //             const response = await fetch(`/api/cards/${cardId}`);
+    //             const data = await response.json();
+    //             setCardDetails(data);
+    //         } catch (error) {
+    //             console.error('Failed to fetch card details', error);
+    //         }
+    //     }
+
+    //     fetchCardDetails();
+    // }, [cardId]);
+
     useEffect(() => {
-        async function fetchCardDetails() {
-            try {
-                const response = await fetch(`/api/cards/${cardId}`);
-                const data = await response.json();
-                setCardDetails(data);
-            } catch (error) {
-                console.error('Failed to fetch card details', error);
-            }
-        }
+        // API 호출 대신 목업 데이터 사용
+        const fetchCardDetails = () => {
+            const data = mockCardDetails[cardId];
+            setCardDetails(data);
+        };
 
         fetchCardDetails();
     }, [cardId]);
 
     useEffect(() => {
         if (cardDetails && cardDetails.locx && cardDetails.locy) {
-            const { kakao } = window; // Kakao Map API 객체
+            const initializeMap = () => {
+                const { kakao } = window; //window 객체로 만들어 줘야 쓸수있음
 
-            if (kakao && kakao.maps) {
-                // 지도 컨테이너
-                const mapContainer = document.getElementById('map');
-                // 지도 옵션
-                const mapOption = {
-                    center: new kakao.maps.LatLng(cardDetails.locy, cardDetails.locx), // 위도, 경도
-                    level: 3 // 지도의 확대 레벨
-                };
+                if (kakao && kakao.maps) {
+                    try {
+                        const mapContainer = document.getElementById('map');
+                        const mapOption = {
+                            center: new kakao.maps.LatLng(cardDetails.locy, cardDetails.locx),
+                            level: 3
+                        };
 
-                // 지도 생성
-                const map = new kakao.maps.Map(mapContainer, mapOption);
+                        const map = new kakao.maps.Map(mapContainer, mapOption);
 
-                // 마커 생성
-                const markerPosition = new kakao.maps.LatLng(cardDetails.locy, cardDetails.locx); // 위도, 경도
-                const marker = new kakao.maps.Marker({
-                    position: markerPosition
-                });
-                marker.setMap(map);
-            }
+                        const markerPosition = new kakao.maps.LatLng(cardDetails.locy, cardDetails.locx);
+                        const marker = new kakao.maps.Marker({
+                            position: markerPosition
+                        });
+                        marker.setMap(map);
+
+                        // 병원 이름을 마커에 표시
+                        const infowindow = new kakao.maps.InfoWindow({
+                            content: `<div style="padding:5px;">${cardDetails.name}</div>`
+                        });
+                        infowindow.open(map, marker);
+                    } catch (error) {
+                        console.error("Error initializing Kakao Map: ", error);
+                    }
+                } else {
+                    console.error("Kakao Maps API is not available.");
+                }
+            };
+
+            // 맵 초기화
+            initializeMap();
         }
     }, [cardDetails]);
 
@@ -50,20 +76,37 @@ export default function CardDetail() {
     }
 
     return (
-        <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
-            <div style={{ borderBottom: '1px solid #ddd', paddingBottom: '10px' }}>
-                <h1 style={{ fontSize: '24px', margin: '0' }}>{cardDetails.name}</h1>
-                <p style={{ fontSize: '18px', margin: '0' }}>전화번호: {cardDetails.phone}</p>
+        <div className="flex flex-col min-h-screen">
+            <div className="fixed left-0 top-0 w-1/5 h-full bg-gray-200 z-10">
+                <Left />
             </div>
-            <div style={{ borderBottom: '1px solid #ddd', margin: '20px 0', paddingBottom: '10px' }}>
-                <h2>전문의 정보</h2>
-                {/* 전문의 정보 추가 */}
-                <p>{cardDetails.specialistInfo}</p>
+            <div className="fixed right-0 top-0 w-1/5 h-full bg-gray-200 z-10">
+                <Right />
             </div>
-            <div>
-                <h2>병원 위치</h2>
-                <p>{cardDetails.address}</p>
-                <div id="map" style={{ width: '100%', height: '400px' }}></div>
+
+            <div className="flex-1 ml-[20%] mr-[20%] p-10 z-0">
+                <div style={{ padding: '20px', fontFamily: 'Roboto, sans-serif', color: '#333' }}>
+                    <div style={{ borderBottom: '1px solid #e0e0e0', paddingBottom: '10px', marginBottom: '20px' }}>
+                        <h1 style={{ fontSize: '30px', color: '#222', margin: '0', fontWeight: 'bold' }}>{cardDetails.name}</h1>
+                        <p style={{ fontSize: '18px', color: '#555', margin: '10px 0' }}>
+                            <i className="fa fa-phone" aria-hidden="true" style={{ marginRight: '8px', color: '#007BFF' }}></i>
+                            {cardDetails.phone}
+                        </p>
+                    </div>
+                    <div style={{ borderBottom: '1px solid #e0e0e0', marginBottom: '30px', paddingBottom: '30px' }}>
+                        <h2 style={{ fontSize: '23px', color: '#333', margin: '10px 0', fontWeight: 'semibold' }}>전문의 정보</h2>
+                        {cardDetails.specialistInfo.map((info, index) => (
+                            <span className="bg-gray-200 rounded-full px-3 py-1 text-s font-semibold text-gray-700">
+                                #{info}
+                            </span>
+                        ))}
+                    </div>
+                    <div>
+                        <h2 style={{ fontSize: '23px', color: '#333', margin: '0', fontWeight: 'semibold' }}>병원 위치 및 주소</h2>
+                        <p style={{ fontSize: '18px', color: '#666', margin: '10px 0' }}>{cardDetails.address}</p>
+                        <div id="map" style={{ width: '100%', height: '400px', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', marginTop: '20px' }}></div>
+                    </div>
+                </div>
             </div>
         </div>
     );
