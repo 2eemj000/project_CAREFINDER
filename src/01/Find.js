@@ -86,7 +86,7 @@ export default function Find() {
                 })
                 .then(data => {
                     console.log('Fetched subregions:', data); // 데이터 구조 확인
-                    const subregionList = data[region1] || []; 
+                    const subregionList = data[region1] || [];
                     setSubregions(subregionList); // 수정된 하위 지역 상태 설정
                 })
                 .catch(error => console.error('Error fetching subregions:', error));
@@ -207,21 +207,25 @@ export default function Find() {
                     </div>
 
                     {/* 검색과 초기화 버튼 */}
-                    <div className="flex space-x-4 pb-20">
+                    <div className="flex space-x-4 pb-20 justify-center">
                         <button
                             onClick={handleSearch}
-                            className="flex-1 bg-blue-500 text-white font-bold px-4 py-2 rounded-lg"
-                            style={{ borderRadius: '20px' , 
-                                fontSize: '0.9rem'
+                            className="bg-blue-500 text-white font-bold px-5 py-2 rounded-lg"
+                            style={{
+                                borderRadius: '20px',
+                                fontSize: '0.9rem', 
+                                width: '200px' 
                             }}
                         >
                             검색
                         </button>
                         <button
                             onClick={handleReset}
-                            className="flex-1 bg-gray-500 text-white font-bold px-4 py-2 rounded-lg"
-                            style={{ borderRadius: '20px', 
-                                fontSize: '0.9rem'
+                            className="bg-gray-500 text-white font-bold px-5 py-2 rounded-lg"
+                            style={{
+                                borderRadius: '20px',
+                                fontSize: '0.9rem', 
+                                width: '200px' 
                             }}
                         >
                             초기화
