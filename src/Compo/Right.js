@@ -13,28 +13,28 @@ function SignBar() {
   const [loginMessage, setLoginMessage] = useState('');
 
   // 세션 상태를 확인하는 useEffect 훅
-  useEffect(() => {
-    const checkSession = async () => {
-        try {
-            const response = await fetch('http://localhost:8080/checkSession', {
-                credentials: 'include', // 세션 쿠키를 포함
-            });
-            if (response.ok) {
-                const data = await response.json();
-                sessionStorage.setItem('user', JSON.stringify(data)); // 로그인 정보를 세션 스토리지에 저장
-                setIsLoggedIn(true);
-                setUsername(data.username);
-                setLoginMessage(`${data.username}님, 반갑습니다!`);
-            } else {
-                setIsLoggedIn(false);
-            }
-        } catch (error) {
-            console.error('세션 확인 실패:', error);
-            setIsLoggedIn(false);
-        }
-    };
-    checkSession();
-}, []);
+ // useEffect(() => {
+  //  const checkSession = async () => {
+  //      try {
+   //         const response = await fetch('http://localhost:8080/checkSession', {
+   //             credentials: 'include', // 세션 쿠키를 포함
+   //         });
+   //         if (response.ok) {
+   //             const data = await response.json();
+   //             sessionStorage.setItem('user', JSON.stringify(data)); // 로그인 정보를 세션 스토리지에 저장
+   //             setIsLoggedIn(true);
+   //             setUsername(data.username);
+   //             setLoginMessage(`${data.username}님, 반갑습니다!`);
+   //         } else {
+   //             setIsLoggedIn(false);
+   //         }
+   //     } catch (error) {
+   //         console.error('세션 확인 실패:', error);
+   //         setIsLoggedIn(false);
+   //     }
+   // };
+    //checkSession();
+//}, []);
 
   // 로그인 핸들러
   const handleLogin = async () => {
