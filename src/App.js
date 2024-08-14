@@ -51,13 +51,13 @@ function MainApp() {
           </div>
           <div className='image-wrapper'>
             <img src={skyImage} alt="Sky" className="background-image" />
-            <div className="text-overlay large-text">
+            <div className="text-overlay large-text" style={{ fontSize: '1.3rem' }}>
               오래 살수록 인생은 더 아름다워진다.
             </div>
-            <div className="text-overlay medium-text font-mono">
+            <div className="text-overlay medium-text font-mono" style={{ fontSize: '1.0rem' }}>
               "The longer I live, the more beautiful life becomes."
             </div>
-            <div className="text-overlay small-text font-mono">
+            <div className="text-overlay small-text font-mono" style={{ fontSize: '0.8rem' }}>
               -Frank Lloyd Wright-
             </div>
           </div>
