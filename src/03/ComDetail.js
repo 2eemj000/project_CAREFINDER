@@ -68,7 +68,7 @@ function ComDetail() {
   }, [id]);
 
   const handleDelete = () => {
-    const member = JSON.parse(sessionStorage.getItem("member"));
+    const member = JSON.parse(sessionStorage.getItem("user"));
 
     if (!member || !member.username) {
       alert("로그인이 필요합니다.");
@@ -93,7 +93,8 @@ function ComDetail() {
   };
 
   const handleCommentSubmit = () => {
-    const member = JSON.parse(sessionStorage.getItem("member"));
+    const member = JSON.parse(sessionStorage.getItem("user"));
+
 
     if (!member || !member.username) {
       alert("로그인이 필요합니다.");
@@ -116,7 +117,8 @@ function ComDetail() {
   };
 
   const handleEditToggle = () => {
-    const member = JSON.parse(sessionStorage.getItem("member"));
+    const member = JSON.parse(sessionStorage.getItem("user"));
+
 
     if (!member || !member.username) {
       alert("로그인이 필요합니다.");
@@ -137,7 +139,8 @@ function ComDetail() {
   };
 
   const handleEditSubmit = () => {
-    const member = JSON.parse(sessionStorage.getItem("member"));
+    const member = JSON.parse(sessionStorage.getItem("user"));
+
 
     if (!member || !member.username) {
       alert("로그인이 필요합니다.");

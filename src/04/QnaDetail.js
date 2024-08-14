@@ -60,7 +60,8 @@ function QnaDetail() {
   }, [id]);
 
   const handleCommentSubmit = () => {
-    const member = JSON.parse(sessionStorage.getItem("member"));
+    const member = JSON.parse(sessionStorage.getItem("user"));
+
 
     if (!member || !member.username) {
       alert("로그인이 필요합니다.");

@@ -13,7 +13,7 @@ function ComWrite() {
     event.preventDefault();
 
     // 세션에서 member 정보 가져오기
-    const member = JSON.parse(sessionStorage.getItem("member"));
+    const member = JSON.parse(sessionStorage.getItem("user"));
 
     // member가 없으면 경고창 띄우기
     if (!member || !member.username) {
