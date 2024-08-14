@@ -14,23 +14,23 @@ function Community() {
     fetch('http://localhost:8080/auth/status', {
       credentials: 'include', // 쿠키를 포함하여 요청
     })
-      .then(response => {
-        if (response.ok) {
-          return response.json();
-        } else {
-          throw new Error('Not logged in');
-        }
-      })
-      .then(data => setUser(data))
-      .catch(error => console.error('Login check error:', error));
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error('Not logged in');
+      }
+    })
+    .then(data => setUser(data))
+    .catch(error => console.error('Login check error:', error));
 
     // 게시글 데이터 가져오기
-    fetch('http://localhost:8080/community', {
+    fetch('http://localhost:8080/community',{
       credentials: 'include', // 쿠키를 포함하여 요청
     })
-      .then(response => response.json())
-      .then(data => setBoards(data))
-      .catch(error => console.error('Fetch error:', error));
+    .then(response => response.json())
+    .then(data => setBoards(data))
+    .catch(error => console.error('Fetch error:', error));
   }, []);
 
   function formatDate(dateStr) {
@@ -41,7 +41,7 @@ function Community() {
         time: 'Unknown Time'
       };
     }
-
+    
     const formattedDate = dateObj.toLocaleDateString('ko-KR', {
       year: 'numeric',
       month: 'long',
@@ -88,39 +88,37 @@ function Community() {
           <h1>- 로그인 후, 게시글을 작성할 수 있습니다.</h1>
           <h1>- 게시글의 작성자 본인 및 관리자만 해당 게시글을 수정 및 삭제할 수 있습니다.</h1>
         </div>
-        <div className="relative overflow-x-auto">
-          <table className="w-full text-sm text-gray-500 bg-white border-none rounded-lg shadow-md dark:bg-gray-800 dark:text-gray-400 dark:border-none">
-            <thead className="text-s text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-              <tr>
-                <th scope="col" className="text-center px-6 py-3 border-b border-gray-300 dark:border-gray-600">번호</th>
-                <th scope="col" className="text-center px-6 py-3 border-b border-gray-300 dark:border-gray-600">제목</th>
-                <th scope="col" className="text-center px-6 py-3 border-b border-gray-300 dark:border-gray-600">작성자</th>
-                <th scope="col" className="text-center px-6 py-3 border-b border-gray-300 dark:border-gray-600">작성 날짜</th>
-              </tr>
-            </thead>
-            <tbody>
-              {boards.map((board, index) => {
-                const { date, time } = formatDate(board.createDate);
-                return (
-                  <tr key={board.boardId} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-900 transition-colors">
-                    <td className="text-center px-6 py-4">{index + 1}</td>
-                    <td
-                      className="cursor-pointer px-6 py-4 text-blue-600 hover:underline"
-                      onClick={() => handleBoardClick(board.boardId)}
-                    >
-                      {board.title}
-                    </td>
-                    <td className="text-center px-6 py-4">{board.member.username}</td>
-                    <td className="text-center px-6 py-4">
-                      <div>{date}</div>
-                      <div>{time}</div>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
+        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+          <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+              <th scope="col" className="text-center px-6 py-3">번호</th>
+              <th scope="col" className="text-center px-6 py-3">제목</th>
+              <th scope="col" className="text-center px-6 py-3">작성자</th>
+              <th scope="col" className="text-center px-6 py-3">작성 날짜</th>
+            </tr>
+          </thead>
+          <tbody>
+            {boards.map((board, index) => {
+              const { date, time } = formatDate(board.createDate);
+              return (
+                <tr classN="bg-white border-b dark:bg-gray-800 dark:border-gray-700" key={board.boardId}>
+                  <td className="text-center">{index + 1}</td>
+                  <td 
+                    className="cursor-pointer"
+                    onClick={() => handleBoardClick(board.boardId)}
+                  >
+                    {board.title}
+                  </td>
+                  <td className="text-center">{board.member.username}</td>
+                  <td className="text-center">
+                    <div>{date}</div>
+                    <div>{time}</div>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
         <div className="flex justify-center mt-6">
           <button className="sign-button mb-16" onClick={handleWriteClick}>
             작성하기
