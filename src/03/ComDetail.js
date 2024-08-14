@@ -23,14 +23,14 @@ function ComDetail() {
         time: '알 수 없는 시간'
       };
     }
-    
+
     const formattedDate = dateObj.toLocaleDateString('ko-KR', {
       year: 'numeric',
       month: 'long',
       day: 'numeric'
     });
     const formattedTime = dateObj.toLocaleTimeString('ko-KR');
-  
+
     return {
       date: formattedDate,
       time: formattedTime
@@ -47,7 +47,7 @@ function ComDetail() {
         setAuthor(data.username); // 게시글 작성자 정보 저장
       })
       .catch(error => console.error('게시글 가져오기 실패:', error));
-    
+
     // 댓글 데이터 가져오기
     fetch(`http://localhost:8080/community/reply/${id}`)
       .then(response => response.json())
@@ -170,18 +170,18 @@ function ComDetail() {
 
   return (
     <div className="flex h-screen">
-      <div className="fixed left-0 top-0 w-1/5 h-full bg-gray-200">
+      <div className="fixed left-0 top-0 w-1/6 h-full z-10">
         <Left />
       </div>
-      <div className="fixed right-0 top-0 w-1/5 h-full bg-gray-200">
+      <div className="fixed right-0 top-0 w-1/6 h-full z-10">
         <Right />
       </div>
-      <div className="flex-1 ml-[20%] mr-[20%] p-10">
+      <div className="flex-1 ml-[15%] mr-[20%] p-10 z-0">
         <div className="mt-6">
-          <table className="w-full">
-            <thead>
+        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+          <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
               <tr>
-                <th className="bg-[#f2f2f2] text-center font-bold text-2xl p-4">{board.title}</th>
+                <th className="bg-[#f2f2f2] text-center font-bold text-xl p-4">{board.title}</th>
               </tr>
             </thead>
             <tbody>
@@ -203,12 +203,12 @@ function ComDetail() {
           </table>
         </div>
         <div className="m-3 mt-10 text-xl font-bold">댓글</div>
-        <table className="mt-3 w-full">
-          <thead>
+        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+          <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
-              <th className="text-center">작성자</th>
-              <th className="text-center">내용</th>
-              <th className="text-center">작성 날짜</th>
+              <th scope="col" className="text-center px-6 py-3">작성자</th>
+              <th scope="col" className="text-center px-6 py-3">내용</th>
+              <th scope="col" className="text-center px-6 py-3">작성 날짜</th>
             </tr>
           </thead>
           <tbody>
@@ -227,7 +227,7 @@ function ComDetail() {
                 );
               })
             ) : (
-              <tr>
+              <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700" key={board.boardId}>
                 <td colSpan="3" className="text-center">댓글이 없습니다.</td>
               </tr>
             )}

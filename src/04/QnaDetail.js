@@ -19,14 +19,14 @@ function QnaDetail() {
         time: 'Unknown Time'
       };
     }
-    
+
     const formattedDate = dateObj.toLocaleDateString('ko-KR', {
       year: 'numeric',
       month: 'long',
       day: 'numeric'
     });
     const formattedTime = dateObj.toLocaleTimeString('ko-KR');
-  
+
     return {
       date: formattedDate,
       time: formattedTime
@@ -40,7 +40,7 @@ function QnaDetail() {
         setQna(data);
       })
       .catch(error => console.error('Failed to fetch qna:', error));
-    
+
     fetch(`http://localhost:8080/qna/reply/${id}`)
       .then(response => response.json())
       .then(data => {
@@ -88,14 +88,14 @@ function QnaDetail() {
 
   return (
     <div className="flex h-screen">
-      <div className="fixed left-0 top-0 w-1/5 h-full bg-gray-200">
+      <div className="fixed left-0 top-0 w-1/6 h-full z-10">
         <Left />
       </div>
-      <div className="fixed right-0 top-0 w-1/5 h-full bg-gray-200">
+      <div className="fixed right-0 top-0 w-1/6 h-full z-10">
         <Right />
       </div>
-      <div className="flex-1 ml-[20%] mr-[20%] p-10">
-        <div className="mt-6">
+      <div className="flex-1 ml-[15%] mr-[20%] p-10 z-0">
+       <div className="mt-6">
           <table className="w-full">
             <thead>
               <tr>
@@ -112,12 +112,12 @@ function QnaDetail() {
           </table>
         </div>
         <div className="m-3 mt-10 text-xl font-bold">댓글</div>
-        <table className="mt-3 w-full">
-          <thead>
+        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+          <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
-              <th className="text-center">작성자</th>
-              <th className="text-center">내용</th>
-              <th className="text-center">작성 날짜</th>
+              <th scope="col" className="text-center px-6 py-3">작성자</th>
+              <th scope="col" className="text-center px-6 py-3">내용</th>
+              <th scope="col" className="text-center px-6 py-3">작성 날짜</th>
             </tr>
           </thead>
           <tbody>
@@ -136,7 +136,7 @@ function QnaDetail() {
                 );
               })
             ) : (
-              <tr>
+              <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700" >
                 <td colSpan="3" className="text-center">댓글이 없습니다.</td>
               </tr>
             )}
@@ -150,7 +150,7 @@ function QnaDetail() {
             onChange={(e) => setNewComment(e.target.value)}
             placeholder="댓글을 입력하세요..."
           />
-          
+
         </div>
         <div className="flex justify-between mt-6">
           <button className="action-button comment-button mt-2" onClick={handleCommentSubmit}>댓글 달기</button>

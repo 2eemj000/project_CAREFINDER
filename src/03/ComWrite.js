@@ -35,24 +35,24 @@ function ComWrite() {
       },
       body: JSON.stringify(newPost),
     })
-    .then(response => response.json())
-    .then(() => {
-      navigate('/community');
-    })
-    .catch(error => {
-      console.error('Error:', error);
-    });
+      .then(response => response.json())
+      .then(() => {
+        navigate('/community');
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
   };
 
   return (
     <div className="flex h-screen">
-      <div className="fixed left-0 top-0 w-1/5 h-full bg-gray-200">
+      <div className="fixed left-0 top-0 w-1/6 h-full z-10">
         <Left />
       </div>
-      <div className="fixed right-0 top-0 w-1/5 h-full bg-gray-200">
+      <div className="fixed right-0 top-0 w-1/6 h-full z-10">
         <Right />
       </div>
-      <div className="flex-1 ml-[20%] mr-[20%] p-10">
+      <div className="flex-1 ml-[15%] mr-[20%] p-10 z-0">
         <div className="font-bold text-2xl mt-6">
           게시글 작성
         </div>

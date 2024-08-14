@@ -35,53 +35,72 @@ function QnaWrite() {
       },
       body: JSON.stringify(newPost),
     })
-    .then(response => response.json())
-    .then(() => {
-      navigate('/qna');
-    })
-    .catch(error => {
-      console.error('Error:', error);
-    });
+      .then(response => response.json())
+      .then(() => {
+        navigate('/qna');
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
   };
 
   return (
     <div className="flex h-screen">
-      <div className="fixed left-0 top-0 w-1/5 h-full bg-gray-200">
+      <div className="fixed left-0 top-0 w-1/6 h-full z-10">
         <Left />
       </div>
-      <div className="fixed right-0 top-0 w-1/5 h-full bg-gray-200">
+      <div className="fixed right-0 top-0 w-1/6 h-full z-10">
         <Right />
       </div>
-      <div className="flex-1 ml-[20%] mr-[20%] p-10">
-        <div className="font-bold text-2xl mt-6">
-            질문 작성
+      <div className="flex-1 ml-[15%] mr-[20%] p-10 z-0">
+        <div className="font-bold mt-6 mb-10" style={{ fontSize: '1.2rem' }}>
+        질문하기
         </div>
-        <form onSubmit={handleSubmit} className="mt-6">
-          <div className="mb-4">
-            <label htmlFor="title" className="block text-lg font-medium">제목</label>
-            <input
-              type="text"
-              id="title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              className="mt-1 block w-full p-2 border border-gray-300 rounded"
-              required
-            />
+        <form onSubmit={handleSubmit} className="bg-white shadow-lg rounded-lg p-8 max-w-2xl border border-gray-200">
+          <div className="mb-6">
+            <div className="relative">
+              <input
+                type="text"
+                id="title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                className="peer block w-full p-4 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-transparent"
+                placeholder=" "
+                required
+              />
+              <label
+                htmlFor="title"
+                className="absolute top-3 left-4 text-md text-gray-600 transition-transform duration-300 transform -translate-y-1/2 scale-75 origin-top-left peer-placeholder-shown:translate-y-4 peer-placeholder-shown:scale-100 peer-placeholder-shown:text-gray-400 peer-focus:scale-75 peer-focus:-translate-y-1/2 peer-focus:text-blue-600"
+              >
+                제목
+              </label>
+            </div>
           </div>
-          <div className="mb-4">
-            <label htmlFor="content" className="block text-lg font-medium">내용</label>
-            <textarea
-              id="content"
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-              className="mt-1 block w-full p-2 border border-gray-300 rounded"
-              rows="6"
-              required
-            />
+          <div className="mb-8">
+            <div className="relative">
+              <textarea
+                id="content"
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+                className="peer block w-full p-4 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-transparent"
+                rows="10"
+                placeholder=" "
+                required
+              />
+              <label
+                htmlFor="content"
+                className="absolute top-3 left-4 text-md text-gray-600 transition-transform duration-300 transform -translate-y-1/2 scale-75 origin-top-left peer-placeholder-shown:translate-y-4 peer-placeholder-shown:scale-100 peer-placeholder-shown:text-gray-400 peer-focus:scale-75 peer-focus:-translate-y-1/2 peer-focus:text-blue-600"
+              >
+                내용
+              </label>
+            </div>
           </div>
-          <div className="flex justify-center mt-6">
-            <button type="submit" className="sign-button mb-16">
-              등록하기
+          <div className="flex justify-end">
+            <button
+              type="submit"
+              className="bg-blue-500 text-white font-semibold py-3 px-6 rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition duration-300"
+            >
+              등록
             </button>
           </div>
         </form>

@@ -1,18 +1,4 @@
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 3rem;
-}
 
-thead {
-  background-color: #f2f2f2;
-}
-
-th, td {
-  border: 1px solid #ddd;
-  padding: 8px;
-  text-align: left;
-}
 
 th:nth-child(1), td:nth-child(1) {
   width: 20%; 

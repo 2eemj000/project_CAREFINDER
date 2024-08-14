@@ -14,23 +14,23 @@ function Community() {
     fetch('http://localhost:8080/auth/status', {
       credentials: 'include', // 쿠키를 포함하여 요청
     })
-    .then(response => {
-      if (response.ok) {
-        return response.json();
-      } else {
-        throw new Error('Not logged in');
-      }
-    })
-    .then(data => setUser(data))
-    .catch(error => console.error('Login check error:', error));
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error('Not logged in');
+        }
+      })
+      .then(data => setUser(data))
+      .catch(error => console.error('Login check error:', error));
 
     // 게시글 데이터 가져오기
-    fetch('http://localhost:8080/community',{
+    fetch('http://localhost:8080/community', {
       credentials: 'include', // 쿠키를 포함하여 요청
     })
-    .then(response => response.json())
-    .then(data => setBoards(data))
-    .catch(error => console.error('Fetch error:', error));
+      .then(response => response.json())
+      .then(data => setBoards(data))
+      .catch(error => console.error('Fetch error:', error));
   }, []);
 
   function formatDate(dateStr) {
@@ -41,7 +41,7 @@ function Community() {
         time: 'Unknown Time'
       };
     }
-    
+
     const formattedDate = dateObj.toLocaleDateString('ko-KR', {
       year: 'numeric',
       month: 'long',
@@ -73,40 +73,37 @@ function Community() {
 
   return (
     <div className="flex h-screen">
-      <div className="fixed left-0 top-0 w-1/5 h-full bg-gray-200">
+      <div className="fixed left-0 top-0 w-1/6 h-full z-10">
         <Left />
       </div>
-      <div className="fixed right-0 top-0 w-1/5 h-full bg-gray-200">
+      <div className="fixed right-0 top-0 w-1/6 h-full z-10">
         <Right />
       </div>
-      <div className="flex-1 ml-[20%] mr-[20%] p-10">
-        <div className="font-bold text-2xl mt-6">
+      <div className="flex-1 ml-[15%] mr-[20%] p-10 z-0">
+        <div className="font-bold text-2xl mt-6" style={{ fontSize: '1.2rem' }}>
           너도 아파? 나도 아파!
         </div>
         <div className='mt-6'>
-          <h1>- 게시글의 제목을 선택하면 상세정보를 확인하실 수 있습니다.</h1>
-          <h1>- 로그인 후, 게시글을 작성할 수 있습니다.</h1>
-          <h1>- 게시글의 작성자 본인 및 관리자만 해당 게시글을 수정 및 삭제할 수 있습니다.</h1>
+          <h1 style={{ fontSize: '0.9rem' }}>- 게시글의 제목을 선택하면 상세정보를 확인하실 수 있습니다.</h1>
+          <h1 style={{ fontSize: '0.9rem' }}>- 로그인 후, 게시글을 작성할 수 있습니다.</h1>
+          <h1 style={{ fontSize: '0.9rem' }}>- 게시글의 작성자 본인 및 관리자만 해당 게시글을 수정 및 삭제할 수 있습니다.</h1>
         </div>
-        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-          <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
               <th scope="col" className="text-center px-6 py-3">번호</th>
               <th scope="col" className="text-center px-6 py-3">제목</th>
               <th scope="col" className="text-center px-6 py-3">작성자</th>
-              <th scope="col" className="text-center px-6 py-3">작성 날짜</th>
+              <th scope="col" className="text-center px-6 py-3">작성일</th>
             </tr>
           </thead>
           <tbody>
             {boards.map((board, index) => {
               const { date, time } = formatDate(board.createDate);
               return (
-                <tr classN="bg-white border-b dark:bg-gray-800 dark:border-gray-700" key={board.boardId}>
+                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700" key={board.boardId}>
                   <td className="text-center">{index + 1}</td>
-                  <td 
-                    className="cursor-pointer"
-                    onClick={() => handleBoardClick(board.boardId)}
-                  >
+                  <td className="cursor-pointer" onClick={() => handleBoardClick(board.boardId)}>
                     {board.title}
                   </td>
                   <td className="text-center">{board.member.username}</td>

@@ -30,14 +30,14 @@ function Qna() {
         time: 'Unknown Time'
       };
     }
-    
+
     const formattedDate = dateObj.toLocaleDateString('ko-KR', {
       year: 'numeric',
       month: 'long',
       day: 'numeric'
     });
     const formattedTime = dateObj.toLocaleTimeString('ko-KR');
-  
+
     return {
       date: formattedDate,
       time: formattedTime
@@ -54,64 +54,61 @@ function Qna() {
 
   return (
     <div className="flex h-screen">
-    {/* 왼쪽 고정 */}
-    <div className="fixed left-0 top-0 w-1/5 h-full bg-gray-200">
-      <Left />
-    </div>
-
-    {/* 오른쪽 고정 */}
-    <div className="fixed right-0 top-0 w-1/5 h-full bg-gray-200">
-      <Right />
-    </div>
-
-    {/* 중앙 콘텐츠 */}
-    <div className="flex-1 ml-[20%] mr-[20%] p-10">
-      <div className="font-bold text-2xl mt-6">
-      Q & A
+      <div className="fixed left-0 top-0 w-1/6 h-full z-10">
+        <Left />
       </div>
-      <div className='mt-6'>
-        <h1>- 게시글의 제목을 선택하면 상세정보를 확인하실 수 있습니다.</h1>
-        <h1>- 로그인 후, 게시글을 작성할 수 있습니다.</h1>
-        <h1>- 게시글은 수정 및 삭제할 수 없습니다. </h1>
+      <div className="fixed right-0 top-0 w-1/6 h-full z-10">
+        <Right />
       </div>
-      <table>
-        <thead>
-          <tr>
-            <th className="text-center">번호</th>
-            <th className="text-center">제목</th>
-            <th className="text-center">작성자</th>
-            <th className="text-center">작성일</th>
-          </tr>
-        </thead>
-        <tbody>
+
+      {/* 중앙 콘텐츠 */}
+      <div className="flex-1 ml-[15%] mr-[20%] p-10 z-0">
+        <div className="font-bold mt-6" style={{ fontSize: '1.2rem' }}>
+          Q & A
+        </div>
+        <div className='mt-6' >
+          <h1 style={{ fontSize: '0.9rem' }}>- 게시글의 제목을 선택하면 상세정보를 확인하실 수 있습니다.</h1>
+          <h1 style={{ fontSize: '0.9rem' }}>- 로그인 후, 게시글을 작성할 수 있습니다.</h1>
+          <h1 style={{ fontSize: '0.9rem' }}>- 게시글은 수정 및 삭제할 수 없습니다. </h1>
+        </div>
+        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+          <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <tr>
+            <th scope="col" className="text-center px-6 py-3">번호</th>
+              <th scope="col" className="text-center px-6 py-3">제목</th>
+              <th scope="col" className="text-center px-6 py-3">작성자</th>
+              <th scope="col" className="text-center px-6 py-3">작성일</th>
+            </tr>
+          </thead>
+          <tbody>
             {qnas.map((qna, index) => {
               const { date, time } = formatDate(qna.createDate);
               return (
-              <tr key={qna.qnaId}>
-                <td className="text-center">{index + 1}</td>
-                <td 
+                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700" key={qna.qnaId}>
+                  <td className="text-center">{index + 1}</td>
+                  <td
                     className="cursor-pointer"
                     onClick={() => handleQnaClick(qna.qnaId)}
                   >
                     {qna.title}
                   </td>
-                <td className="text-center">{qna.member.username}</td>
-                <td className="text-center">
+                  <td className="text-center">{qna.member.username}</td>
+                  <td className="text-center">
                     <div>{date}</div>
                     <div>{time}</div>
                   </td>
-              </tr>
+                </tr>
               );
-              })}  
+            })}
           </tbody>
-      </table>
-      <div className="flex justify-center mt-6">
-          <button className="sign-button mb-16" onClick={() => navigate("/qna/write")}>
+        </table>
+        <div className="flex justify-center mt-6">
+          <button className="sign-button" onClick={() => navigate("/qna/write")}>
             작성하기
           </button>
+        </div>
       </div>
     </div>
-  </div>
   );
 }
 
