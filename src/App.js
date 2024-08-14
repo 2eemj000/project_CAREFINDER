@@ -4,7 +4,7 @@ import skyImage from './Img/Sky.jpg';
 import logoImage from './Img/Logo.png';
 import ButtonC from './UI/ButtonC.js';
 import Find from './01/Find.js';
-import List from './01/Find.js';
+import List from './01/List.js';
 import CardDetail from './01/CardDetail.js'; 
 import Health from './02/Health.js'; 
 import Community from './03/Community.js'; 
