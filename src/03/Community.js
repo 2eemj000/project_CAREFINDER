@@ -116,9 +116,9 @@ function Community() {
             })}
           </tbody>
         </table>
-        <div className="flex justify-center mt-6">
+        <div className="flex justify-end">
           <button className="sign-button mb-16" onClick={handleWriteClick}>
-            작성하기
+            글쓰기
           </button>
         </div>
       </div>

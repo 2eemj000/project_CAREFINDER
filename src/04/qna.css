@@ -50,12 +50,10 @@ th:nth-child(3), td:nth-child(3) {
   width: 20%;  
 }
 
-
+/* 버튼 스타일 */
 .sign-button {
-  margin-top: 1rem; /* 상단 여백 */
-  font-size: 1rem; /* 텍스트 크기 */
-  display: inline-block; /* 버튼 너비를 내용에 맞게 조정 */
-  padding: 0.75rem 1.5rem; /* 상하, 좌우 여백 */
+  font-size: 0.875rem; /* 텍스트 크기 줄이기 */
+  padding: 0.5rem 1rem; /* 상하, 좌우 여백 줄이기 */
   border-radius: 8px; /* 둥글게 설정 */
   cursor: pointer; /* 클릭 가능한 커서 */
   text-align: center; /* 텍스트 중앙 정렬 */
@@ -64,10 +62,11 @@ th:nth-child(3), td:nth-child(3) {
   font-weight: bold; /* 텍스트 굵기 */
   text-decoration: none; /* 텍스트 장식 제거 */
   transition: background-color 0.3s ease, transform 0.2s ease; /* 색상 변화와 변형 효과 */
+  max-width: 130px; /* 버튼의 최대 너비 설정 */
+  width: 100%; /* 버튼의 너비를 부모 요소에 맞게 조정 */
 }
 
 .sign-button:hover {
-  background-color: #686767;
-  font-weight: bold;
-  color: white;
+  background-color: #686767; /* 호버 시 배경색 변경 */
+  transform: scale(1.05); /* 호버 시 살짝 확대 */
 }

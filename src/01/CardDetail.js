@@ -74,21 +74,21 @@ export default function CardDetail() {
             <div className="flex-1 ml-[15%] mr-[20%] p-10 z-0">
                 <div style={{ padding: '20px', fontFamily: 'Roboto, sans-serif', color: '#333' }}>
                     <div style={{ borderBottom: '1px solid #e0e0e0', paddingBottom: '10px', marginBottom: '20px' }}>
-                        <h1 style={{ fontSize: '25px', color: '#222', margin: '0', fontWeight: 'bold' }}>{cardDetails.name}</h1>
+                        <h1 style={{ fontSize: '23px', color: '#222', margin: '0', fontWeight: 'bold' }}>{cardDetails.name}</h1>
                         <p style={{ fontSize: '18px', color: '#555', margin: '10px 0' }}>
                             <i className="fa fa-phone" aria-hidden="true" style={{ marginRight: '8px', color: '#007BFF' }}></i>
                             {cardDetails.phone}
                         </p>
                     </div>
                     <div style={{ borderBottom: '1px solid #e0e0e0', marginBottom: '30px', paddingBottom: '30px' }}>
-                        <h2 style={{ fontSize: '20px', color: '#333', margin: '10px 0', fontWeight: 'bold' }}>전문의 정보</h2>
-                            <span className="bg-gray-200 rounded-full px-3 py-1 text-s font-semibold text-gray-700">
+                        <h2 style={{ fontSize: '19px', color: '#333', margin: '10px 0', fontWeight: 'bold', padding: '3px'}}>전문의 정보</h2>
+                            <span className="bg-gray-200 rounded-full px-3 py-2 text-s font-semibold text-gray-700">
                                 {cardDetails.specialistInfo}
                             </span>
                     </div>
                     <div>
-                        <h2 style={{ fontSize: '20px', color: '#333', margin: '0', fontWeight: 'bold' }}>병원 위치 및 주소</h2>
-                        <p style={{ fontSize: '18px', color: '#666', margin: '10px 0' }}>{cardDetails.address}</p>
+                        <h2 style={{ fontSize: '19px', color: '#333', margin: '0', fontWeight: 'bold' }}>병원 위치 및 주소</h2>
+                        <p style={{ fontSize: '17px', color: '#666', margin: '10px 0' }}>{cardDetails.address}</p>
                         <div id="map" style={{ width: '100%', height: '400px', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', marginTop: '20px' }}></div>
                     </div>
                 </div>

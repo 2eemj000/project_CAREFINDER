@@ -102,9 +102,9 @@ function Qna() {
             })}
           </tbody>
         </table>
-        <div className="flex justify-center mt-6">
+        <div className="flex justify-end">
           <button className="sign-button" onClick={() => navigate("/qna/write")}>
-            작성하기
+            글쓰기
           </button>
         </div>
       </div>
