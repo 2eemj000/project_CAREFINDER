@@ -1,9 +1,11 @@
 import { Link } from 'react-router-dom';
 
-export default function News({ title, id, onClick }) {
+export default function News({ title, id, onClick, isSelected }) {
   return (
-    <div 
-      className="max-w-xs rounded-lg overflow-hidden shadow-lg transition-transform transform hover:scale-105 cursor-pointer"
+    <div
+      className={`max-w-xs rounded-lg overflow-hidden shadow-lg transition-transform transform cursor-pointer ${
+        isSelected ? 'scale-110 order-first' : 'hover:scale-105'
+      }`}
       onClick={onClick}
     >
       <div className="bg-blue-100 p-4 flex flex-col justify-center items-center h-full">
