@@ -11,7 +11,10 @@ function SignBar() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loginMessage, setLoginMessage] = useState('');
-
+  
+  if (isLoggedIn) {
+    return null; // 로그인이 완료된 경우 아무것도 렌더링하지 않음
+  }
   // 세션 상태를 확인하는 useEffect 훅
  // useEffect(() => {
   //  const checkSession = async () => {
