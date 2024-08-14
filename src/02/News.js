@@ -8,9 +8,9 @@ export default function News({ title, id, onClick, isSelected }) {
       }`}
       onClick={onClick}
     >
-      <div className="bg-blue-100 p-4 flex flex-col justify-center items-center h-full">
+      <div className="bg-gray-100 p-4 flex flex-col justify-center items-center h-full">
         <div>
-          <div className="font-semibold text-l text-gray-900">{title}</div>
+          <div className="font-semibold text-gray-900" style={{ fontSize: '0.8rem' }}>{title}</div>
         </div>
       </div>
     </div>
