@@ -6,7 +6,7 @@ export default function Card({ name, phone, onClick, level }) {
     return (
         <div
             onClick={onClick}
-            className="cursor-pointer max-w-sm p-4 bg-white border border-gray-200 rounded-lg shadow-md hover:bg-gray-100 transition-transform transform hover:scale-105"
+            className="cursor-pointer max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-md hover:bg-gray-100 transition-transform transform hover:scale-105"
         >
             <h5 className="text-lg font-semibold mb-2 text-left">{name}</h5>
             <div className="flex items-center text-sm text-gray-700 mb-3">

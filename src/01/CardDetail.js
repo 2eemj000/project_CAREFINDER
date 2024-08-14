@@ -2,32 +2,22 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { mockCardDetails } from '../data/mockCardData'; // 목업 데이터 테스트용
 import Left from '../Compo/Left.js'
-import Right from '../Compo/Left.js'
 
 export default function CardDetail() {
     const { cardId } = useParams();
     const [cardDetails, setCardDetails] = useState(null);
-
-    // useEffect(() => {
-    //     async function fetchCardDetails() {
-    //         try {
-    //             const response = await fetch(`/api/cards/${cardId}`);
-    //             const data = await response.json();
-    //             setCardDetails(data);
-    //         } catch (error) {
-    //             console.error('Failed to fetch card details', error);
-    //         }
-    //     }
-
-    //     fetchCardDetails();
-    // }, [cardId]);
+    const [mapLoaded, setMapLoaded] = useState(false); //api를 두개 부르다보니, 동시에 부르면 충돌이 있어서 순서를 정해주기로 함
 
     useEffect(() => {
-        // API 호출 대신 목업 데이터 사용
-        const fetchCardDetails = () => {
-            const data = mockCardDetails[cardId];
-            setCardDetails(data);
-        };
+        async function fetchCardDetails() {
+            try {
+                const response = await fetch(`http://localhost:8080/find/card/${cardId}`);
+                const data = await response.json();
+                setCardDetails(data["1"][0]);
+            } catch (error) {
+                console.error('Failed to fetch card details', error);
+            }
+        }
 
         fetchCardDetails();
     }, [cardId]);
@@ -77,32 +67,27 @@ export default function CardDetail() {
 
     return (
         <div className="flex flex-col min-h-screen">
-            <div className="fixed left-0 top-0 w-1/5 h-full bg-gray-200 z-10">
+            <div className="fixed left-0 top-0 w-1/6 h-full z-10">
                 <Left />
             </div>
-            <div className="fixed right-0 top-0 w-1/5 h-full bg-gray-200 z-10">
-                <Right />
-            </div>
 
-            <div className="flex-1 ml-[20%] mr-[20%] p-10 z-0">
+            <div className="flex-1 ml-[15%] mr-[20%] p-10 z-0">
                 <div style={{ padding: '20px', fontFamily: 'Roboto, sans-serif', color: '#333' }}>
                     <div style={{ borderBottom: '1px solid #e0e0e0', paddingBottom: '10px', marginBottom: '20px' }}>
-                        <h1 style={{ fontSize: '30px', color: '#222', margin: '0', fontWeight: 'bold' }}>{cardDetails.name}</h1>
+                        <h1 style={{ fontSize: '25px', color: '#222', margin: '0', fontWeight: 'bold' }}>{cardDetails.name}</h1>
                         <p style={{ fontSize: '18px', color: '#555', margin: '10px 0' }}>
                             <i className="fa fa-phone" aria-hidden="true" style={{ marginRight: '8px', color: '#007BFF' }}></i>
                             {cardDetails.phone}
                         </p>
                     </div>
                     <div style={{ borderBottom: '1px solid #e0e0e0', marginBottom: '30px', paddingBottom: '30px' }}>
-                        <h2 style={{ fontSize: '23px', color: '#333', margin: '10px 0', fontWeight: 'semibold' }}>전문의 정보</h2>
-                        {cardDetails.specialistInfo.map((info, index) => (
+                        <h2 style={{ fontSize: '20px', color: '#333', margin: '10px 0', fontWeight: 'bold' }}>전문의 정보</h2>
                             <span className="bg-gray-200 rounded-full px-3 py-1 text-s font-semibold text-gray-700">
-                                #{info}
+                                {cardDetails.specialistInfo}
                             </span>
-                        ))}
                     </div>
                     <div>
-                        <h2 style={{ fontSize: '23px', color: '#333', margin: '0', fontWeight: 'semibold' }}>병원 위치 및 주소</h2>
+                        <h2 style={{ fontSize: '20px', color: '#333', margin: '0', fontWeight: 'bold' }}>병원 위치 및 주소</h2>
                         <p style={{ fontSize: '18px', color: '#666', margin: '10px 0' }}>{cardDetails.address}</p>
                         <div id="map" style={{ width: '100%', height: '400px', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', marginTop: '20px' }}></div>
                     </div>

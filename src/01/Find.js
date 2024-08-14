@@ -99,26 +99,26 @@ export default function Find() {
 
     return (
         <div className="flex flex-col min-h-screen">
-            <div className="fixed left-0 top-0 w-1/5 h-full bg-gray-200 z-10">
+            <div className="fixed left-0 top-0 w-1/6 h-full z-10">
                 <Left />
             </div>
-            <div className="fixed right-0 top-0 w-1/5 h-full bg-gray-200 z-10">
+            <div className="fixed right-0 top-0 w-1/6 h-full z-10">
                 <Right />
             </div>
 
             {/* 메인부분 */}
-            <div className="flex-1 ml-[20%] mr-[20%] p-10 z-0">
-                <div className="font-bold text-2xl mt-6">
+            <div className="flex-1 ml-[15%] mr-[20%] p-10 z-0">
+                <div className="font-bold mt-6" style={{ fontSize: '1.2rem' }}>
                     내 맘에 쏙 병원찾기
                 </div>
-                <div className='mt-6'>
-                    <h1>- 검색 조건을 선택하세요.</h1>
-                    <h1>- 각 섹션에서 조건을 선택하면 해당 조건에 맞는 병원 목록이 나타납니다.</h1>
+                <div className='mt-6  '>
+                    <h1 style={{ fontSize: '0.9rem' }}>- 검색 조건을 선택하세요.</h1>
+                    <h1 style={{ fontSize: '0.9rem' }}>- 각 섹션에서 조건을 선택하면 해당 조건에 맞는 병원 목록이 나타납니다.</h1>
                 </div>
                 <div>
                     {/* 지역 섹션 */}
                     <div className="mb-6">
-                        <h2 className="text-xl font-semibold mb-2 mt-10">
+                        <h2 className="text-1.5rem font-semibold mb-2 mt-10">
                             지역 <span className="text-red-500 text-xl font-bold"> *</span>
                         </h2>
                         <div className="flex space-x-4">
@@ -126,6 +126,7 @@ export default function Find() {
                                 value={region1}
                                 onChange={(e) => setRegion1(e.target.value)}
                                 className="border border-gray-300 rounded-lg p-2 mb-4 w-full"
+                                style={{ fontSize: '0.8rem' }}
                             >
                                 <option value="">시/도 선택</option>
                                 {regions.map(region => (
@@ -139,6 +140,7 @@ export default function Find() {
                                 value={region2}
                                 onChange={(e) => setRegion2(e.target.value)}
                                 className="border border-gray-300 rounded-lg p-2 mb-4 w-full"
+                                style={{ fontSize: '0.8rem' }}
                             >
                                 <option value="">시/군/구 선택</option>
                                 {subregions && subregions.map(subregion => (
@@ -152,7 +154,7 @@ export default function Find() {
 
                     {/* 전문의 섹션 */}
                     <div className="mb-10" style={{ zIndex: 0 }}>
-                        <h2 className="text-xl font-semibold mb-2">전문의</h2>
+                        <h2 className="text-1.5rem font-semibold mb-2">전문의</h2>
                         <div className="flex justify-center">
                             <div className="grid grid-cols-5 gap-8 mb-5 max-w-screen-xl px-4">
                                 {specialists.map((item, index) => (
@@ -165,6 +167,7 @@ export default function Find() {
                                             minHeight: "140px",
                                             padding: "2px",
                                             zIndex: 1,
+                                            fontSize: '0.9rem'
                                         }}
                                     >
                                         <img
@@ -177,12 +180,12 @@ export default function Find() {
                                 ))}
                             </div>
                         </div>
-                        <p className="text-gray-700 mt-2">선택된 전문의: {selectedSpecialist.join(', ')}</p>
+                        <p className="text-gray-700 mt-2 ">선택된 전문의: {selectedSpecialist.join(', ')}</p>
                     </div>
 
                     {/* 기타인력 섹션 */}
                     <div className="mb-10" style={{ zIndex: 0 }}>
-                        <h2 className="text-xl font-semibold mb-2">기타인력</h2>
+                        <h2 className="text-1.5rem font-semibold mb-2">기타인력</h2>
                         <div className="flex flex-wrap justify-center gap-4 mb-4">
                             {otherOptions.map((item) => (
                                 <button
@@ -193,13 +196,14 @@ export default function Find() {
                                         width: '150px',
                                         height: '50px',
                                         zIndex: 1,
+                                        fontSize: '0.9rem'
                                     }}
                                 >
                                     {item}
                                 </button>
                             ))}
                         </div>
-                        <p className="text-gray-700">선택된 기타인력: {selectedOther.join(', ')}</p>
+                        <p className="text-gray-700" >선택된 기타인력: {selectedOther.join(', ')}</p>
                     </div>
 
                     {/* 검색과 초기화 버튼 */}
@@ -207,14 +211,18 @@ export default function Find() {
                         <button
                             onClick={handleSearch}
                             className="flex-1 bg-blue-500 text-white font-bold px-4 py-2 rounded-lg"
-                            style={{ borderRadius: '20px' }}
+                            style={{ borderRadius: '20px' , 
+                                fontSize: '0.9rem'
+                            }}
                         >
                             검색
                         </button>
                         <button
                             onClick={handleReset}
                             className="flex-1 bg-gray-500 text-white font-bold px-4 py-2 rounded-lg"
-                            style={{ borderRadius: '20px' }}
+                            style={{ borderRadius: '20px', 
+                                fontSize: '0.9rem'
+                            }}
                         >
                             초기화
                         </button>
