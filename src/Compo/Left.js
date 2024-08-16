@@ -45,7 +45,6 @@ function NavigationBar() {
 
         if (response.ok) {
           const data = await response.json();
-          sessionStorage.setItem('user', JSON.stringify(data)); // 로그인 정보를 세션 스토리지에 저장
           setIsLoggedIn(true);
           setUsername(data.username);
           setEmail(data.email);
@@ -66,6 +65,12 @@ function NavigationBar() {
 
     checkSession();
   }, []); // 빈 배열: 마운트 시에만 실행
+
+  const handleLoginSuccess = () => {
+    setIsLoggedIn(true);
+    // 여기서 로그인 성공 후 추가 작업을 수행할 수 있습니다.
+    // 예: 페이지 리디렉션, 사용자 데이터 로딩 등
+  };
 
   const handleLogout = async () => {
     try {
@@ -139,22 +144,21 @@ function NavigationBar() {
             </>
           ) : (
             <>
-              <li className="welcome-message">{loginMessage}</li>
-              <li>
+              <p2 className="welcome-message" 
+              style={{ backgroundColor: 'rgb(43, 116, 181)', color: 'white', fontSize: "0.8rem" }}>{loginMessage}</p2>
                 <button
                   className="sign-button"
-                  style={{ backgroundColor: '#f44336', color: 'white' }}
+                  style={{ backgroundColor: 'rgb(43, 116, 181)', color: 'white', fontSize: "0.8rem" }}
                   onClick={handleLogout}
                 >
                   로그아웃
                 </button>
-              </li>
             </>
           )}
         </div>
       </ul>
 
-      {showLoginModal && <LoginForm onClose={() => setShowLoginModal(false)} onLoginSuccess={username => { setIsLoggedIn(true); setUsername(username); setLoginMessage(`${username}님, 반갑습니다!`); setShowLoginModal(false); }} />}
+      {showLoginModal && <LoginForm onClose={() => setShowLoginModal(false)} onLoginSuccess={username => { setIsLoggedIn(true); setUsername(username); setLoginMessage(`사랑하는 ${username}님`); setShowLoginModal(false); }} />}
       {showSignup && <Signup onClose={() => setShowSignup(false)} />}
     </div>
   );

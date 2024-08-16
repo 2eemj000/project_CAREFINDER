@@ -51,7 +51,7 @@ export default function LoginForm({ onClose, onLoginSuccess }) {
     };
 
     try {
-        const response = await fetch('http://192.168.0.142:8080/signin', {
+        const response = await fetch('http://localhost:8080/signin', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
