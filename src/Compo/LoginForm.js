@@ -94,6 +94,7 @@ export default function LoginForm({ onClose }) {
                 <input
                   id="email"
                   type="text"
+                  name="email"
                   className={`w-full bg-transparent text-sm text-gray-800 border-b ${errors.email ? 'border-red-500' : 'border-gray-300'} focus:border-blue-500 px-2 py-3 outline-none`}
                   placeholder="email을 입력하세요."
                   value={formData.email}
@@ -108,6 +109,7 @@ export default function LoginForm({ onClose }) {
                 <input
                   id="password"
                   type="password"
+                  name="password"
                   className={`w-full bg-transparent text-sm text-gray-800 border-b ${errors.password ? 'border-red-500' : 'border-gray-300'} focus:border-blue-500 px-2 py-3 outline-none`}
                   placeholder="비밀번호를 입력하세요."
                   value={formData.password}

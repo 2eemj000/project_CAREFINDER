@@ -152,6 +152,7 @@ export default function Signup({ onClose }) {
                 <input
                   id="userId"
                   type="text"
+                  name="email"
                   className={`w-full bg-transparent text-sm text-gray-800 border-b ${errors.email ? 'border-red-500' : 'border-gray-300'} focus:border-blue-500 px-2 py-3 outline-none`}
                   placeholder="email을 입력하세요."
                   value={formData.email}
@@ -165,6 +166,7 @@ export default function Signup({ onClose }) {
                 <label className="text-gray-800 block mb-1">비밀번호</label>
                 <input
                   id="password"
+                  name="password"
                   type="password"
                   className={`w-full bg-transparent text-sm text-gray-800 border-b ${errors.password ? 'border-red-500' : 'border-gray-300'} focus:border-blue-500 px-2 py-3 outline-none`}
                   placeholder="비밀번호를 입력하세요."
