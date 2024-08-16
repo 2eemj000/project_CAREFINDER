@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Left from '../Compo/Left.js'
-import Right from '../Compo/Right.js'
 import './qna.css';
 
 function Qna() {
@@ -56,9 +55,6 @@ function Qna() {
     <div className="flex h-screen">
       <div className="fixed left-0 top-0 w-1/6 h-full z-10">
         <Left />
-      </div>
-      <div className="fixed right-0 top-0 w-1/6 h-full z-10">
-        <Right />
       </div>
 
       {/* 중앙 콘텐츠 */}

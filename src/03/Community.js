@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Left from '../Compo/Left';
-import Right from '../Compo/Right';
 import './community.css';
 
 function Community() {
@@ -75,9 +74,6 @@ function Community() {
     <div className="flex h-screen">
       <div className="fixed left-0 top-0 w-1/6 h-full z-10">
         <Left />
-      </div>
-      <div className="fixed right-0 top-0 w-1/6 h-full z-10">
-        <Right />
       </div>
       <div className="flex-1 ml-[15%] mr-[20%] p-10 z-0">
         <div className="font-bold text-2xl mt-6" style={{ fontSize: '1.2rem' }}>
