@@ -11,6 +11,32 @@
   color: white;
 }
 
+
+.auth-buttons {
+  position: absolute;
+  bottom: 50px; /* 네비게이션 바의 하단에서 10px 위로 위치 */
+  left: 50%;
+  transform: translateX(-50%); /* 수평 중앙 정렬 */
+  width: 100%;
+  text-align: center;
+}
+
+.sign-button {
+  display: inline-block; /* 버튼을 인라인 블록으로 설정하여 중앙 정렬을 적용 */
+  margin: 5px; /* 버튼 간 간격 */
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+  font-size: 0.8rem; /* 글씨 크기 조정 */
+}
+.welcome-message {
+  text-align: center;
+  margin-bottom: 10px;
+  color: #333; /* 원하는 텍스트 색상 */
+}
+
 .nav-list li {
   font-size: 0.8rem;
   margin-bottom: 1rem;

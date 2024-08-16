@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import skyImage from '../Img/Sky.jpg';
-import logoImage from '../Img/Logo.png';
+import skyImage from '../Img/Sky.jpg'; // 사용할 이미지
+import logoImage from '../Img/Logo.png'; // 사용할 로고
 
-export default function Signup() {
+export default function Signup({ onClose }) {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -124,78 +124,80 @@ export default function Signup() {
   };
 
   return (
-    <div className="font-[sans-serif] relative" style={{ zIndex: 10 }}> 
-      <div className="h-[240px] font-[sans-serif] w-full">
-        <img src={skyImage} alt="Sky" className="w-full object-cover h-full" />
-      </div>
-      <div className="relative -mt-40 m-4">
-        <form className="bg-white max-w-xl w-full mx-auto shadow-[0_2px_10px_-3px_rgba(6,81,237,0.3)] p-8 rounded-2xl" onSubmit={handleSubmit}>
-          <div className="flex justify-center items-center mb-12">
-            <img src={logoImage} alt="Logo" className="logo-image" />
-          </div>
-          <div>
-            <label className="text-gray-800 block mb-1"> 이름 </label>
-            <input
-              name="name"
-              type="text"
-              className={`w-full bg-transparent text-sm text-gray-800 border-b ${errors.name ? 'border-red-500' : 'border-gray-300'} focus:border-blue-500 px-2 py-3 outline-none`}
-              placeholder="닉네임을 입력하세요."
-              value={formData.name}
-              onChange={handleInputChange}
-              onBlur={() => validateField('name', formData.name)}
-            />
-            {errors.name && <span className="text-red-500 text-sm block mt-1">{errors.name}</span>}
-          </div>
+    <div className="modal-overlay">
+      <div className="modal-content">
+        <button className="close-button" onClick={onClose}>×</button>
+        <div className="font-[sans-serif] relative">
+          <div className="relative -mt-40 m-4">
+            <form className="bg-white max-w-xl w-full mx-auto shadow-[0_2px_10px_-3px_rgba(6,81,237,0.3)] p-8 rounded-2xl" onSubmit={handleSubmit}>
+              <div className="flex justify-center items-center mb-12">
+                <img src={logoImage} alt="Logo" className="logo-image" />
+              </div>
+              <div>
+                <label className="text-gray-800 block mb-1">이름</label>
+                <input
+                  name="name"
+                  type="text"
+                  className={`w-full bg-transparent text-sm text-gray-800 border-b ${errors.name ? 'border-red-500' : 'border-gray-300'} focus:border-blue-500 px-2 py-3 outline-none`}
+                  placeholder="닉네임을 입력하세요."
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  onBlur={() => validateField('name', formData.name)}
+                />
+                {errors.name && <span className="text-red-500 text-sm block mt-1">{errors.name}</span>}
+              </div>
 
-          <div className="mt-8">
-            <label className="text-gray-800 block mb-1">e-mail</label>
-            <input
-              name="email"
-              type="text"
-              className={`w-full bg-transparent text-sm text-gray-800 border-b ${errors.email ? 'border-red-500' : 'border-gray-300'} focus:border-blue-500 px-2 py-3 outline-none`}
-              placeholder="email을 입력하세요."
-              value={formData.email}
-              onChange={handleInputChange}
-              onBlur={() => validateField('email', formData.email)}
-            />
-            {errors.email && <span className="text-red-500 text-sm block mt-1">{errors.email}</span>}
-          </div>
+              <div className="mt-8">
+                <label className="text-gray-800 block mb-1">e-mail</label>
+                <input
+                  id="userId"
+                  type="text"
+                  className={`w-full bg-transparent text-sm text-gray-800 border-b ${errors.email ? 'border-red-500' : 'border-gray-300'} focus:border-blue-500 px-2 py-3 outline-none`}
+                  placeholder="email을 입력하세요."
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  onBlur={() => validateField('email', formData.email)}
+                />
+                {errors.email && <span className="text-red-500 text-sm block mt-1">{errors.email}</span>}
+              </div>
 
-          <div className="mt-8">
-            <label className="text-gray-800 block mb-1"> 비밀번호 </label>
-            <input
-              name="password"
-              type="password"
-              className={`w-full bg-transparent text-sm text-gray-800 border-b ${errors.password ? 'border-red-500' : 'border-gray-300'} focus:border-blue-500 px-2 py-3 outline-none`}
-              placeholder="비밀번호를 입력하세요."
-              value={formData.password}
-              onChange={handleInputChange}
-              onBlur={() => validateField('password', formData.password)}
-            />
-            {errors.password && <span className="text-red-500 text-sm block mt-1">{errors.password}</span>}
-          </div>
+              <div className="mt-8">
+                <label className="text-gray-800 block mb-1">비밀번호</label>
+                <input
+                  id="password"
+                  type="password"
+                  className={`w-full bg-transparent text-sm text-gray-800 border-b ${errors.password ? 'border-red-500' : 'border-gray-300'} focus:border-blue-500 px-2 py-3 outline-none`}
+                  placeholder="비밀번호를 입력하세요."
+                  value={formData.password}
+                  onChange={handleInputChange}
+                  onBlur={() => validateField('password', formData.password)}
+                />
+                {errors.password && <span className="text-red-500 text-sm block mt-1">{errors.password}</span>}
+              </div>
 
-          <div className="flex items-center mt-8">
-            <input
-              id="remember-me"
-              name="remember-me"
-              type="checkbox"
-              className="h-4 w-4 shrink-0 rounded"
-              checked={isChecked}
-              onChange={(e) => setIsChecked(e.target.checked)}
-            />
-            <label htmlFor="remember-me" className="ml-3 block text-sm">
-              CAREFINDER의 개인 정보 수집 및 이용에 동의합니다.
-            </label>
-          </div>
+              <div className="flex items-center mt-8">
+                <input
+                  id="remember-me"
+                  name="remember-me"
+                  type="checkbox"
+                  className="h-4 w-4 shrink-0 rounded"
+                  checked={isChecked}
+                  onChange={(e) => setIsChecked(e.target.checked)}
+                />
+                <label htmlFor="remember-me" className="ml-3 block" style={{ fontSize: '0.8rem'}}>
+                  CAREFINDER의 개인정보 수집 및 이용에 동의합니다.
+                </label>
+              </div>
 
-          <div className="mt-8">
-            <button type="submit" className="w-full shadow-xl py-2.5 px-5 text-sm font-semibold tracking-wider rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none transition-all">
-              회원가입
-            </button>
-            {successMessage && <div className="mt-4 text-green-500">{successMessage}</div>}
+              <div className="mt-8">
+                <button type="submit" className="w-full shadow-xl py-2.5 px-5 text-sm font-semibold tracking-wider rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none transition-all">
+                  회원가입
+                </button>
+                {successMessage && <div className="mt-4 text-green-500">{successMessage}</div>}
+              </div>
+            </form>
           </div>
-        </form>
+        </div>
       </div>
     </div>
   );
