@@ -1,6 +1,5 @@
 import List from './List.js'
 import Left from '../Compo/Left.js'
-import Right from '../Compo/Right.js'
 import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import image1 from '../Img/medicine.png';
@@ -101,9 +100,6 @@ export default function Find() {
         <div className="flex flex-col min-h-screen">
             <div className="fixed left-0 top-0 w-1/6 h-full z-10">
                 <Left />
-            </div>
-            <div className="fixed right-0 top-0 w-1/6 h-full z-10">
-                <Right />
             </div>
 
             {/* 메인부분 */}

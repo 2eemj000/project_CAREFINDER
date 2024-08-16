@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Card from './Card';
 import Left from '../Compo/Left.js'
-import Right from '../Compo/Right.js'
 import { useNavigate, useLocation } from 'react-router-dom';
 
 export default function List() {
@@ -51,26 +50,12 @@ export default function List() {
         }
     };
 
-        //테스트용
-    // //async function fetchCards() {
-    //     try {
-    //         const data = [
-    //             { id: '1', name: '아프면병원', phone: '010-1234-5678', level: '1' },
-    //             { id: '2', name: '앓아도병원', phone: '010-2345-6789', level: '2' },
-    //             { id: '3', name: '가야지', phone: '010-3456-7890', level: '3' },
-    //         ];
-    //         setCards(data);
-    //     } catch (error) {
-    //         console.error('Failed to fetch cards', error);
-    //     }
-    // }
-
     useEffect(() => {
         fetchCards(); 
     }, [sido, sigungu, doctor, person]);
 
     const handleCardClick = (cardId) => {
-        navigate(`/find/card/${cardId}`); // useNavigate로 페이지 이동
+        navigate(`/find/card/${cardId}`); 
     };
 
     return (
@@ -78,14 +63,11 @@ export default function List() {
         <div className="fixed left-0 top-0 w-1/6 h-full z-10">
             <Left />
         </div>
-        <div className="fixed right-0 top-0 w-1/6 h-full z-10">
-            <Right />
-        </div>
         <div className="flex-1 ml-[15%] mr-[20%] p-10 z-0">
             <div className="border-t border-gray-300 mt-6 pt-4 pb-6 mb-8">
                 <h2 className="text-xl font-semibold mb-2">병원 목록</h2>
                 <p className="text-gray-700">
-                    사용자 선택에 따른 병원이 출력됩니다. 
+                    - 자세한 정보를 보시려면 카드를 클릭하세요.
                 </p>
             </div>
             {cards.length > 0 ? (

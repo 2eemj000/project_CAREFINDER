@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { mockCardDetails } from '../data/mockCardData'; // 목업 데이터 테스트용
 import Left from '../Compo/Left.js'
 
 export default function CardDetail() {
@@ -43,11 +42,6 @@ export default function CardDetail() {
                         });
                         marker.setMap(map);
 
-                        // 병원 이름을 마커에 표시
-                        const infowindow = new kakao.maps.InfoWindow({
-                            content: `<div style="padding:5px;">${cardDetails.name}</div>`
-                        });
-                        infowindow.open(map, marker);
                     } catch (error) {
                         console.error("Error initializing Kakao Map: ", error);
                     }
@@ -73,23 +67,24 @@ export default function CardDetail() {
 
             <div className="flex-1 ml-[15%] mr-[20%] p-10 z-0">
                 <div style={{ padding: '20px', fontFamily: 'Roboto, sans-serif', color: '#333' }}>
-                    <div style={{ borderBottom: '1px solid #e0e0e0', paddingBottom: '10px', marginBottom: '20px' }}>
-                        <h1 style={{ fontSize: '23px', color: '#222', margin: '0', fontWeight: 'bold' }}>{cardDetails.name}</h1>
-                        <p style={{ fontSize: '18px', color: '#555', margin: '10px 0' }}>
-                            <i className="fa fa-phone" aria-hidden="true" style={{ marginRight: '8px', color: '#007BFF' }}></i>
+                    <div style={{ borderBottom: '1px solid #e0e0e0', paddingBottom: '25px', marginBottom: '20px' }}>
+                        <h1 className="text-3xl font-bold text-gray-800 mb-2">{cardDetails.name}</h1>
+                        <p className="text-lg text-gray-600 flex items-center">
+                            <i className="fa fa-phone mr-2 text-blue-500"></i>
                             {cardDetails.phone}
                         </p>
                     </div>
                     <div style={{ borderBottom: '1px solid #e0e0e0', marginBottom: '30px', paddingBottom: '30px' }}>
-                        <h2 style={{ fontSize: '19px', color: '#333', margin: '10px 0', fontWeight: 'bold', padding: '3px'}}>전문의 정보</h2>
-                            <span className="bg-gray-200 rounded-full px-3 py-2 text-s font-semibold text-gray-700">
-                                {cardDetails.specialistInfo}
+                        <h2 className="text-xl font-semibold text-gray-700 mb-4">전문의 진료과목</h2>
+                        {cardDetails.specialistInfo.split(' ').map((info, index) => (
+                            <span key={index} className="bg-blue-100 text-blue-600 rounded-full px-4 py-2 text-sm font-medium">
+                                {info}
                             </span>
+                        ))}
                     </div>
                     <div>
-                        <h2 style={{ fontSize: '19px', color: '#333', margin: '0', fontWeight: 'bold' }}>병원 위치 및 주소</h2>
-                        <p style={{ fontSize: '17px', color: '#666', margin: '10px 0' }}>{cardDetails.address}</p>
-                        <div id="map" style={{ width: '100%', height: '400px', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', marginTop: '20px' }}></div>
+                        <h2 className="text-xl font-semibold text-gray-700 mb-4">병원 위치 및 주소</h2>
+                        <p className="text-base text-gray-600 mb-4">{cardDetails.address}</p>                        <div id="map" style={{ width: '100%', height: '400px', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', marginTop: '20px' }}></div>
                     </div>
                 </div>
             </div>
