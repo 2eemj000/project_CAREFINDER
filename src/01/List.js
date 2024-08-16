@@ -63,7 +63,7 @@ export default function List() {
         <div className="fixed left-0 top-0 w-1/6 h-full z-10">
             <Left />
         </div>
-        <div className="flex-1 ml-[15%] mr-[20%] p-10 z-0">
+        <div className="flex-1 ml-[15%] mr-[10%] p-10 z-0">
             <div className="border-t border-gray-300 mt-6 pt-4 pb-6 mb-8">
                 <h2 className="text-xl font-semibold mb-2">병원 목록</h2>
                 <p className="text-gray-700">

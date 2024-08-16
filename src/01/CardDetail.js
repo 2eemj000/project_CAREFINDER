@@ -7,25 +7,25 @@ export default function CardDetail() {
     const [cardDetails, setCardDetails] = useState(null);
     const [mapLoaded, setMapLoaded] = useState(false); //api를 두개 부르다보니, 동시에 부르면 충돌이 있어서 순서를 정해주기로 함
 
-    useEffect(() => {
-        async function fetchCardDetails() {
-            try {
-                const response = await fetch(`http://localhost:8080/find/card/${cardId}`);
-                const data = await response.json();
-                setCardDetails(data["1"][0]);
-            } catch (error) {
-                console.error('Failed to fetch card details', error);
-            }
+    async function fetchCardDetails() {
+        try {
+            const response = await fetch(`http://localhost:8080/find/card/${cardId}`);
+            const data = await response.json();
+            setCardDetails(data["1"][0]);
+        } catch (error) {
+            console.error('Failed to fetch card details', error);
         }
+    }
 
+    useEffect(() => {
         fetchCardDetails();
     }, [cardId]);
 
     useEffect(() => {
         if (cardDetails && cardDetails.locx && cardDetails.locy) {
             const initializeMap = () => {
-                const { kakao } = window; //window 객체로 만들어 줘야 쓸수있음
-
+                const { kakao } = window;
+    
                 if (kakao && kakao.maps) {
                     try {
                         const mapContainer = document.getElementById('map');
@@ -33,15 +33,19 @@ export default function CardDetail() {
                             center: new kakao.maps.LatLng(cardDetails.locy, cardDetails.locx),
                             level: 3
                         };
-
+    
                         const map = new kakao.maps.Map(mapContainer, mapOption);
-
+    
                         const markerPosition = new kakao.maps.LatLng(cardDetails.locy, cardDetails.locx);
                         const marker = new kakao.maps.Marker({
-                            position: markerPosition
+                            position: markerPosition,
+                            map: map, // map 객체를 여기서 바로 설정
                         });
-                        marker.setMap(map);
-
+    
+                        // 마커 좌표 확인 로그
+                        console.log("Marker Position:", markerPosition);
+                        console.log("Map:", map);
+    
                     } catch (error) {
                         console.error("Error initializing Kakao Map: ", error);
                     }
@@ -49,7 +53,7 @@ export default function CardDetail() {
                     console.error("Kakao Maps API is not available.");
                 }
             };
-
+    
             // 맵 초기화
             initializeMap();
         }
@@ -65,10 +69,10 @@ export default function CardDetail() {
                 <Left />
             </div>
 
-            <div className="flex-1 ml-[15%] mr-[20%] p-10 z-0">
+            <div className="flex-1 ml-[15%] mr-[10%] p-10 z-0">
                 <div style={{ padding: '20px', fontFamily: 'Roboto, sans-serif', color: '#333' }}>
                     <div style={{ borderBottom: '1px solid #e0e0e0', paddingBottom: '25px', marginBottom: '20px' }}>
-                        <h1 className="text-3xl font-bold text-gray-800 mb-2">{cardDetails.name}</h1>
+                        <h1 className="text-3xl font-bold text-gray-700 mb-2">{cardDetails.name}</h1>
                         <p className="text-lg text-gray-600 flex items-center">
                             <i className="fa fa-phone mr-2 text-blue-500"></i>
                             {cardDetails.phone}

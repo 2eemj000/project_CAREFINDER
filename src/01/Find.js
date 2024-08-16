@@ -103,7 +103,7 @@ export default function Find() {
             </div>
 
             {/* 메인부분 */}
-            <div className="flex-1 ml-[15%] mr-[20%] p-10 z-0">
+            <div className="flex-1 ml-[15%] mr-[10%] p-10 z-0">
                 <div className="font-bold mt-6" style={{ fontSize: '1.2rem' }}>
                     내 맘에 쏙 병원찾기
                 </div>
@@ -152,15 +152,15 @@ export default function Find() {
                     <div className="mb-10" style={{ zIndex: 0 }}>
                         <h2 className="text-1.5rem font-semibold mb-2">전문의</h2>
                         <div className="flex justify-center">
-                            <div className="grid grid-cols-5 gap-8 mb-5 max-w-screen-xl px-4">
+                            <div className="grid grid-cols-5 gap-6 mb-5 max-w-screen-xl px-4">
                                 {specialists.map((item, index) => (
                                     <button
                                         key={item}
                                         onClick={() => handleSpecialistChange(item)}
                                         className={`w-full aspect-square border rounded-lg flex flex-col items-center justify-center ${selectedSpecialist.includes(item) ? 'bg-blue-200 text-white font-bold' : 'bg-white text-blue-500'} transition-transform transform hover:scale-105`}
                                         style={{
-                                            width: "140px",
-                                            minHeight: "140px",
+                                            width: "135px",
+                                            minHeight: "135px",
                                             padding: "2px",
                                             zIndex: 1,
                                             fontSize: '0.9rem'
