@@ -39,7 +39,7 @@ export default function Health() {
       <div className="fixed left-0 top-0 w-1/6 h-full z-10">
         <Left />
       </div>
-      <div className="flex-1 ml-[15%] mr-[20%] p-10 z-0">
+      <div className="flex-1 ml-[15%] mr-[10%] p-10 z-0">
         <div className="font-bold mt-6" style={{ fontSize: '1.2rem' }}>
           건강백과사전
         </div>
@@ -61,16 +61,16 @@ export default function Health() {
         {/* 디테일 영역 */}
         {selectedNews && (
           <div className="mt-10">
-            {/* 상단 카드 */}
             <div className="flex mb-6">
-              <div className="w-20px bg-gray-300 p-4 border border-gray-300 rounded-lg shadow-md flex items-center justify-center">
+              <div className="w-1/6 p-4 border border-gray-300 rounded-lg shadow-md flex items-center justify-center"
+               style = {{backgroundColor : 'rgb(146, 198, 232)'}}>
                 <div className="text-center">
                   <h2 className="font-bold mb-4 text-gray-800" style={{ fontSize: '1.0rem' }}>
                     {selectedNews.title}
                   </h2>
                 </div>
               </div>
-              <div className={`w-4/5 transition-all duration-500 ease-in-out ${animationState}`}>
+              <div className={`w-5/6 transition-all duration-500 ease-in-out ${animationState}`}>
                 <div className="bg-white p-8 border border-gray-300 rounded-lg shadow-md">
                   <div className="border-b-2 border-gray-300 mb-6"></div>
                   <p className="text-gray-700 leading-relaxed" style={{ fontSize: '0.8rem' }}>
@@ -82,16 +82,17 @@ export default function Health() {
 
             {/* 하단 카드 */}
             <div className="flex">
-              <div className="w-20px bg-gray-400 p-4 border border-gray-300 rounded-lg shadow-md flex items-center justify-center">
+              <div className="w-1/6 bg-gray-400 p-4 border border-gray-300 rounded-lg shadow-md flex items-center justify-center"
+               style = {{backgroundColor : 'rgb(98, 173, 222)'}}>
                 <div className="text-center">
                   <h2 className="font-bold mb-4 text-gray-800" style={{ fontSize: '1.0rem' }}>
                     진단 및 검사
                   </h2>
                 </div>
               </div>
-              <div className={`w-4/5 transition-all duration-500 ease-in-out ${animationState}`}>
+              <div className={`w-5/6 transition-all duration-500 ease-in-out ${animationState}`}>
                 <div className="bg-white p-8 border border-gray-300 rounded-lg shadow-md">
-                  <div className="border-b-2 border-gray-300 mb-6"></div>
+                  <div className="border-b-2 border-gray-300 mb-6" ></div>
                   <p className="text-gray-700 leading-relaxed" style={{ fontSize: '0.8rem' }}>
                     {selectedNews.check}
                   </p>
