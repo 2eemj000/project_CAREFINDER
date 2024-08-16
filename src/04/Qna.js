@@ -58,7 +58,7 @@ function Qna() {
       </div>
 
       {/* 중앙 콘텐츠 */}
-      <div className="flex-1 ml-[15%] mr-[20%] p-10 z-0">
+      <div className="flex-1 ml-[15%] mr-[10%] p-10 z-0">
         <div className="font-bold mt-6" style={{ fontSize: '1.2rem' }}>
           Q & A
         </div>

@@ -49,7 +49,7 @@ function QnaWrite() {
       <div className="fixed left-0 top-0 w-1/6 h-full z-10">
         <Left />
       </div>
-      <div className="flex-1 ml-[15%] mr-[20%] p-10 z-0">
+      <div className="flex-1 ml-[15%] mr-[10%] p-10 z-0">
         <div className="font-bold mt-6 mb-10" style={{ fontSize: '1.2rem' }}>
         질문하기
         </div>

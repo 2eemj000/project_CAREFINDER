@@ -91,24 +91,24 @@ function QnaDetail() {
       <div className="fixed left-0 top-0 w-1/6 h-full z-10">
         <Left />
       </div>
-      <div className="flex-1 ml-[15%] mr-[20%] p-10 z-0">
+      <div className="flex-1 ml-[15%] mr-[10%] p-10 z-0">
        <div className="mt-6">
           <table className="w-full">
             <thead>
               <tr>
-                <th className="bg-[#f2f2f2] text-center font-bold text-2xl p-4">{qna.title}</th>
+                <th className="bg-[#f2f2f2] text-center font-bold  p-4" style={{ fontSize: '0.9rem' }}>{qna.title}</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td className="bg-white p-4">
+                <td className="bg-white p-4" style={{ fontSize: '0.9rem' }}>
                   {qna.content}
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
-        <div className="m-3 mt-10 text-xl font-bold">댓글</div>
+        <div className="m-3 mt-10 font-bold" style={{ fontSize: '0.9rem' }}>댓글</div>
         <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
           <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
@@ -150,8 +150,8 @@ function QnaDetail() {
 
         </div>
         <div className="flex justify-between mt-6">
-          <button className="action-button comment-button mt-2" onClick={handleCommentSubmit}>댓글 달기</button>
-          <button className="action-button list-button" onClick={() => navigate("/qna")}>목록으로</button>
+          <button className="action-button comment-button mt-2" onClick={handleCommentSubmit} style={{ fontSize: '0.9rem' }}>댓글 달기</button>
+          <button className="action-button list-button" onClick={() => navigate("/qna")} style={{ fontSize: '0.9rem' }}>목록으로</button>
         </div>
       </div>
     </div>
