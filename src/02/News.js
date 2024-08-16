@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-export default function News({ title, id, onClick, isSelected }) {
+export default function News({ title, ID, onClick, isSelected }) {
   return (
     <div
       className={`max-w-xs rounded-lg overflow-hidden shadow-lg transition-transform transform cursor-pointer ${

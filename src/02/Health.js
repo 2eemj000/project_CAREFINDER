@@ -49,9 +49,9 @@ export default function Health() {
         <div className="flex flex-wrap gap-8">
           {newsData.map(item => (
             <News
-              key={item.id}
+              key={item.ID}
               title={item.title}
-              id={item.id}
+              id={item.ID}
               onClick={() => handleCardClick(item)}
               isSelected={selectedNews?.id === item.id} // 선택 여부 전달
             />
