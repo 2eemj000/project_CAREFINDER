@@ -3,14 +3,14 @@ import '../NavigationBar.css';
 import logo from '../Img/Logo-white.png';
 import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
 import Find from '../01/Find.js';
-import CardDetail from '../01/CardDetail.js'; 
-import Health from '../02/Health.js'; 
-import Community from '../03/Community.js'; 
+import CardDetail from '../01/CardDetail.js';
+import Health from '../02/Health.js';
+import Community from '../03/Community.js';
 import Qna from '../04/Qna.js';
 import MainApp from '../App.js'
 import LoginForm from './LoginForm.js'; // 로그인 폼 컴포넌트
 import Signup from './SignUp.js'; // 회원가입 폼 컴포넌트
-  
+
 function App() {
   return (
     <BrowserRouter>
@@ -31,114 +31,111 @@ function NavigationBar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
   const [loginMessage, setLoginMessage] = useState('');
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+
 
   useEffect(() => {
     const checkSession = async () => {
       try {
         const response = await fetch('http://localhost:8080/checkSession', {
-          credentials: 'include',
+          credentials: 'include', // 세션 쿠키를 포함
         });
+
         if (response.ok) {
           const data = await response.json();
-          sessionStorage.setItem('user', JSON.stringify(data));
+          sessionStorage.setItem('user', JSON.stringify(data)); // 로그인 정보를 세션 스토리지에 저장
           setIsLoggedIn(true);
+          setUsername(data.username);
+          setEmail(data.email);
+          setLoginMessage(`${data.username}님, 반갑습니다!`);
+        } else if (response.status === 401) {
+          setIsLoggedIn(false);
+          setLoginMessage('로그인 정보가 없습니다. 다시 로그인 해주세요.');
         } else {
           setIsLoggedIn(false);
+          setLoginMessage('세션 확인 중 문제가 발생했습니다.');
         }
       } catch (error) {
         console.error('세션 확인 실패:', error);
         setIsLoggedIn(false);
+        setLoginMessage('세션 확인 중 오류가 발생했습니다.');
       }
     };
-    checkSession();
-  }, []);
 
-  const handleLogin = async () => {
+    checkSession();
+  }, []); // 빈 배열: 마운트 시에만 실행
+
+  const handleLogout = async () => {
     try {
-      const response = await fetch('http://localhost:8080/signin', {
+      const response = await fetch('http://localhost:8080/signout', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, password }),
-        credentials: 'include',
+        credentials: 'include', // 세션 쿠키를 포함
       });
 
       if (response.ok) {
-        setIsLoggedIn(true);
-        setLoginMessage(`${username}님, 반갑습니다!`);
-        setShowLoginModal(false);
+        sessionStorage.removeItem('user'); // 세션 스토리지에서 사용자 정보 삭제
+        setIsLoggedIn(false);
+        setUsername('');
+        setEmail('');
+        setLoginMessage('로그아웃 되었습니다.');
       } else {
-        const errorMessage = '로그인에 실패했습니다.';
-        if (window.confirm(`${errorMessage}. 회원가입 하시겠습니까?`)) {
-          setShowSignup(true);
-        }
+        console.error('로그아웃 실패');
+        alert('로그아웃에 실패했습니다.');
       }
     } catch (error) {
-      console.error('로그인 실패:', error);
-      alert('로그인에 실패했습니다.');
+      console.error('로그아웃 실패:', error);
+      alert('로그아웃 중 오류가 발생했습니다.');
     }
-  };
-
-  const handleSignup = () => setShowSignup(true);
-
-  const handleLogout = () => {
-    sessionStorage.removeItem('user');
-    setIsLoggedIn(false);
-    setUsername('');
-    setPassword('');
-    setLoginMessage('');
   };
 
   return (
     <div style={{ width: '12%', height: '100vh', position: 'fixed', padding: 0 }}>
-        <ul className="nav-list">
-            <div className="logo">
-                <img
-                  src={logo}
-                  alt="carefinder-logo"
-                  onClick={() => navigate('/')} // 메인 화면으로 돌아가기
-                  style={{
-                    cursor: 'pointer',
-                    border: '2px solid #ccc',  // 보더를 2px 회색으로 적용
-                    borderRadius: '8px',       // 모서리를 둥글게 처리
-                    padding: '4px',            // 이미지와 보더 사이에 패딩 적용
-                }}
-            />
-            </div>
-            <li onClick={() => navigate('/find')}>
-              내 맘에 쏙 병원찾기
-            </li>
-            <li onClick={() => navigate('/health')}>
-              건강백과사전
-            </li>
-            <li onClick={() => navigate('/community')}>
-              너도 아파? 나도 아파!
-            </li>
-            <li onClick={() => navigate('/qna')}>
-              Q & A
-            </li>
+      <ul className="nav-list">
+        <div className="logo">
+          <img
+            src={logo}
+            alt="carefinder-logo"
+            onClick={() => navigate('/')} // 메인 화면으로 돌아가기
+            style={{
+              cursor: 'pointer',
+              border: '2px solid #ccc',  // 보더를 2px 회색으로 적용
+              borderRadius: '8px',       // 모서리를 둥글게 처리
+              padding: '4px',            // 이미지와 보더 사이에 패딩 적용
+            }}
+          />
+        </div>
+        <li onClick={() => navigate('/find')}>
+          내 맘에 쏙 병원찾기
+        </li>
+        <li onClick={() => navigate('/health')}>
+          건강백과사전
+        </li>
+        <li onClick={() => navigate('/community')}>
+          너도 아파? 나도 아파!
+        </li>
+        <li onClick={() => navigate('/qna')}>
+          Q & A
+        </li>
         {/* 로그인 및 회원가입 버튼 추가 */}
         <div className="auth-buttons">
           {!isLoggedIn ? (
             <>
-                <button
-                  className="sign-button"
-                  style={{ backgroundColor: 'rgb(18, 135, 202)', color: 'white', fontSize:"0.8rem" }}
-                  onClick={() => setShowLoginModal(true)}
-                >
-                  로그인
-                </button>
-                <button
-                  className="sign-button"
-                  style={{ backgroundColor: 'rgb(18, 135, 202)', color: 'white', fontSize:"0.8rem" }}
-                  onClick={handleSignup}
-                >
-                  회원가입
-                </button>
+              <button
+                className="sign-button"
+                style={{ backgroundColor: 'rgb(43, 116, 181)', color: 'white', fontSize: "0.8rem" }}
+                onClick={() => setShowLoginModal(true)}
+              >
+                로그인
+              </button>
+              <button
+                className="sign-button"
+                style={{ backgroundColor: 'rgb(43, 116, 181)', color: 'white', fontSize: "0.8rem" }}
+                onClick={() => setShowSignup(true)}
+              >
+                회원가입
+              </button>
             </>
           ) : (
             <>
@@ -157,11 +154,10 @@ function NavigationBar() {
         </div>
       </ul>
 
-      {showLoginModal && <LoginForm onClose={() => setShowLoginModal(false)} />}
+      {showLoginModal && <LoginForm onClose={() => setShowLoginModal(false)} onLoginSuccess={username => { setIsLoggedIn(true); setUsername(username); setLoginMessage(`${username}님, 반갑습니다!`); setShowLoginModal(false); }} />}
       {showSignup && <Signup onClose={() => setShowSignup(false)} />}
     </div>
   );
 }
-
 
 export default NavigationBar;

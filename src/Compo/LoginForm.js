@@ -1,17 +1,16 @@
 import React, { useState } from 'react';
-import skyImage from '../Img/Sky.jpg'; // 사용할 이미지
-import logoImage from '../Img/Logo.png'; // 사용할 로고
+import logoImage from '../Img/Logo.png';
 import { FcGoogle } from "react-icons/fc";
 import { SiNaver, SiKakaotalk } from "react-icons/si";
 import './LoginForm.css'; 
 
-export default function LoginForm({ onClose }) {
+export default function LoginForm({ onClose, onLoginSuccess }) {
   const [formData, setFormData] = useState({
-    username: '',
+    email: '',
     password: ''
   });
   const [errors, setErrors] = useState({});
-  const [loginMessage, setLoginMessage] = useState('');
+  const [loginErrorMessage, setLoginErrorMessage] = useState('');
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -29,16 +28,8 @@ export default function LoginForm({ onClose }) {
 
   const validateField = (name, value) => {
     let errorMsg = null;
-    switch (name) {
-      case 'username':
-        if (!value) errorMsg = '이름을 입력하세요.';
-        break;
-      case 'password':
-        if (value.length < 8) errorMsg = '비밀번호는 8자 이상이어야 합니다.';
-        break;
-      default:
-        break;
-    }
+    if (name === 'email' && (!value || !value.includes('@'))) errorMsg = '유효한 이메일 주소를 입력하세요.';
+    if (name === 'password' && !value) errorMsg = '비밀번호를 입력하세요.';
     setErrors(prevErrors => ({
       ...prevErrors,
       [name]: errorMsg
@@ -48,36 +39,43 @@ export default function LoginForm({ onClose }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validate fields
     Object.keys(formData).forEach(key => validateField(key, formData[key]));
 
-    // Check if there are any validation errors
     if (Object.values(errors).some(error => error)) {
-      return;
+        return;
     }
+
+    const dataToSend = {
+        email: formData.email,
+        password: formData.password
+    };
 
     try {
-      const response = await fetch('http://localhost:8080/signin', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-        credentials: 'include',
-      });
+        const response = await fetch('http://192.168.0.142:8080/signin', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(dataToSend),
+            credentials: 'include',
+        });
 
-      if (response.ok) {
-        setLoginMessage('로그인 성공!');
-        // Handle login success (e.g., redirect, close modal)
-      } else {
-        const errorData = await response.json();
-        setLoginMessage('로그인 실패: ' + errorData.message);
-      }
+        console.log('Response Status:', response.status); // 상태 코드 로그
+        const textResponse = await response.text(); // 텍스트 형태로 응답 받기
+        console.log('Response Body:', textResponse); // 응답 본문 로그
+
+        if (response.ok) {
+            // 정상적으로 로그인 성공 처리
+            onLoginSuccess(); // 로그인 성공 후 콜백 호출
+        } else {
+            // 오류 메시지 처리
+            setLoginErrorMessage('로그인 실패: ' + textResponse);
+        }
     } catch (error) {
-      console.error('로그인 실패:', error);
-      setLoginMessage('로그인 실패');
+        console.error('로그인 실패:', error);
+        alert('로그인 중 오류가 발생했습니다.');
     }
-  };
+};
 
   return (
     <div className="modal-overlay">
@@ -93,7 +91,7 @@ export default function LoginForm({ onClose }) {
                 <label className="text-gray-800 block mb-1">email</label>
                 <input
                   id="email"
-                  type="text"
+                  type="email"
                   name="email"
                   className={`w-full bg-transparent text-sm text-gray-800 border-b ${errors.email ? 'border-red-500' : 'border-gray-300'} focus:border-blue-500 px-2 py-3 outline-none`}
                   placeholder="email을 입력하세요."
@@ -123,7 +121,7 @@ export default function LoginForm({ onClose }) {
                 <button type="submit" className="w-full shadow-xl py-2.5 px-5 text-sm font-semibold tracking-wider rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none transition-all">
                   로그인
                 </button>
-                {loginMessage && <div className="mt-4 text-green-500">{loginMessage}</div>}
+                {loginErrorMessage  && <div className="mt-4 text-green-500">{loginErrorMessage }</div>}
               </div>
             </form>
             <div className="oauth-buttons mt-8">
