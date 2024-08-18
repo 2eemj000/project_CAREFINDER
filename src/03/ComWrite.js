@@ -12,14 +12,6 @@ function ComWrite() {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-  
-    // const newPost = {
-    //   title,
-    //   content,
-    //   createDate: new Date().toISOString(), // 현재 시간 추가
-    //   username: member.username // 작성자 정보 추가
-    // };
-
     fetch('http://localhost:8080/community/write', {
       credentials: 'include',
       method: 'POST',

@@ -155,8 +155,30 @@ function Community() {
             })}
           </tbody>
         </table>
-        <div className="flex justify-end">
-          <button className="sign-button mb-16" onClick={handleWriteClick}>
+        <div className="mt-10 mb-5 flex justify-end w-full">
+          <button
+            onClick={handleWriteClick}
+            style={{
+              fontSize: 'medium',
+              textDecoration: 'none',
+              padding: '0.5rem',
+              width: '20%',
+              borderRadius: '20px',
+              cursor: 'pointer',
+              backgroundColor: '#929292',
+              transition: 'background-color 0.3s ease, color 0.3s ease',
+              fontWeight: 'bold',
+              color: 'white'
+            }}
+            onMouseOver={(e) => {
+              e.target.style.backgroundColor = '#686767';
+              e.target.style.color = 'white';
+            }}
+            onMouseOut={(e) => {
+              e.target.style.backgroundColor = '#929292';
+              e.target.style.color = 'white';
+            }}
+          >
             글쓰기
           </button>
         </div>
