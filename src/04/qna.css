@@ -38,35 +38,20 @@ tbody td {
 tbody tr:hover {
   background-color: #f9f9f9; /* 호버 시 배경색 변경 */
 }
+
+/* 각 열 너비 설정 */
 th:nth-child(1), td:nth-child(1) {
-  width: 10%; 
+  width: 7%;
 }
 
 th:nth-child(2), td:nth-child(2) {
-  width: 70%;
+  width: 50%;
 }
 
 th:nth-child(3), td:nth-child(3) {
-  width: 20%;  
+  width: 20%;
 }
 
-/* 버튼 스타일 */
-.sign-button {
-  font-size: 0.875rem; /* 텍스트 크기 줄이기 */
-  padding: 0.5rem 1rem; /* 상하, 좌우 여백 줄이기 */
-  border-radius: 8px; /* 둥글게 설정 */
-  cursor: pointer; /* 클릭 가능한 커서 */
-  text-align: center; /* 텍스트 중앙 정렬 */
-  background-color: #929292; /* 배경색 */
-  color: white; /* 텍스트 색상 */
-  font-weight: bold; /* 텍스트 굵기 */
-  text-decoration: none; /* 텍스트 장식 제거 */
-  transition: background-color 0.3s ease, transform 0.2s ease; /* 색상 변화와 변형 효과 */
-  max-width: 130px; /* 버튼의 최대 너비 설정 */
-  width: 100%; /* 버튼의 너비를 부모 요소에 맞게 조정 */
-}
-
-.sign-button:hover {
-  background-color: #686767; /* 호버 시 배경색 변경 */
-  transform: scale(1.05); /* 호버 시 살짝 확대 */
+th:nth-child(4), td:nth-child(4) {
+  width: 23%;
 }
