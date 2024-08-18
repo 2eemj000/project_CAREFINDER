@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Left from '../Compo/Left';
 import './qnawrite.css';
+import Footer from '../Compo/Footer.js';
 
 function QnaWrite() {
   const [title, setTitle] = useState('');
@@ -45,12 +46,12 @@ function QnaWrite() {
   };
 
   return (
-    <div className="flex h-screen">
+    <div className="flex flex-col h-screen">
       <div className="fixed left-0 top-0 w-1/6 h-full z-10">
         <Left />
       </div>
       <div className="flex-1 ml-[15%] mr-[10%] p-10 z-0">
-        <div className="font-bold mt-6 mb-10" style={{ fontSize: '1.2rem' }}>
+        <div className="font-bold text-2xl mt-6 mb-6" style={{ fontSize: '1.2rem' }}>
         질문하기
         </div>
         <form onSubmit={handleSubmit} className="bg-white shadow-lg rounded-lg p-8 max-w-2xl border border-gray-200">
@@ -102,6 +103,7 @@ function QnaWrite() {
           </div>
         </form>
       </div>
+      <Footer/>
     </div>
   );
 }

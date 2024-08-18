@@ -2,6 +2,7 @@ import './qnadetail.css';
 import Left from '../Compo/Left';
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import Footer from '../Compo/Footer.js';
 
 function QnaDetail() {
   const { id } = useParams();
@@ -87,7 +88,7 @@ function QnaDetail() {
   }
 
   return (
-    <div className="flex h-screen">
+    <div className="flex flex-col h-screen">
       <div className="fixed left-0 top-0 w-1/6 h-full z-10">
         <Left />
       </div>
@@ -154,6 +155,7 @@ function QnaDetail() {
           <button className="action-button list-button" onClick={() => navigate("/qna")} style={{ fontSize: '0.9rem' }}>목록으로</button>
         </div>
       </div>
+      <Footer/>
     </div>
   );
 }

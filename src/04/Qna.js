@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Left from '../Compo/Left.js'
 import './qna.css';
+import Footer from '../Compo/Footer.js';
 
 function Qna() {
   const [qnas, setQnas] = useState([]);
@@ -52,7 +53,7 @@ function Qna() {
   }
 
   return (
-    <div className="flex h-screen">
+    <div className="flex flex-col h-screen">
       <div className="fixed left-0 top-0 w-1/6 h-full z-10">
         <Left />
       </div>
@@ -104,6 +105,7 @@ function Qna() {
           </button>
         </div>
       </div>
+      <Footer/>
     </div>
   );
 }

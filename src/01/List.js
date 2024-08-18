@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Card from './Card';
 import Left from '../Compo/Left.js'
 import { useNavigate, useLocation } from 'react-router-dom';
+import Footer from '../Compo/Footer.js';
 
 export default function List() {
     const [cards, setCards] = useState([]);
@@ -86,6 +87,7 @@ export default function List() {
                 <p className="text-gray-700">검색 결과가 없습니다.</p>
             )}
         </div>
+        <Footer/>
     </div>
 );
 }

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Left from '../Compo/Left';
 import './community.css';
+import Footer from '../Compo/Footer.js';
 
 function Community() {
   const [boards, setBoards] = useState([]);
@@ -71,7 +72,7 @@ function Community() {
   }
 
   return (
-    <div className="flex h-screen">
+    <div className="flex flex-col h-screen">
       <div className="fixed left-0 top-0 w-1/6 h-full z-10">
         <Left />
       </div>
@@ -118,6 +119,7 @@ function Community() {
           </button>
         </div>
       </div>
+      <Footer/>
     </div>
   );
 }
