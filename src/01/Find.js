@@ -104,8 +104,8 @@ export default function Find() {
             </div>
 
             {/* 메인부분 */}
-            <div className="flex-1 ml-[15%] mr-[10%] p-10 z-0" style={{ marginLeft: "250px"}}>
-                <div className="font-bold mt-6" style={{ fontSize: '1.2rem' }}>
+            <div className="flex-1 ml-[15%] mr-[10%] p-10 z-0" style={{ marginLeft: "350px"}}>
+                <div className="font-bold mt-6" style={{ fontSize: '2rem' }}>
                     내 맘에 쏙 병원찾기
                 </div>
                 <div className='mt-6  '>

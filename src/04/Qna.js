@@ -92,28 +92,20 @@ function Qna() {
     setCurrentPage(1);
   }, [searchTerm, searchCategory, qnas]);
 
-
-  // 날짜 포맷팅 함수
   const formatDate = (dateStr) => {
     const dateObj = new Date(dateStr);
     if (isNaN(dateObj.getTime())) {
-      return {
-        date: '알 수 없는 날짜',
-        time: '알 수 없는 시간'
-      };
+      return 'Unknown Date';
     }
-
+  
+    // YYYY.MM.DD 형식으로 포맷팅
     const formattedDate = dateObj.toLocaleDateString('ko-KR', {
       year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
-    const formattedTime = dateObj.toLocaleTimeString('ko-KR');
-
-    return {
-      date: formattedDate,
-      time: formattedTime
-    };
+      month: '2-digit',
+      day: '2-digit'
+    }).replace(/\. /g, '.').slice(0, -1); // 년.월.일 형식으로 변경
+  
+    return formattedDate;
   };
 
   // QnA 클릭 시 상세 페이지로 이동
@@ -156,8 +148,8 @@ function Qna() {
       <div className="fixed left-0 top-0 w-1/6 h-full z-10">
         <Left />
       </div>
-      <div className="flex-1 ml-[15%] mr-[10%] p-10 z-0" style={{ marginLeft: "250px" }}>
-        <div className="font-bold text-2xl mt-6" style={{ fontSize: '1.2rem' }}>
+      <div className="flex-1 ml-[15%] mr-[10%] p-10 z-0" style={{ marginLeft: "350px" }}>
+        <div className="font-bold text-2xl mt-6" style={{ fontSize: '2rem' }}>
           QnA 게시판
         </div>
         <div className='mt-6'>
@@ -200,7 +192,7 @@ function Qna() {
           </thead>
           <tbody>
             {paginatedQnas.map((qna, index) => {
-              const { date, time } = formatDate(qna.createDate);
+              const date = formatDate(qna.createDate); // 날짜만 반환
               const qnasNumber = sortedQnas.length - (currentPage - 1) * itemsPerPage - index;
 
               return (
@@ -211,19 +203,16 @@ function Qna() {
                       {qna.title}
                     </td>
                     <td className="text-center">{qna.member.username}</td>
-                    <td className="text-center">
-                      <div>{date}</div>
-                      <div>{time}</div>
-                    </td>
+                    <td className="text-center">{date}</td>
                   </tr>
                   {qna.replies.map((reply, replyIndex) => {
-                    const replyDate = formatDate(reply.createDate);
+                    const replyDate = formatDate(reply.createDate); // 날짜만 반환
                     return (
                       <tr key={`reply-${qna.qnaId}-${replyIndex}`} className="bg-gray-100">
                         <td colSpan="4" className="text-left pl-6">
                           <div className="flex items-center">
-                            <span className="text-blue-500 mr-2">→</span>
-                            <strong>답변 : </strong> {reply.content.length > 50 ? `${reply.content.substring(0, 50)}...` : reply.content}
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className="text-blue-500 mr-2">→</span>
+                            &nbsp;&nbsp;&nbsp; {reply.content.length > 50 ? `${reply.content.substring(0, 50)}...` : reply.content}
                           </div>
                         </td>
                       </tr>
@@ -233,6 +222,7 @@ function Qna() {
               );
             })}
           </tbody>
+
         </table>
         <div className="mt-10 mb-5 flex justify-end w-full">
           <button

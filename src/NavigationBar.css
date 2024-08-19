@@ -49,6 +49,18 @@
   margin-left: 1rem;
 }
 
+/* .nav-list 내의 이미지 스타일 */
+.nav-list div img {
+  width: 100%; 
+  height: auto; 
+  display: block; 
+  margin: 0 auto;
+  padding: 10px;
+  background-color: white;
+  border-radius: 5px; 
+}
+
+/* 필요에 따라 로고에 대한 추가 스타일 */
 .nav-list .logo {
   margin-top: 3rem;
   margin-bottom: 3rem;
@@ -56,13 +68,6 @@
   display: flex;
   align-items: center;
   margin-left: 2.5rem;
-}
-
-.nav-list div img {
-  width: 90%;
-  height: auto;
-  display: block;
-  margin: 0 auto;
 }
 
 .nav-list li:hover {

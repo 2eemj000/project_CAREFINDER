@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import React from 'react';
 
 export default function News({ title, ID, onClick, isSelected }) {
   return (
@@ -9,7 +9,7 @@ export default function News({ title, ID, onClick, isSelected }) {
       onClick={onClick}
     >
       <div className="p-4 flex flex-col justify-center items-center h-full"
-      style = {{backgroundColor : 'rgb(206, 228, 242)'}}>
+        style={{ backgroundColor: 'rgb(206, 228, 242)' }}>
         <div>
           <div className="font-semibold text-gray-900" style={{ fontSize: '0.8rem' }}>{title}</div>
         </div>

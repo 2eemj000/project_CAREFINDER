@@ -8,7 +8,6 @@ export default function Health() {
   const [newsData, setNewsData] = useState([]);
   const [selectedNews, setSelectedNews] = useState(null); // 선택된 뉴스 상태
   const [animationState, setAnimationState] = useState(''); // 애니메이션 상태
-  const [topButton, setTopButton] = useState(null); // 현재 맨 위에 있는 버튼 상태
 
   useEffect(() => {
     fetch('/dictionary.json')
@@ -31,30 +30,28 @@ export default function Health() {
     }
   }, [selectedNews]);
 
-  const handleButtonClick = (id) => {
-    setTopButton(id); // 클릭된 버튼의 id를 topButton 상태로 설정
-  };
-
   return (
     <div className="flex flex-col h-screen">
       <div className="fixed left-0 top-0 w-1/6 h-full z-10">
         <Left />
       </div>
-      <div className="flex-1 ml-[15%] mr-[10%] p-10 z-0"  style={{ marginLeft: "250px"}}>
-        <div className="font-bold mt-6" style={{ fontSize: '1.2rem' }}>
+      <div className="flex-1 ml-[15%] mr-[10%] p-10 z-0" style={{ marginLeft: "350px" }}>
+        <div className="font-bold mt-6" style={{ fontSize: '2rem' }}>
           건강백과사전
         </div>
-        <div className='mt-6 mb-5'>
+        <div className='mt-6 mb-10'>
           <h1 style={{ fontSize: '0.9rem' }}>- 아는 만큼 건강해집니다! 자세한 정보를 보시려면 클릭하세요.</h1>
         </div>
-        <div className="flex flex-wrap gap-8">
+
+        {/* 뉴스 카드 그리드 레이아웃 */}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8">
           {newsData.map(item => (
             <News
               key={item.ID}
               title={item.title}
-              id={item.ID}
+              ID={item.ID}
               onClick={() => handleCardClick(item)}
-              isSelected={selectedNews?.id === item.id} // 선택 여부 전달
+              isSelected={selectedNews?.ID === item.ID} // 선택 여부 전달
             />
           ))}
         </div>
@@ -64,7 +61,7 @@ export default function Health() {
           <div className="mt-10">
             <div className="flex mb-6">
               <div className="w-1/6 p-4 border border-gray-300 rounded-lg shadow-md flex items-center justify-center"
-               style={{ backgroundColor: 'rgb(146, 198, 232)' }}>
+                style={{ backgroundColor: 'rgb(146, 198, 232)' }}>
                 <div className="text-center">
                   <h2 className="font-bold mb-4 text-gray-800" style={{ fontSize: '1.0rem' }}>
                     {selectedNews.title}
@@ -84,7 +81,7 @@ export default function Health() {
             {/* 하단 카드 */}
             <div className="flex">
               <div className="w-1/6 bg-gray-400 p-4 border border-gray-300 rounded-lg shadow-md flex items-center justify-center"
-               style={{ backgroundColor: 'rgb(98, 173, 222)' }}>
+                style={{ backgroundColor: 'rgb(98, 173, 222)' }}>
                 <div className="text-center">
                   <h2 className="font-bold mb-4 text-gray-800" style={{ fontSize: '1.0rem' }}>
                     진단 및 검사
@@ -103,7 +100,7 @@ export default function Health() {
           </div>
         )}
       </div>
-      <Footer/>
+      <Footer />
     </div>
   );
 }
