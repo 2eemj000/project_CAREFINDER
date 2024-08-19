@@ -69,7 +69,7 @@ export default function CardDetail() {
                 <Left />
             </div>
 
-            <div className="flex-1 ml-[15%] mr-[10%] p-10 z-0">
+            <div className="flex-1 ml-[15%] mr-[10%] p-10 z-0"  style={{ marginLeft: "250px"}}>
                 <div style={{ padding: '20px', fontFamily: 'Roboto, sans-serif', color: '#333' }}>
                     <div style={{ borderBottom: '1px solid #e0e0e0', paddingBottom: '25px', marginBottom: '20px' }}>
                         <h1 className="text-3xl font-bold text-gray-700 mb-2">{cardDetails.name}</h1>
