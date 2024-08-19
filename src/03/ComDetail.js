@@ -1,7 +1,8 @@
-import './comdetail.css';
-import Left from '../Compo/Left';
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import Left from '../Compo/Left';
+import Footer from '../Compo/Footer.js';
+import './comdetail.css';
 
 function ComDetail() {
   const { id } = useParams();
@@ -11,10 +12,12 @@ function ComDetail() {
   const [isEditing, setIsEditing] = useState(false);
   const [editedContent, setEditedContent] = useState("");
   const [author, setAuthor] = useState(""); // 게시글 작성자 정보
+  const [user, setUser] = useState(null); // 로그인된 사용자 정보
   const navigate = useNavigate();
   const textareaRef = useRef(null); // 수정 시 커서 위치 조정
 
-  function formatDate(dateStr) {
+  // 날짜 포맷팅 함수
+  const formatDate = (dateStr) => {
     const dateObj = new Date(dateStr);
     if (isNaN(dateObj.getTime())) {
       return {
@@ -34,100 +37,135 @@ function ComDetail() {
       date: formattedDate,
       time: formattedTime
     };
-  }
+  };
+
+  // 세션 확인 함수
+  const fetchSession = async () => {
+    try {
+      const response = await fetch('http://localhost:8080/checkSession', {
+        credentials: 'include',
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setUser(data.username); // 세션 정보에서 사용자 이름을 가져옴
+      } else {
+        setUser(null);
+      }
+    } catch (error) {
+      console.error('세션 확인 중 오류 발생:', error);
+      setUser(null);
+    }
+  };
+
+  // 데이터 가져오기 함수
+  const fetchData = async () => {
+    try {
+      await fetchSession(); // 세션 정보를 먼저 가져옴
+
+      const boardResponse = await fetch(`http://localhost:8080/community/${id}`);
+      if (!boardResponse.ok) {
+        throw new Error('게시글 데이터 가져오기 실패');
+      }
+      const boardData = await boardResponse.json();
+      setBoard(boardData);
+      setEditedContent(boardData.content);
+      setAuthor(boardData.username); // 게시글 작성자 정보 저장
+
+      const commentsResponse = await fetch(`http://localhost:8080/community/reply/${id}`);
+      if (!commentsResponse.ok) {
+        throw new Error('댓글 데이터 가져오기 실패');
+      }
+      const commentsData = await commentsResponse.json();
+      if (Array.isArray(commentsData)) {
+        setBoardRe(commentsData.map(comment => ({
+          boardReId: comment.boardReId,
+          content: comment.content,
+          createDate: comment.createDate,
+          username: comment.member.username // 댓글 작성자 정보
+        })));
+      } else {
+        console.error('댓글 데이터 형식 오류');
+      }
+    } catch (error) {
+      console.error('게시글 및 댓글 데이터 가져오기 실패:', error);
+    }
+  };
 
   useEffect(() => {
-    // 게시글 데이터 가져오기
-    fetch(`http://localhost:8080/community/${id}`)
-      .then(response => response.json())
-      .then(data => {
-        setBoard(data);
-        setEditedContent(data.content);
-        setAuthor(data.username); // 게시글 작성자 정보 저장
-      })
-      .catch(error => console.error('게시글 가져오기 실패:', error));
-
-    // 댓글 데이터 가져오기
-    fetch(`http://localhost:8080/community/reply/${id}`)
-      .then(response => response.json())
-      .then(data => {
-        if (Array.isArray(data)) {
-          const comments = data.map(comment => ({
-            boardReId: comment.boardReId,
-            content: comment.content,
-            createDate: comment.createDate,
-            username: comment.member.username
-          }));
-          setBoardRe(comments);
-        } else {
-          console.error('댓글 데이터 형식 오류');
-        }
-      })
-      .catch(error => console.error('댓글 가져오기 실패:', error));
+    fetchData();
   }, [id]);
 
-  const handleDelete = () => {
-    const member = JSON.parse(sessionStorage.getItem("user"));
-
-    if (!member || !member.username) {
+  // 게시글 삭제 함수
+  const handleDelete = async () => {
+    if (!user) {
       alert("로그인이 필요합니다.");
       return;
     }
 
-    if (member.username !== author) {
+    if (user !== author) {
       alert("해당 게시글의 작성자만 게시글 삭제가 가능합니다.");
       return;
     }
 
-    fetch(`http://localhost:8080/community/${id}`, {
-      method: 'DELETE'
-    })
-      .then(response => {
-        if (response.ok) {
-          navigate('/community');
-        } else {
-          console.error('게시글 삭제 실패');
-        }
+    try {
+      const response = await fetch(`http://localhost:8080/community/${id}`, {
+        method: 'DELETE',
+        credentials: 'include',
       });
+      if (response.ok) {
+        navigate('/community'); // 삭제 후 목록 페이지로 이동
+      } else {
+        console.error('게시글 삭제 실패');
+      }
+    } catch (error) {
+      console.error('게시글 삭제 중 오류 발생:', error);
+    }
   };
 
-  const handleCommentSubmit = () => {
-    const member = JSON.parse(sessionStorage.getItem("user"));
-
-
-    if (!member || !member.username) {
+  // 댓글 작성 함수
+  const handleCommentSubmit = async () => {
+    await fetchSession(); // 세션을 최신 상태로 갱신
+    if (!user) {
       alert("로그인이 필요합니다.");
       return;
     }
 
-    fetch(`http://localhost:8080/community/reply/write/${id}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ content: newComment })
-    })
-      .then(response => {
-        if (response.ok) {
-          setNewComment("");
-          window.location.reload();
-        } else {
-          console.error('댓글 작성 실패');
-        }
+    if (newComment.trim() === "") {
+      alert("댓글 내용을 입력해주세요.");
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://localhost:8080/community/reply/write/${id}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ content: newComment, username: user }), // 사용자 정보 포함
+        credentials: 'include',
       });
+
+      if (response.ok) {
+        setNewComment("");
+        // 댓글 작성 후, 댓글 목록을 다시 가져와서 최신 상태를 반영
+        await fetchData(); // 최신 상태를 가져오기 위해 전체 데이터 갱신
+      } else {
+        console.error('댓글 작성 실패');
+      }
+    } catch (error) {
+      console.error('댓글 작성 중 오류 발생:', error);
+    }
   };
 
+  // 수정 모드 토글 함수
   const handleEditToggle = () => {
-    const member = JSON.parse(sessionStorage.getItem("user"));
-
-
-    if (!member || !member.username) {
+    if (!user) {
       alert("로그인이 필요합니다.");
       return;
     }
 
-    if (member.username === author) {
+    if (user === author) {
       setIsEditing(!isEditing);
       if (!isEditing) {
-        // 수정 모드로 전환되면 커서가 textarea에 위치하도록 설정
         setTimeout(() => {
           textareaRef.current?.focus();
         }, 0);
@@ -137,33 +175,39 @@ function ComDetail() {
     }
   };
 
-  const handleEditSubmit = () => {
-    const member = JSON.parse(sessionStorage.getItem("user"));
-
-
-    if (!member || !member.username) {
+  // 게시글 수정 함수
+  const handleEditSubmit = async () => {
+    if (!user) {
       alert("로그인이 필요합니다.");
       return;
     }
 
-    if (member.username !== author) {
+    if (user !== author) {
       alert("해당 게시글의 작성자만 게시글 수정이 가능합니다.");
       return;
     }
 
-    fetch(`http://localhost:8080/community/${id}`, {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ content: editedContent })
-    })
-      .then(response => {
-        if (response.ok) {
-          setIsEditing(false);
-          setBoard({ ...board, content: editedContent });
-        } else {
-          console.error('게시글 수정 실패');
-        }
+    if (editedContent.trim() === "") {
+      alert("내용을 입력해주세요.");
+      return;
+    }
+
+    try {
+      const response = await fetch(`http://localhost:8080/community/${id}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ content: editedContent }),
+        credentials: 'include',
       });
+      if (response.ok) {
+        setIsEditing(false);
+        setBoard(prevBoard => ({ ...prevBoard, content: editedContent }));
+      } else {
+        console.error('게시글 수정 실패');
+      }
+    } catch (error) {
+      console.error('게시글 수정 중 오류 발생:', error);
+    }
   };
 
   if (!board) {
@@ -171,14 +215,14 @@ function ComDetail() {
   }
 
   return (
-    <div className="flex h-screen">
+    <div className="flex flex-col h-screen">
       <div className="fixed left-0 top-0 w-1/6 h-full z-10">
         <Left />
       </div>
-      <div className="flex-1 ml-[15%] mr-[10%] p-10 z-0" >
+      <div className="flex-1 ml-[15%] mr-[10%] p-10 z-0">
         <div className="mt-6">
-        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-          <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+          <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
               <tr>
                 <th className="bg-[#f2f2f2] font-bold p-4" style={{ fontSize: '0.9rem' }}>{board.title}</th>
               </tr>
@@ -202,8 +246,8 @@ function ComDetail() {
           </table>
         </div>
         <div className="m-3 mt-10 font-bold" style={{ fontSize: '0.9rem' }}> 댓글</div>
-        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-          <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+        <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
               <th scope="col" className="text-center px-6 py-3">작성자</th>
               <th scope="col" className="text-center px-6 py-3">내용</th>
@@ -226,7 +270,7 @@ function ComDetail() {
                 );
               })
             ) : (
-              <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700" key={board.boardId}>
+              <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                 <td colSpan="3" className="text-center">댓글이 없습니다.</td>
               </tr>
             )}
@@ -238,20 +282,25 @@ function ComDetail() {
             rows="3"
             value={newComment}
             onChange={(e) => setNewComment(e.target.value)}
-            placeholder="댓글을 입력하세요..."
+            placeholder="댓글을 작성하세요."
           />
         </div>
         <div className="flex justify-between mt-6">
-          <button className="action-button comment-button mt-2" onClick={handleCommentSubmit} style={{ fontSize: '0.9rem' }}>댓글 달기</button>
-          {isEditing ? (
-            <button className="action-button edit-button" onClick={handleEditSubmit} style={{ fontSize: '0.9rem' }}>수정 완료</button>
-          ) : (
-            <button className="action-button edit-button" onClick={handleEditToggle} style={{ fontSize: '0.9rem' }}>수정</button>
-          )}
-          <button className="action-button delete-button" onClick={handleDelete} style={{ fontSize: '0.9rem' }} >삭제</button>
-          <button className="action-button list-button" onClick={() => navigate("/community")} style={{ fontSize: '0.9rem' }}>목록으로</button>
+          <button className="action-button comment-button mt-2" onClick={handleCommentSubmit} style={{ fontSize: '0.9rem' }}>
+            댓글 달기
+          </button>
+          <button className="action-button edit-button" onClick={isEditing ? handleEditSubmit : handleEditToggle} style={{ fontSize: '0.9rem' }}>
+            {isEditing ? '수정 완료' : '수정'}
+          </button>
+          <button className="action-button delete-button" onClick={handleDelete} style={{ fontSize: '0.9rem' }}>
+            삭제
+          </button>
+          <button className="action-button list-button" onClick={() => navigate("/community")} style={{ fontSize: '0.9rem' }}>
+            목록으로
+          </button>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

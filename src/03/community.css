@@ -55,23 +55,3 @@ th:nth-child(3), td:nth-child(3) {
 th:nth-child(4), td:nth-child(4) {
   width: 23%;
 }
-.sign-button {
-  margin-top: 1rem;
-  font-size: medium;
-  text-decoration: none; 
-  padding: 0.5rem;
-  width: 90%;
-  border-radius: 20px; 
-  cursor: pointer;
-  justify-content: center;
-  background-color: #929292;
-  transition: background-color 0.3s ease, color 0.3s ease;
-  font-weight: bold;
-  color: white;
-}  
-
-.sign-button:hover {
-  background-color: #686767;
-  font-weight: bold;
-  color: white;
-}

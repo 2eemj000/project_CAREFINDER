@@ -69,7 +69,7 @@ export default function LoginForm({ onClose, onLoginSuccess }) {
             onLoginSuccess(); // 로그인 성공 후 콜백 호출
         } else {
             // 오류 메시지 처리
-            setLoginErrorMessage('로그인 실패: ' + textResponse);
+            setLoginErrorMessage('로그인 실패 ! ' + textResponse);
         }
     } catch (error) {
         console.error('로그인 실패:', error);

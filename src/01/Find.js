@@ -12,6 +12,7 @@ import image7 from '../Img/han.png';
 import image8 from '../Img/kit.png';
 import image9 from '../Img/skin.png';
 import image10 from '../Img/ear.png';
+import Footer from '../Compo/Footer.js';
 
 export default function Find() {
     const [selectedSpecialist, setSelectedSpecialist] = useState([]);
@@ -98,7 +99,7 @@ export default function Find() {
 
     return (
         <div className="flex flex-col min-h-screen">
-            <div className="fixed left-0 top-0 w-1/6 h-full z-10">
+            <div className="fixed left-0 top-0 w-1/6 h-5/6 z-10">
                 <Left />
             </div>
 
@@ -203,7 +204,7 @@ export default function Find() {
                     </div>
 
                     {/* 검색과 초기화 버튼 */}
-                    <div className="flex space-x-4 pb-20 justify-center">
+                    <div className="flex space-x-4 justify-center">
                         <button
                             onClick={handleSearch}
                             className="bg-blue-500 text-white font-bold px-5 py-2 rounded-lg"
@@ -229,6 +230,7 @@ export default function Find() {
                     </div>
                 </div>
             </div>
+            <Footer/>
         </div >
     );
 }

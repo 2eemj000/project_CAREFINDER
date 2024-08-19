@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Left from '../Compo/Left';
 import './comwrite.css';
+import Footer from '../Compo/Footer.js';
 
 function ComWrite() {
   const [title, setTitle] = useState('');
@@ -11,45 +12,33 @@ function ComWrite() {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    // 세션에서 member 정보 가져오기
-    const member = JSON.parse(sessionStorage.getItem("user"));
-
-    // member가 없으면 경고창 띄우기
-    if (!member || !member.username) {
-      alert("로그인이 필요합니다.");
-      return;
-    }
-
-    const newPost = {
-      title,
-      content,
-      createDate: new Date().toISOString(), // 현재 시간 추가
-      username: member.username // 작성자 정보 추가
-    };
-
-    fetch('http://localhost:3000/community/write', {
+    fetch('http://localhost:8080/community/write', {
+      credentials: 'include',
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(newPost),
-    })
-      .then(response => response.json())
-      .then(() => {
-        navigate('/community');
+      body: JSON.stringify({
+        "title": title,
+        "content": content
       })
-      .catch(error => {
-        console.error('Error:', error);
-      });
+    })
+    //.then(response => response.json())
+    .then(() => {
+      navigate('/community');
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
   };
 
   return (
-    <div className="flex h-screen">
+    <div className="flex flex-col h-screen">
       <div className="fixed left-0 top-0 w-1/6 h-full z-10">
         <Left />
       </div>
       <div className="flex-1 ml-[15%] mr-[10%] p-10 z-0">
-        <div className="font-bold text-2xl mt-6">
+        <div className="font-bold text-2xl mt-6" style={{ fontSize: '1.2rem' }}>
           게시글 작성
         </div>
         <form onSubmit={handleSubmit} className="mt-6">
@@ -82,6 +71,7 @@ function ComWrite() {
           </div>
         </form>
       </div>
+      <Footer/>
     </div>
   );
 }

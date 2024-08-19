@@ -7,7 +7,7 @@ import CardDetail from '../01/CardDetail.js';
 import Health from '../02/Health.js';
 import Community from '../03/Community.js';
 import Qna from '../04/Qna.js';
-import MainApp from '../App.js'
+import MainApp from '../App.js';
 import LoginForm from './LoginForm.js'; // 로그인 폼 컴포넌트
 import Signup from './SignUp.js'; // 회원가입 폼 컴포넌트
 
@@ -35,7 +35,7 @@ function NavigationBar() {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
 
-
+  // 세션 확인 및 사용자 정보 로딩
   useEffect(() => {
     const checkSession = async () => {
       try {
@@ -64,14 +64,36 @@ function NavigationBar() {
     };
 
     checkSession();
-  }, []); // 빈 배열: 마운트 시에만 실행
+  }, []); // 빈 배열: 컴포넌트 마운트 시에만 실행
 
-  const handleLoginSuccess = () => {
+  // 로그인 성공 후 사용자 정보 가져오기
+  const handleLoginSuccess = async () => {
     setIsLoggedIn(true);
-    // 여기서 로그인 성공 후 추가 작업을 수행할 수 있습니다.
-    // 예: 페이지 리디렉션, 사용자 데이터 로딩 등
+
+    try {
+      const response = await fetch('http://localhost:8080/checkSession', {
+        credentials: 'include',
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setUsername(data.username);
+        setEmail(data.email);
+        setLoginMessage(`${data.username}님, 반갑습니다!`);
+      } else {
+        setIsLoggedIn(false);
+        setLoginMessage('로그인 정보가 없습니다. 다시 로그인 해주세요.');
+      }
+    } catch (error) {
+      console.error('세션 확인 실패:', error);
+      setIsLoggedIn(false);
+      setLoginMessage('세션 확인 중 오류가 발생했습니다.');
+    }
+
+    setShowLoginModal(false);
   };
 
+  // 로그아웃 처리
   const handleLogout = async () => {
     try {
       const response = await fetch('http://localhost:8080/signout', {
@@ -144,7 +166,7 @@ function NavigationBar() {
             </>
           ) : (
             <>
-              <p2 className="welcome-message" 
+              <p2 className="welcome-message"
               style={{ backgroundColor: 'rgb(43, 116, 181)', color: 'white', fontSize: "0.8rem" }}>{loginMessage}</p2>
                 <button
                   className="sign-button"
@@ -158,7 +180,7 @@ function NavigationBar() {
         </div>
       </ul>
 
-      {showLoginModal && <LoginForm onClose={() => setShowLoginModal(false)} onLoginSuccess={username => { setIsLoggedIn(true); setUsername(username); setLoginMessage(`사랑하는 ${username}님`); setShowLoginModal(false); }} />}
+      {showLoginModal && <LoginForm onClose={() => setShowLoginModal(false)} onLoginSuccess={handleLoginSuccess} />}
       {showSignup && <Signup onClose={() => setShowSignup(false)} />}
     </div>
   );
