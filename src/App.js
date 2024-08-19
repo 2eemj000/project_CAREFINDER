@@ -5,9 +5,9 @@ import logoImage from './Img/Logo.png';
 import ButtonC from './UI/ButtonC.js';
 import Find from './01/Find.js';
 import List from './01/List.js';
-import CardDetail from './01/CardDetail.js'; 
-import Health from './02/Health.js'; 
-import Community from './03/Community.js'; 
+import CardDetail from './01/CardDetail.js';
+import Health from './02/Health.js';
+import Community from './03/Community.js';
 import ComWrite from './03/ComWrite.js';
 import ComDetail from './03/ComDetail.js';
 import Qna from './04/Qna.js';
@@ -18,7 +18,7 @@ import Footer from './Compo/Footer.js';
 function App() {
   return (
     <BrowserRouter>
-      <div className='app-container'>
+      <div className='app-container' style={{ marginLeft: '100px', padding: '1rem', flex: '1' }}>
         <Routes>
           <Route path="/" element={<MainApp />} />
           <Route path="/find" element={<Find />} />
@@ -60,24 +60,24 @@ function MainApp() {
         </div>
       </header>
       <main className='main-content'>
-        <ButtonC bcolor="sky" 
-                title='요양 병원 찾기' 
-                text='내가 원하는 전문의가 있는 병원을 찾아보세요.' 
-                handleClick={() => navigate('/find')}/>
-        <ButtonC bcolor="purple" 
-                title='건강백과사전'
-                text='아는 만큼 건강해져요.'
-                handleClick={() => navigate('/health')}/>
-        <ButtonC bcolor="blue" 
-                title='커뮤니티' 
-                text='너두 아파? 나두 아파! 함께 이야기 나눠요.' 
-                handleClick={() => navigate('/community')}/>
-        <ButtonC bcolor="teal" 
-                title='Q&A' 
-                text='궁금증 해소하고 한 살 젊어져요.'
-                handleClick={() => navigate('/qna')}/>
+        <ButtonC bcolor="sky"
+          title='요양 병원 찾기'
+          text='내가 원하는 전문의가 있는 병원을 찾아보세요.'
+          handleClick={() => navigate('/find')} />
+        <ButtonC bcolor="purple"
+          title='건강백과사전'
+          text='아는 만큼 건강해져요.'
+          handleClick={() => navigate('/health')} />
+        <ButtonC bcolor="blue"
+          title='커뮤니티'
+          text='너두 아파? 나두 아파! 함께 이야기 나눠요.'
+          handleClick={() => navigate('/community')} />
+        <ButtonC bcolor="teal"
+          title='Q&A'
+          text='궁금증 해소하고 한 살 젊어져요.'
+          handleClick={() => navigate('/qna')} />
       </main>
-      <Footer/>
+      <Footer />
     </div>
   );
 }

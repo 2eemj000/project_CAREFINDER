@@ -130,6 +130,7 @@ function NavigationBar() {
               border: '2px solid #ccc',  // 보더를 2px 회색으로 적용
               borderRadius: '8px',       // 모서리를 둥글게 처리
               padding: '4px',            // 이미지와 보더 사이에 패딩 적용
+              alignItems: 'center'
             }}
           />
         </div>
