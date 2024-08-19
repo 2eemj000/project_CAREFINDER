@@ -1,17 +1,20 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Left from '../Compo/Left';
-import Footer from '../Compo/Footer.js';
+import Footer from '../Compo/Footer';
 import './qnadetail.css';
+import { checkSession } from '../utils/authUtils'; // checkSession 가져오기
 
 function QnaDetail() {
   const { id } = useParams();
   const [qna, setQna] = useState(null);
   const [qnaReplies, setQnaReplies] = useState([]);
   const [newReply, setNewReply] = useState("");
-  const [user, setUser] = useState(null); // 로그인된 사용자 정보
-  const [userRole, setUserRole] = useState(""); // 사용자 역할 정보
+  const [user, setUser] = useState(null);
+  const [userRole, setUserRole] = useState("");
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  const textareaRef = useRef(null);
 
   // 날짜 포맷팅 함수
   const formatDate = (dateStr) => {
@@ -36,33 +39,20 @@ function QnaDetail() {
     };
   };
 
-  // 세션 확인 함수
-  const fetchSession = async () => {
-    try {
-      const response = await fetch('http://localhost:8080/checkSession', {
-        credentials: 'include',
-      });
+  // 데이터 가져오기 함수
+  const fetchData = async () => {
+    setLoading(true); // 로딩 시작
 
-      if (response.ok) {
-        const data = await response.json();
-        setUser(data.username);
-        setUserRole(data.role); // 사용자 역할 정보를 설정
-      } else {
-        setUser(null);
-        setUserRole(null);
-      }
-    } catch (error) {
-      console.error('세션 확인 중 오류 발생:', error);
+    const sessionData = await checkSession();
+    if (sessionData.loggedIn) {
+      setUser(sessionData.username);
+      setUserRole(sessionData.role);
+    } else {
       setUser(null);
       setUserRole(null);
     }
-  };
 
-  // 데이터 가져오기 함수
-  const fetchData = async () => {
     try {
-      await fetchSession(); // 세션 정보를 먼저 가져옴
-
       const qnaResponse = await fetch(`http://localhost:8080/qna/${id}`);
       if (!qnaResponse.ok) {
         throw new Error('질문 데이터 가져오기 실패');
@@ -80,13 +70,15 @@ function QnaDetail() {
           qnaReplyId: reply.qnaReplyId,
           content: reply.content,
           createDate: reply.createDate,
-          username: reply.member.username
+          username: reply.member.username 
         })));
       } else {
         console.error('답변 데이터 형식 오류');
       }
     } catch (error) {
       console.error('질문 및 답변 데이터 가져오기 실패:', error);
+    } finally {
+      setLoading(false); // 로딩 종료
     }
   };
 
@@ -112,7 +104,7 @@ function QnaDetail() {
         credentials: 'include',
       });
       if (response.ok) {
-        navigate('/qna'); // 삭제 후 목록 페이지로 이동
+        navigate('/qna');
       } else {
         console.error('질문 삭제 실패');
       }
@@ -123,7 +115,6 @@ function QnaDetail() {
 
   // 답변 작성 함수
   const handleReplySubmit = async () => {
-    await fetchSession(); // 세션을 최신 상태로 갱신
     if (!user) {
       alert("로그인이 필요합니다.");
       return;
@@ -143,13 +134,14 @@ function QnaDetail() {
       const response = await fetch(`http://localhost:8080/qna/reply/write/${id}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ content: newReply, username: user }),
+        body: JSON.stringify({ content: newReply }),
         credentials: 'include',
       });
 
       if (response.ok) {
         setNewReply("");
-        await fetchData(); // 최신 상태를 가져오기 위해 전체 데이터 갱신
+        await fetchData(); // 답변 작성 후 데이터 갱신
+        textareaRef.current?.focus(); // 답변 작성 후 텍스트 영역 포커스
       } else {
         console.error('답변 작성 실패');
       }
@@ -158,8 +150,12 @@ function QnaDetail() {
     }
   };
 
-  if (!qna) {
+  if (loading) {
     return <div>로딩 중...</div>;
+  }
+
+  if (!qna) {
+    return <div>질문을 찾을 수 없습니다.</div>;
   }
 
   return (
@@ -217,6 +213,7 @@ function QnaDetail() {
         </table>
         <div className="mt-6">
           <textarea
+            ref={textareaRef}
             className="w-full p-2 border border-gray-300"
             rows="3"
             value={newReply}

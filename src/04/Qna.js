@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Left from '../Compo/Left';
-import './qna.css';
 import Footer from '../Compo/Footer.js';
+import './qna.css'; 
+import { checkSession } from '../utils/authUtils'; // 유틸리티 함수 가져오기
 
 function Qna() {
   const [qnas, setQnas] = useState([]);
@@ -12,37 +13,9 @@ function Qna() {
   const [errorMessage, setErrorMessage] = useState(''); // 에러 메시지 상태 추가
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10; // 페이지당 항목 수
-
   const navigate = useNavigate();
 
-  const checkSession = async () => {
-    try {
-      const response = await fetch('http://localhost:8080/checkSession', {
-        credentials: 'include',
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setUser(data.username);
-        setLoginMessage(`${data.username}님, 반갑습니다!`);
-        return true; // 로그인 성공 시 true 반환
-      } else if (response.status === 401) {
-        setUser(null);
-        setLoginMessage('로그인 정보가 없습니다. 다시 로그인 해주세요.');
-        return false; // 로그인 실패 시 false 반환
-      } else {
-        setUser(null);
-        setLoginMessage('세션 확인 중 문제가 발생했습니다.');
-        return false;
-      }
-    } catch (error) {
-      console.error('세션 확인 실패:', error);
-      setUser(null);
-      setLoginMessage('세션 확인 중 오류가 발생했습니다.');
-      return false;
-    }
-  };
-
+  // QnA 게시글 데이터 가져오기
   const fetchQnas = async () => {
     try {
       const response = await fetch('http://localhost:8080/qna');
@@ -60,10 +33,19 @@ function Qna() {
     }
   };
 
+  // 로그인 상태 확인 및 QnA 데이터 가져오기
   const fetchData = async () => {
     setLoading(true); // 로딩 상태 시작
 
-    await checkSession();
+    const sessionData = await checkSession();
+    if (sessionData.loggedIn) {
+      setUser(sessionData.username);
+      setLoginMessage(sessionData.message);
+    } else {
+      setUser(null);
+      setLoginMessage(sessionData.message);
+    }
+    
     await fetchQnas();
 
     setLoading(false); // 로딩 상태 종료
@@ -73,12 +55,13 @@ function Qna() {
     fetchData();
   }, []);
 
+  // 날짜 포맷팅 함수
   const formatDate = (dateStr) => {
     const dateObj = new Date(dateStr);
     if (isNaN(dateObj.getTime())) {
       return {
-        date: 'Unknown Date',
-        time: 'Unknown Time'
+        date: '알 수 없는 날짜',
+        time: '알 수 없는 시간'
       };
     }
 
@@ -95,26 +78,29 @@ function Qna() {
     };
   };
 
+  // QnA 클릭 시 상세 페이지로 이동
   const handleQnaClick = (qnaId) => {
     if (qnaId) {
-      navigate(`/qna/${qnaId}`);
+      navigate(`/qna/${qnaId}`); 
     } else {
       console.error('Invalid qna ID');
     }
   };
 
-  async function handleWriteClick() {
+  // 글쓰기 클릭 시 로그인 상태 확인 후 이동
+  const handleWriteClick = async () => {
     if (user) {
       navigate("/qna/write");
     } else {
-      const loggedIn = await checkSession(); // 로그인 상태를 다시 확인
-      if (loggedIn) {
+      const sessionData = await checkSession(); // 로그인 상태를 다시 확인
+      if (sessionData.loggedIn) {
+        setUser(sessionData.username); // 세션이 확인되면 사용자 정보 업데이트
         navigate("/qna/write"); // 세션 확인 후 바로 글쓰기 페이지로 이동
       } else {
         alert("로그인 후에 게시글을 작성할 수 있습니다.");
       }
     }
-  }
+  };
 
   //페이징 관한 부분
   const sortedQnas = [...qnas].sort((a, b) => new Date(b.createDate) - new Date(a.createDate));
@@ -126,7 +112,6 @@ function Qna() {
       setCurrentPage(pageNumber);
     }
   };
-
 
   return (
     <div className="flex flex-col h-screen">

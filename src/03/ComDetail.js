@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import Left from '../Compo/Left';
 import Footer from '../Compo/Footer.js';
 import './comdetail.css';
+import { checkSession } from '../utils/authUtils'; // 유틸리티 함수 가져오기
 
 function ComDetail() {
   const { id } = useParams();
@@ -39,30 +40,11 @@ function ComDetail() {
     };
   };
 
-  // fetchSession 함수에서 user 정보가 올바르게 설정되었는지 확인하는 부분 추가
-  const fetchSession = async () => {
-    try {
-      const response = await fetch('http://localhost:8080/checkSession', {
-        credentials: 'include',
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setUser(data.username); // 세션 정보에서 사용자 이름을 가져옴
-        console.log("Logged in user:", data.username); // 로그인된 사용자 정보 확인
-      } else {
-        setUser(null);
-      }
-    } catch (error) {
-      console.error('세션 확인 중 오류 발생:', error);
-      setUser(null);
-    }
-  };
-
   // 데이터 가져오기 함수
   const fetchData = async () => {
     try {
-      await fetchSession(); // 세션 정보를 먼저 가져옴
+      const sessionData = await checkSession();
+      setUser(sessionData.loggedIn ? sessionData.username : null);
 
       const boardResponse = await fetch(`http://localhost:8080/community/${id}`);
       if (!boardResponse.ok) {
@@ -74,8 +56,7 @@ function ComDetail() {
 
       // member 안의 username에 접근
       if (boardData.member && boardData.member.username) {
-        setAuthor(boardData.member.username); // 게시글 작성자 정보 저장
-        console.log("Author of the post:", boardData.member.username);
+        setAuthor(boardData.member.username);
       } else {
         console.error('작성자 정보가 없습니다.');
       }
@@ -90,7 +71,7 @@ function ComDetail() {
           boardReId: comment.boardReId,
           content: comment.content,
           createDate: comment.createDate,
-          username: comment.member.username // 댓글 작성자 정보
+          username: comment.member.username
         })));
       } else {
         console.error('댓글 데이터 형식 오류');
@@ -122,11 +103,11 @@ function ComDetail() {
         credentials: 'include',
       });
       if (response.ok) {
-        navigate('/community'); // 삭제 후 목록 페이지로 이동
+        navigate('/community');
       } else {
         console.error('게시글 삭제 실패');
         const errorText = await response.text();
-        console.error('서버 응답:', errorText); // 응답 본문 출력
+        console.error('서버 응답:', errorText);
       }
     } catch (error) {
       console.error('게시글 삭제 중 오류 발생:', error);
@@ -135,7 +116,6 @@ function ComDetail() {
 
   // 댓글 작성 함수
   const handleCommentSubmit = async () => {
-    await fetchSession(); // 세션을 최신 상태로 갱신
     if (!user) {
       alert("로그인이 필요합니다.");
       return;
@@ -150,13 +130,12 @@ function ComDetail() {
       const response = await fetch(`http://localhost:8080/community/reply/write/${id}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ content: newComment, username: user }), // 사용자 정보 포함
+        body: JSON.stringify({ content: newComment }),
         credentials: 'include',
       });
 
       if (response.ok) {
         setNewComment("");
-        // 댓글 작성 후, 댓글 목록을 다시 가져와서 최신 상태를 반영
         await fetchData(); // 최신 상태를 가져오기 위해 전체 데이터 갱신
       } else {
         console.error('댓글 작성 실패');
@@ -172,9 +151,6 @@ function ComDetail() {
       alert("로그인이 필요합니다.");
       return;
     }
-
-    console.log("User trying to edit:", user);
-    console.log("Author of the post:", author);
 
     if (user === author) {
       setIsEditing(!isEditing);

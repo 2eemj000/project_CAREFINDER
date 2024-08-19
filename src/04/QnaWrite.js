@@ -2,34 +2,39 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Left from '../Compo/Left';
 import './qnawrite.css';
-import Footer from '../Compo/Footer.js';
+import Footer from '../Compo/Footer';
+import { checkSession } from '../utils/authUtils'; // checkSession 가져오기
 
 function QnaWrite() {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    fetch('http://localhost:8080/qna/write', {
-      credentials: 'include',
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        "title": title,
-        "content": content
-      })
-    })
-    //.then(response => response.json())
-    .then(() => {
+    const sessionData = await checkSession();
+    if (!sessionData.loggedIn) {
+      alert("로그인이 필요합니다.");
+      return;
+    }
+
+    try {
+      await fetch('http://localhost:8080/qna/write', {
+        credentials: 'include',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          title: title,
+          content: content,
+        }),
+      });
       navigate('/qna');
-    })
-    .catch(error => {
+    } catch (error) {
       console.error('Error:', error);
-    });
+    }
   };
 
   return (
@@ -71,7 +76,7 @@ function QnaWrite() {
           </div>
         </form>
       </div>
-      <Footer/>
+      <Footer />
     </div>
   );
 }

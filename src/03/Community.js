@@ -3,9 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import Left from '../Compo/Left';
 import './community.css';
 import Footer from '../Compo/Footer.js';
+import { checkSession } from '../utils/authUtils'; // 유틸리티 함수 가져오기
 
 function Community() {
-  const [boards, setBoards] = useState([]); //이거는 정렬 안한, 상태 관리를 위한 '원본' 게시글 관리 상태 변수
+  const [boards, setBoards] = useState([]);
   const [user, setUser] = useState(null); // 로그인된 사용자 정보를 상태로 저장
   const [loading, setLoading] = useState(true);
   const [loginMessage, setLoginMessage] = useState('');
@@ -14,34 +15,6 @@ function Community() {
   const itemsPerPage = 10; // 페이지당 항목 수
 
   const navigate = useNavigate();
-  
-  const checkSession = async () => {
-    try {
-      const response = await fetch('http://localhost:8080/checkSession', {
-        credentials: 'include',
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setUser(data.username);
-        setLoginMessage(`${data.username}님, 반갑습니다!`);
-        return true; // 로그인 성공 시 true 반환
-      } else if (response.status === 401) {
-        setUser(null);
-        setLoginMessage('로그인 정보가 없습니다. 다시 로그인 해주세요.');
-        return false; // 로그인 실패 시 false 반환
-      } else {
-        setUser(null);
-        setLoginMessage('세션 확인 중 문제가 발생했습니다.');
-        return false;
-      }
-    } catch (error) {
-      console.error('세션 확인 실패:', error);
-      setUser(null);
-      setLoginMessage('세션 확인 중 오류가 발생했습니다.');
-      return false;
-    }
-  };
 
   const fetchBoards = async () => {
     try {
@@ -63,7 +36,10 @@ function Community() {
   const fetchData = async () => {
     setLoading(true); // 로딩 상태 시작
 
-    await checkSession();
+    const sessionData = await checkSession();
+    setUser(sessionData.loggedIn ? sessionData.username : null);
+    setLoginMessage(sessionData.message || '');
+
     await fetchBoards();
 
     setLoading(false); // 로딩 상태 종료
@@ -103,7 +79,7 @@ function Community() {
     }
   };
 
-  async function handleWriteClick() {
+  const handleWriteClick = async () => {
     if (user) {
       navigate("/community/write");
     } else {
@@ -114,7 +90,7 @@ function Community() {
         alert("로그인 후에 게시글을 작성할 수 있습니다.");
       }
     }
-  }
+  };
 
   //보드들을 역순으로 정렬하고 정렬된걸 페이징함
   const sortedBoards = [...boards].sort((a, b) => new Date(b.createDate) - new Date(a.createDate));
