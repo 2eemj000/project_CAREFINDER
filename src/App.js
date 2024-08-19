@@ -14,6 +14,7 @@ import Qna from './04/Qna.js';
 import QnaWrite from './04/QnaWrite.js';
 import QnaDetail from './04/QnaDetail.js';
 import Footer from './Compo/Footer.js';
+import MyPage from './Compo/MyPage.js';
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
           <Route path="/qna" element={<Qna />} />
           <Route path="/qna/write" element={<QnaWrite />} />
           <Route path="/qna/:id" element={<QnaDetail />} />
+          <Route path="/mypage" element={<MyPage />} />
         </Routes>
       </div>
     </BrowserRouter>

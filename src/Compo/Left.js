@@ -5,15 +5,18 @@ import { useNavigate } from 'react-router-dom';
 import { checkSession } from '../utils/authUtils'; // 유틸리티 함수 가져오기
 import LoginForm from './LoginForm.js'; // 로그인 폼 컴포넌트
 import Signup from './SignUp.js'; // 회원가입 폼 컴포넌트
+import MyPage from './MyPage'; // MyPage 모달 컴포넌트 추가
 
 function NavigationBar() {
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
+  const [showMyPageModal, setShowMyPageModal] = useState(false); // MyPage 모달 상태 추가
   const [loginMessage, setLoginMessage] = useState('');
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
+
 
   // 세션 확인 및 사용자 정보 로딩
   useEffect(() => {
@@ -61,6 +64,16 @@ function NavigationBar() {
       console.error('로그아웃 실패:', error);
       alert('로그아웃 중 오류가 발생했습니다.');
     }
+  };
+
+  // 마이페이지 모달 열기
+  const handleMyPageClick = () => {
+    setShowMyPageModal(true);
+  };
+
+  // 마이페이지 모달 닫기
+  const closeMyPageModal = () => {
+    setShowMyPageModal(false);
   };
 
   return (
@@ -114,14 +127,21 @@ function NavigationBar() {
           ) : (
             <>
               <p2 className="welcome-message"
-              style={{ backgroundColor: 'rgb(43, 116, 181)', color: 'white', fontSize: "0.8rem" }}>{loginMessage}</p2>
-                <button
-                  className="sign-button"
-                  style={{ backgroundColor: 'rgb(43, 116, 181)', color: 'white', fontSize: "0.8rem" }}
-                  onClick={handleLogout}
-                >
-                  로그아웃
-                </button>
+                style={{ backgroundColor: 'rgb(43, 116, 181)', color: 'white', fontSize: "0.8rem" }}>{loginMessage}</p2>
+              <button
+                className="sign-button"
+                style={{ backgroundColor: 'rgb(43, 116, 181)', color: 'white', fontSize: "0.8rem" }}
+                onClick={handleMyPageClick}
+              >
+                마이페이지
+              </button>
+              <button
+                className="sign-button"
+                style={{ backgroundColor: 'rgb(43, 116, 181)', color: 'white', fontSize: "0.8rem" }}
+                onClick={handleLogout}
+              >
+                로그아웃
+              </button>
             </>
           )}
         </div>
@@ -129,6 +149,7 @@ function NavigationBar() {
 
       {showLoginModal && <LoginForm onClose={() => setShowLoginModal(false)} onLoginSuccess={handleLoginSuccess} />}
       {showSignup && <Signup onClose={() => setShowSignup(false)} />}
+      {showMyPageModal && <MyPage onClose={closeMyPageModal} />}
     </div>
   );
 }
