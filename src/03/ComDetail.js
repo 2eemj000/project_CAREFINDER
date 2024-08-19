@@ -289,13 +289,13 @@ const handleDelete = async () => {
         </div>
         <div className="flex justify-between mt-6">
           <button className="action-button comment-button mt-2" onClick={handleCommentSubmit} style={{ fontSize: '0.9rem' }}>
-            댓글 달기
+            댓글 등록
           </button>
           <button className="action-button edit-button" onClick={isEditing ? handleEditSubmit : handleEditToggle} style={{ fontSize: '0.9rem' }}>
-            {isEditing ? '수정 완료' : '수정'}
+            {isEditing ? '수정 완료' : '글 수정하기'}
           </button>
           <button className="action-button delete-button" onClick={handleDelete} style={{ fontSize: '0.9rem' }}>
-            삭제
+            글 삭제
           </button>
           <button className="action-button list-button" onClick={() => navigate("/community")} style={{ fontSize: '0.9rem' }}>
             목록으로
