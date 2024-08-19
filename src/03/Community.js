@@ -72,23 +72,17 @@ function Community() {
   const formatDate = (dateStr) => {
     const dateObj = new Date(dateStr);
     if (isNaN(dateObj.getTime())) {
-      return {
-        date: 'Unknown Date',
-        time: 'Unknown Time'
-      };
+      return 'Unknown Date';
     }
-
+  
+    // YYYY.MM.DD 형식으로 포맷팅
     const formattedDate = dateObj.toLocaleDateString('ko-KR', {
       year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
-    const formattedTime = dateObj.toLocaleTimeString('ko-KR');
-
-    return {
-      date: formattedDate,
-      time: formattedTime
-    };
+      month: '2-digit',
+      day: '2-digit'
+    }).replace(/\. /g, '.').slice(0, -1); // 년.월.일 형식으로 변경
+  
+    return formattedDate;
   };
 
   const handleBoardClick = (boardId) => {
@@ -128,8 +122,8 @@ function Community() {
       <div className="fixed left-0 top-0 w-1/6 h-full z-10">
         <Left />
       </div>
-      <div className="flex-1 ml-[15%] mr-[10%] p-10 z-0" style={{ marginLeft: "250px" }}>
-        <div className="font-bold text-2xl mt-6" style={{ fontSize: '1.2rem' }}>
+      <div className="flex-1 ml-[15%] mr-[10%] p-10 z-0" style={{ marginLeft: "350px" }}>
+        <div className="font-bold text-2xl mt-6" style={{ fontSize: '2rem' }}>
           너도 아파? 나도 아파!
         </div>
         <div className='mt-6'>
@@ -172,7 +166,7 @@ function Community() {
           </thead>
           <tbody>
             {paginatedBoards.map((board, index) => {
-              const { date, time } = formatDate(board.createDate);
+              const date = formatDate(board.createDate);
               // 게시글의 번호를 전체 게시글에서의 순서로 계산
               const boardNumber = sortedBoards.length - (currentPage - 1) * itemsPerPage - index;
               return (
@@ -184,7 +178,6 @@ function Community() {
                   <td className="text-center">{board.member.username}</td>
                   <td className="text-center">
                     <div>{date}</div>
-                    <div>{time}</div>
                   </td>
                 </tr>
               );
