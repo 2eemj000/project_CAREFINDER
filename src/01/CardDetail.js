@@ -69,7 +69,7 @@ export default function CardDetail() {
                 <Left />
             </div>
 
-            <div className="flex-1 ml-[15%] mr-[10%] p-10 z-0"  style={{ marginLeft: "250px"}}>
+            <div className="flex-1 ml-[15%] mr-[10%] p-10 z-0"  style={{ marginLeft: "350px"}}>
                 <div style={{ padding: '20px', fontFamily: 'Roboto, sans-serif', color: '#333' }}>
                     <div style={{ borderBottom: '1px solid #e0e0e0', paddingBottom: '25px', marginBottom: '20px' }}>
                         <h1 className="text-3xl font-bold text-gray-700 mb-2">{cardDetails.name}</h1>
@@ -81,7 +81,7 @@ export default function CardDetail() {
                     <div style={{ borderBottom: '1px solid #e0e0e0', marginBottom: '30px', paddingBottom: '30px' }}>
                         <h2 className="text-xl font-semibold text-gray-700 mb-4">전문의 진료과목</h2>
                         {cardDetails.specialistInfo.split(' ').map((info, index) => (
-                            <span key={index} className="bg-blue-100 text-blue-600 rounded-full px-4 py-2 text-sm font-medium">
+                            <span key={index} className="bg-blue-100 text-blue-600 rounded-full px-4 py-2 text-sm font-medium m-1">
                                 {info}
                             </span>
                         ))}

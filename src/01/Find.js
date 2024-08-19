@@ -158,7 +158,7 @@ export default function Find() {
                                     <button
                                         key={item}
                                         onClick={() => handleSpecialistChange(item)}
-                                        className={`w-full aspect-square border rounded-lg flex flex-col items-center justify-center ${selectedSpecialist.includes(item) ? 'bg-blue-200 text-white font-bold' : 'bg-white text-blue-500'} transition-transform transform hover:scale-105`}
+                                        className={`w-full aspect-square border rounded-lg flex flex-col items-center justify-center ${selectedSpecialist.includes(item) ? 'bg-blue-100 text-white font-bold' : 'bg-white text-blue-500'} transition-transform transform hover:scale-105`}
                                         style={{
                                             width: "135px",
                                             minHeight: "135px",
@@ -188,7 +188,7 @@ export default function Find() {
                                 <button
                                     key={item}
                                     onClick={() => handleOtherChange(item)}
-                                    className={`flex items-center justify-center border rounded-lg ${selectedOther.includes(item) ? 'bg-blue-200 text-black font-bold' : 'bg-white text-black-500'} transition-transform transform hover:scale-105`}
+                                    className={`flex items-center justify-center border rounded-lg ${selectedOther.includes(item) ? 'bg-blue-100 text-black font-bold' : 'bg-white text-black-500'} transition-transform transform hover:scale-105`}
                                     style={{
                                         width: '150px',
                                         height: '50px',
