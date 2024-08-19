@@ -162,6 +162,7 @@ function Community() {
               <th scope="col" className="text-center px-6 py-3">제목</th>
               <th scope="col" className="text-center px-6 py-3">작성자</th>
               <th scope="col" className="text-center px-6 py-3">작성일</th>
+              <th scope="col" className="text-center px-6 py-3">조회수</th> 
             </tr>
           </thead>
           <tbody>
@@ -179,6 +180,7 @@ function Community() {
                   <td className="text-center">
                     <div>{date}</div>
                   </td>
+                  <td className="text-center">{board.cnt}</td> 
                 </tr>
               );
             })}
