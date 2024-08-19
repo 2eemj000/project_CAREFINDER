@@ -174,7 +174,7 @@ function QnaDetail() {
         <Left />
       </div>
       {/* 메인 콘텐츠 영역 */}
-      <div className="flex-1 ml-[15%] mr-[10%] p-10 z-0" style={{ marginLeft: "250px" }}>
+      <div className="flex-1 ml-[15%] mr-[10%] p-10 z-0" style={{ marginLeft: "350px" }}>
         {/* QnA 제목과 내용 표시 */}
         <div className="mt-6">
           <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">

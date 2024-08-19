@@ -63,7 +63,7 @@ function ComWrite() {
       <div className="fixed left-0 top-0 w-1/6 h-full z-10" >
         <Left />
       </div>
-      <div className="flex-1 ml-[15%] mr-[10%] p-10 z-0"  style={{ marginLeft: "250px"}}>
+      <div className="flex-1 ml-[15%] mr-[10%] p-10 z-0"  style={{ marginLeft: "350px"}}>
         <div className="font-bold text-2xl mt-6" style={{ fontSize: '1.2rem' }}>
           게시글 작성
         </div>
