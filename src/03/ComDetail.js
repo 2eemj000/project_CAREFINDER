@@ -21,23 +21,17 @@ function ComDetail() {
   const formatDate = (dateStr) => {
     const dateObj = new Date(dateStr);
     if (isNaN(dateObj.getTime())) {
-      return {
-        date: '알 수 없는 날짜',
-        time: '알 수 없는 시간'
-      };
+      return 'Unknown Date';
     }
-
+  
+    // YYYY.MM.DD 형식으로 포맷팅
     const formattedDate = dateObj.toLocaleDateString('ko-KR', {
       year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
-    const formattedTime = dateObj.toLocaleTimeString('ko-KR');
-
-    return {
-      date: formattedDate,
-      time: formattedTime
-    };
+      month: '2-digit',
+      day: '2-digit'
+    }).replace(/\. /g, '.').slice(0, -1); // 년.월.일 형식으로 변경
+  
+    return formattedDate;
   };
 
   // 데이터 가져오기 함수
@@ -259,15 +253,14 @@ const handleDelete = async () => {
           <tbody>
             {boardRe.length > 0 ? (
               boardRe.map(comment => {
-                const { date, time } = formatDate(comment.createDate);
+                const date = formatDate(board.createDate);
                 return (
                   <tr key={comment.boardReId}>
                     <td className="reply text-center">{comment.username}</td>
                     <td className="pl-3 pr-3">{comment.content}</td>
                     <td className="text-center">
-                      <div>{date}</div>
-                      <div>{time}</div>
-                    </td>
+                    <div>{date}</div>
+                  </td>
                   </tr>
                 );
               })

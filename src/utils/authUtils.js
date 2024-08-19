@@ -1,4 +1,7 @@
 // src/utils/authUtils.js
+import React from 'react';
+import { FaRegSmile } from "react-icons/fa";
+
 export const checkSession = async () => {
     try {
       const response = await fetch('http://localhost:8080/checkSession', {
@@ -12,7 +15,12 @@ export const checkSession = async () => {
           username: data.username,
           email: data.email,
           role: data.role,
-          message: `${data.username}님, 반갑습니다!`,
+          message: (
+            <span style={{ display: 'inline-flex', alignItems: 'center' }}>
+            {data.username}님, 반갑습니다!
+            <FaRegSmile style={{ marginLeft: '0.6rem' }} />
+          </span>
+          )
         };
       } else if (response.status === 401) {
         return {
