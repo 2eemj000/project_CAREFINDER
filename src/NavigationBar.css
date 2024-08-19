@@ -4,7 +4,7 @@
   padding: 0; /* 기본 패딩 제거 */
   margin: 0; /* 기본 마진 제거 */
   height: 100%;
-  width: 200px; /* 고정 너비 설정 */
+  width: 240px; /* 고정 너비 설정 */
   background-color: rgb(43, 116, 181);
   color: white;
   position: fixed; /* 화면에 고정 */
@@ -38,7 +38,7 @@
 }
 
 .nav-list li {
-  font-size: 0.8rem;
+  font-size: 1.0rem;
   margin-bottom: 1rem;
   text-align: left;
   cursor: pointer;
@@ -50,12 +50,12 @@
 }
 
 .nav-list .logo {
-  margin-top: 2rem;
-  margin-bottom: 2rem;
+  margin-top: 3rem;
+  margin-bottom: 3rem;
   width: 10rem;
   display: flex;
   align-items: center;
-  margin-left: 1.3rem;
+  margin-left: 2.5rem;
 }
 
 .nav-list div img {

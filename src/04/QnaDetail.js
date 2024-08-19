@@ -70,7 +70,7 @@ function QnaDetail() {
           qnaReplyId: reply.qnaReplyId,
           content: reply.content,
           createDate: reply.createDate,
-          username: reply.member.username 
+          username: reply.member.username
         })));
       } else {
         console.error('답변 데이터 형식 오류');
@@ -166,12 +166,16 @@ function QnaDetail() {
     return <div>질문을 찾을 수 없습니다.</div>;
   }
 
+
   return (
     <div className="flex flex-col h-screen">
+      {/* Left 컴포넌트가 화면의 왼쪽에 고정 */}
       <div className="fixed left-0 top-0 w-1/6 h-full z-10">
         <Left />
       </div>
-      <div className="flex-1 ml-[15%] mr-[10%] p-10 z-0"  style={{ marginLeft: "250px"}}>
+      {/* 메인 콘텐츠 영역 */}
+      <div className="flex-1 ml-[15%] mr-[10%] p-10 z-0" style={{ marginLeft: "250px" }}>
+        {/* QnA 제목과 내용 표시 */}
         <div className="mt-6">
           <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
@@ -188,41 +192,31 @@ function QnaDetail() {
             </tbody>
           </table>
         </div>
+        {/* 답변 섹션 */}
         <div className="m-3 mt-10 font-bold" style={{ fontSize: '0.9rem' }}> 답변</div>
-        <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-            <tr>
-              <th scope="col" className="text-center px-6 py-3">작성자</th>
-              <th scope="col" className="text-center px-6 py-3">내용</th>
-              <th scope="col" className="text-center px-6 py-3">작성 날짜</th>
-            </tr>
-          </thead>
-          <tbody>
-            {qnaReplies.length > 0 ? (
-              qnaReplies.map(reply => {
-                const { date, time } = formatDate(reply.createDate);
-                return (
-                  <tr key={reply.qnaReplyId}>
-                    <td className="reply text-center">{reply.username}</td>
-                    <td className="pl-3 pr-3">{reply.content}</td>
-                    <td className="text-center">
-                      <div>{date}</div>
-                      <div>{time}</div>
-                    </td>
-                  </tr>
-                );
-              })
-            ) : (
-              <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                <td colSpan="3" className="text-center">답변이 없습니다.</td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+        <div className="space-y-4">
+          {qnaReplies.length > 0 ? (
+            qnaReplies.map(reply => {
+              const { date, time } = formatDate(reply.createDate);
+              return (
+                <div key={reply.qnaReplyId} className="p-4 border border-gray-300 rounded-md bg-gray-50 shadow-sm">
+                  <div className="font-bold text-sm text-gray-700">{reply.username}</div>
+                  <div className="mt-2 text-gray-600">{reply.content}</div>
+                  <div className="mt-2 text-xs text-gray-500">{date} {time}</div>
+                </div>
+              );
+            })
+          ) : (
+            <div className="bg-white p-4 border border-gray-300 rounded-md shadow-sm text-center">
+              답변이 없습니다.
+            </div>
+          )}
+        </div>
+        {/* 답변 작성 및 관리 버튼들 */}
         <div className="mt-6">
           <textarea
             ref={textareaRef}
-            className="w-full p-2 border border-gray-300"
+            className="w-full p-2 border border-gray-300 rounded-md"
             rows="3"
             value={newReply}
             onChange={(e) => setNewReply(e.target.value)}
@@ -231,11 +225,13 @@ function QnaDetail() {
         </div>
         <div className="flex justify-between mt-6">
           <button className="action-button comment-button mt-2" onClick={handleReplySubmit} style={{ fontSize: '0.9rem' }}>
-            답변하기
+            답변 등록하기
           </button>
-          <button className="action-button delete-button" onClick={handleDelete} style={{ fontSize: '0.9rem' }}>
-            삭제하기
-          </button>
+          {userRole === "admin" && (
+            <button className="action-button delete-button" onClick={handleDelete} style={{ fontSize: '0.9rem' }}>
+              글삭제
+            </button>
+          )}
           <button className="action-button list-button" onClick={() => navigate("/qna")} style={{ fontSize: '0.9rem' }}>
             목록으로
           </button>

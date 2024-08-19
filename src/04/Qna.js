@@ -15,14 +15,25 @@ function Qna() {
   const itemsPerPage = 10; // 페이지당 항목 수
   const navigate = useNavigate();
 
-  // QnA 게시글 데이터 가져오기
-  const fetchQnas = async () => {
+   // QnA 게시글 데이터 가져오기
+   const fetchQnas = async () => {
     try {
       const response = await fetch('http://localhost:8080/qna');
 
       if (response.ok) {
         const data = await response.json();
-        setQnas(data);
+        
+        // 각 QnA에 대해 Reply 데이터를 가져와서 결합
+        const qnasWithReplies = await Promise.all(data.map(async (qna) => {
+          const repliesResponse = await fetch(`http://localhost:8080/qna/reply/${qna.qnaId}`);
+          if (repliesResponse.ok) {
+            const replies = await repliesResponse.json();
+            return { ...qna, replies }; // QnA에 Replies를 추가하여 반환
+          }
+          return { ...qna, replies: [] }; // Reply를 못 가져오면 빈 배열로 반환
+        }));
+
+        setQnas(qnasWithReplies);
       } else {
         console.error('게시글 데이터 가져오기 실패:', response.status);
         setErrorMessage('게시글 데이터 가져오기 실패');
@@ -30,6 +41,8 @@ function Qna() {
     } catch (error) {
       console.error('게시글 데이터 가져오기 실패:', error);
       setErrorMessage('게시글 데이터 가져오기 실패');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -102,7 +115,7 @@ function Qna() {
     }
   };
 
-  //페이징 관한 부분
+  // 페이징 관련 부분
   const sortedQnas = [...qnas].sort((a, b) => new Date(b.createDate) - new Date(a.createDate));
   const totalPages = Math.ceil(sortedQnas.length / itemsPerPage);
   const paginatedQnas = sortedQnas.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
@@ -138,23 +151,39 @@ function Qna() {
           </thead>
           <tbody>
             {paginatedQnas.map((qna, index) => {
-               const { date, time } = formatDate(qna.createDate);
-               const qnasNumber = sortedQnas.length - (currentPage - 1) * itemsPerPage - index;
-               return (
-                 <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700" key={qna.qnaId}>
-                   <td className="text-center">{qnasNumber}</td>
-                   <td className="cursor-pointer" onClick={() => handleQnaClick(qna.qnaId)}>
-                     {qna.title}
-                   </td>
-                   <td className="text-center">{qna.member.username}</td>
-                   <td className="text-center">
-                     <div>{date}</div>
-                     <div>{time}</div>
-                  </td>
-                </tr>
+                 const { date, time } = formatDate(qna.createDate);
+                 const qnasNumber = sortedQnas.length - (currentPage - 1) * itemsPerPage - index;
+                
+                 return (
+                  <React.Fragment key={qna.qnaId}>
+                    <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                      <td className="text-center">{qnasNumber}</td>
+                      <td className="cursor-pointer" onClick={() => handleQnaClick(qna.qnaId)}>
+                        {qna.title}
+                      </td>
+                      <td className="text-center">{qna.member.username}</td>
+                      <td className="text-center">
+                        <div>{date}</div>
+                        <div>{time}</div>
+                      </td>
+                    </tr>
+                    {qna.replies.map((reply, replyIndex) => {
+                      const replyDate = formatDate(reply.createDate);
+                      return (
+                        <tr key={`reply-${qna.qnaId}-${replyIndex}`} className="bg-gray-100">
+                          <td colSpan="4" className="text-left pl-6">
+                            <div className="flex items-center">
+                              <span className="text-blue-500 mr-2">→</span>
+                              <strong>답변 : </strong> {reply.content.length > 50 ? `${reply.content.substring(0, 50)}...` : reply.content}
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </React.Fragment>
               );
-            })}
-          </tbody>
+           })}
+         </tbody>
         </table>
         <div className="mt-10 mb-5 flex justify-end w-full">
           <button
