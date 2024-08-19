@@ -125,6 +125,8 @@ function ComDetail() {
         navigate('/community'); // 삭제 후 목록 페이지로 이동
       } else {
         console.error('게시글 삭제 실패');
+        const errorText = await response.text();
+        console.error('서버 응답:', errorText); // 응답 본문 출력
       }
     } catch (error) {
       console.error('게시글 삭제 중 오류 발생:', error);
