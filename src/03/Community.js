@@ -7,6 +7,11 @@ import { checkSession } from '../utils/authUtils'; // 유틸리티 함수 가져
 
 function Community() {
   const [boards, setBoards] = useState([]);
+
+  const [filteredBoards, setFilteredBoards] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchCategory, setSearchCategory] = useState("title"); // 검색 카테고리 상태 추가
+
   const [user, setUser] = useState(null); // 로그인된 사용자 정보를 상태로 저장
   const [loading, setLoading] = useState(true);
   const [loginMessage, setLoginMessage] = useState('');
@@ -35,19 +40,34 @@ function Community() {
 
   const fetchData = async () => {
     setLoading(true); // 로딩 상태 시작
-
     const sessionData = await checkSession();
     setUser(sessionData.loggedIn ? sessionData.username : null);
     setLoginMessage(sessionData.message || '');
-
     await fetchBoards();
-
     setLoading(false); // 로딩 상태 종료
   };
 
   useEffect(() => {
     fetchData();
   }, []);
+
+  useEffect(() => {
+    // 검색어와 검색 카테고리에 따라 필터링
+    const filtered = boards.filter(board => {
+      switch (searchCategory) {
+        case "title":
+          return board.title.toLowerCase().includes(searchTerm.toLowerCase());
+        case "author":
+          return board.member.username.toLowerCase().includes(searchTerm.toLowerCase());
+        case "content":
+          return board.content.toLowerCase().includes(searchTerm.toLowerCase());
+        default:
+          return board.title.toLowerCase().includes(searchTerm.toLowerCase());
+      }
+    });
+    setFilteredBoards(filtered);
+    setCurrentPage(1);
+  }, [searchTerm, searchCategory, boards]);
 
   const formatDate = (dateStr) => {
     const dateObj = new Date(dateStr);
@@ -93,7 +113,7 @@ function Community() {
   };
 
   //보드들을 역순으로 정렬하고 정렬된걸 페이징함
-  const sortedBoards = [...boards].sort((a, b) => new Date(b.createDate) - new Date(a.createDate));
+  const sortedBoards = [...filteredBoards].sort((a, b) => new Date(b.createDate) - new Date(a.createDate));
   const totalPages = Math.ceil(sortedBoards.length / itemsPerPage);
   const paginatedBoards = sortedBoards.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
@@ -108,7 +128,7 @@ function Community() {
       <div className="fixed left-0 top-0 w-1/6 h-full z-10">
         <Left />
       </div>
-      <div className="flex-1 ml-[15%] mr-[10%] p-10 z-0"  style={{ marginLeft: "250px"}}>
+      <div className="flex-1 ml-[15%] mr-[10%] p-10 z-0" style={{ marginLeft: "250px" }}>
         <div className="font-bold text-2xl mt-6" style={{ fontSize: '1.2rem' }}>
           너도 아파? 나도 아파!
         </div>
@@ -117,6 +137,30 @@ function Community() {
           <h1 style={{ fontSize: '0.9rem' }}>- 로그인 후, 게시글을 작성할 수 있습니다.</h1>
           <h1 style={{ fontSize: '0.9rem' }}>- 게시글의 작성자 본인 및 관리자만 해당 게시글을 수정 및 삭제할 수 있습니다.</h1>
         </div>
+
+        {/* 검색 카테고리 셀렉트 박스 추가 */}
+        <div className="mb-4 flex justify-end space-x-2 items-center">
+          <select
+            value={searchCategory}
+            onChange={(e) => setSearchCategory(e.target.value)}
+            className="p-1 text-sm border border-gray-300 rounded-md"
+            style={{ width: '120px' }} // 셀렉트 박스의 너비 조정
+          >
+            <option value="title">제목</option>
+            <option value="author">작성자</option>
+            <option value="content">내용</option>
+          </select>
+
+          <input
+            type="text"
+            placeholder="검색어를 입력하세요"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="p-1 text-sm border border-gray-300 rounded-md"
+            style={{ width: '200px' }} // 입력 필드의 너비 조정
+          />
+        </div>
+
         <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
