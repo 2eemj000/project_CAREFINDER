@@ -18,7 +18,6 @@ export default function Signup({ onClose }) {
       ...prevState,
       [name]: value
     }));
-    // Optionally clear errors as user types
     if (errors[name]) {
       setErrors(prevErrors => ({
         ...prevErrors,
@@ -31,7 +30,7 @@ export default function Signup({ onClose }) {
     let errorMsg = null;
     switch (name) {
       case 'name':
-        if (!value) errorMsg = '이름을 입력하세요.';
+        if (!value) errorMsg = '닉네임을 입력하세요.';
         break;
       case 'email':
         if (!value.includes('@')) errorMsg = '유효한 이메일 주소를 입력하세요.';
@@ -69,6 +68,27 @@ export default function Signup({ onClose }) {
     }
   };
 
+  const checkUsernameExists = async (username) => {
+    try {
+      const response = await fetch(`http://localhost:8080/signup/check-username?username=${encodeURIComponent(username)}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        return data.exists; // Assume the server returns { exists: true } or { exists: false }
+      } else {
+        throw new Error('닉네임 중복 확인 실패');
+      }
+    } catch (error) {
+      console.error('닉네임 중복 확인 실패:', error);
+      alert('닉네임 중복 확인 실패');
+      return false;
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -93,6 +113,13 @@ export default function Signup({ onClose }) {
       return;
     }
 
+    // Check if nickname already exists
+    const usernameExists = await checkUsernameExists(formData.name);
+    if (usernameExists) {
+      alert('이미 사용 중인 닉네임입니다.');
+      return;
+    }
+
     try {
       const response = await fetch('http://localhost:8080/signup', {
         method: 'POST',
@@ -102,7 +129,7 @@ export default function Signup({ onClose }) {
         body: JSON.stringify({
           username: formData.name, // Use name as username
           password: formData.password, // Directly use password
-          email:formData.email,
+          email: formData.email,
           role: 'member' // Default role
         }),
       });
@@ -135,7 +162,7 @@ export default function Signup({ onClose }) {
                 <img src={logoImage} alt="Logo" className="logo-image" />
               </div>
               <div>
-                <label className="text-gray-800 block mb-1">이름</label>
+                <label className="text-gray-800 block mb-1">닉네임</label>
                 <input
                   name="name"
                   type="text"
@@ -187,7 +214,7 @@ export default function Signup({ onClose }) {
                   checked={isChecked}
                   onChange={(e) => setIsChecked(e.target.checked)}
                 />
-                <label htmlFor="remember-me" className="ml-3 block" style={{ fontSize: '0.8rem'}}>
+                <label htmlFor="remember-me" className="ml-3 block" style={{ fontSize: '0.8rem' }}>
                   CAREFINDER의 개인정보 수집 및 이용에 동의합니다.
                 </label>
               </div>

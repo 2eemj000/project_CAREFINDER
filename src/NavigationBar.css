@@ -21,6 +21,7 @@
   padding: 1rem; /* 여백 추가 */
   width: 100%; /* 너비를 100%로 설정하여 nav-list에 맞추기 */
   text-align: center; /* 버튼 텍스트 중앙 정렬 */
+  align-items: center;
 }
 
 .sign-button {
