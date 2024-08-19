@@ -1,30 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import '../NavigationBar.css';
 import logo from '../Img/Logo-white.png';
-import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
-import Find from '../01/Find.js';
-import CardDetail from '../01/CardDetail.js';
-import Health from '../02/Health.js';
-import Community from '../03/Community.js';
-import Qna from '../04/Qna.js';
-import MainApp from '../App.js';
+import { useNavigate } from 'react-router-dom';
+import { checkSession } from '../utils/authUtils'; // 유틸리티 함수 가져오기
 import LoginForm from './LoginForm.js'; // 로그인 폼 컴포넌트
 import Signup from './SignUp.js'; // 회원가입 폼 컴포넌트
-
-function App() {
-  return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<MainApp />} />
-        <Route path="/find" element={<Find />} />
-        <Route path="/find/card/:cardId" element={<CardDetail />} />
-        <Route path="/health" element={<Health />} />
-        <Route path="/community" element={<Community />} />
-        <Route path="/qna" element={<Qna />} />
-      </Routes>
-    </BrowserRouter>
-  );
-}
 
 function NavigationBar() {
   const navigate = useNavigate();
@@ -37,58 +17,24 @@ function NavigationBar() {
 
   // 세션 확인 및 사용자 정보 로딩
   useEffect(() => {
-    const checkSession = async () => {
-      try {
-        const response = await fetch('http://localhost:8080/checkSession', {
-          credentials: 'include', // 세션 쿠키를 포함
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          setIsLoggedIn(true);
-          setUsername(data.username);
-          setEmail(data.email);
-          setLoginMessage(`${data.username}님, 반갑습니다!`);
-        } else if (response.status === 401) {
-          setIsLoggedIn(false);
-          setLoginMessage('로그인 정보가 없습니다. 다시 로그인 해주세요.');
-        } else {
-          setIsLoggedIn(false);
-          setLoginMessage('세션 확인 중 문제가 발생했습니다.');
-        }
-      } catch (error) {
-        console.error('세션 확인 실패:', error);
-        setIsLoggedIn(false);
-        setLoginMessage('세션 확인 중 오류가 발생했습니다.');
-      }
+    const checkUserSession = async () => {
+      const sessionData = await checkSession();
+      setIsLoggedIn(sessionData.loggedIn);
+      setUsername(sessionData.username || '');
+      setEmail(sessionData.email || '');
+      setLoginMessage(sessionData.message || '');
     };
 
-    checkSession();
+    checkUserSession();
   }, []); // 빈 배열: 컴포넌트 마운트 시에만 실행
 
   // 로그인 성공 후 사용자 정보 가져오기
   const handleLoginSuccess = async () => {
-    setIsLoggedIn(true);
-
-    try {
-      const response = await fetch('http://localhost:8080/checkSession', {
-        credentials: 'include',
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setUsername(data.username);
-        setEmail(data.email);
-        setLoginMessage(`${data.username}님, 반갑습니다!`);
-      } else {
-        setIsLoggedIn(false);
-        setLoginMessage('로그인 정보가 없습니다. 다시 로그인 해주세요.');
-      }
-    } catch (error) {
-      console.error('세션 확인 실패:', error);
-      setIsLoggedIn(false);
-      setLoginMessage('세션 확인 중 오류가 발생했습니다.');
-    }
+    const sessionData = await checkSession();
+    setIsLoggedIn(sessionData.loggedIn);
+    setUsername(sessionData.username || '');
+    setEmail(sessionData.email || '');
+    setLoginMessage(sessionData.message || '');
 
     setShowLoginModal(false);
   };

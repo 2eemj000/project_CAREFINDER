@@ -1,35 +1,61 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Left from '../Compo/Left';
 import './comwrite.css';
 import Footer from '../Compo/Footer.js';
+import { checkSession } from '../utils/authUtils'; // 유틸리티 함수 가져오기
 
 function ComWrite() {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태를 관리하는 상태
   const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
+  // 세션 확인 및 로그인 상태 설정
+  useEffect(() => {
+    const verifySession = async () => {
+      const sessionData = await checkSession();
+      setIsLoggedIn(sessionData.loggedIn);
+      if (!sessionData.loggedIn) {
+        alert(sessionData.message || '로그인 후에 게시글을 작성할 수 있습니다.');
+        navigate('/'); // 로그인 페이지로 리다이렉트
+      }
+    };
+
+    verifySession();
+  }, [navigate]);
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
-    fetch('http://localhost:8080/community/write', {
-      credentials: 'include',
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        "title": title,
-        "content": content
-      })
-    })
-    //.then(response => response.json())
-    .then(() => {
-      navigate('/community');
-    })
-    .catch(error => {
-      console.error('Error:', error);
-    });
+    if (!isLoggedIn) {
+      alert('로그인 후에 게시글을 작성할 수 있습니다.');
+      return;
+    }
+
+    try {
+      const response = await fetch('http://localhost:8080/community/write', {
+        credentials: 'include',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          title,
+          content,
+        }),
+      });
+
+      if (response.ok) {
+        navigate('/community');
+      } else {
+        console.error('게시글 등록 실패:', response.status);
+        alert('게시글 등록에 실패했습니다.');
+      }
+    } catch (error) {
+      console.error('게시글 등록 실패:', error);
+      alert('게시글 등록 중 오류가 발생했습니다.');
+    }
   };
 
   return (
@@ -71,7 +97,7 @@ function ComWrite() {
           </div>
         </form>
       </div>
-      <Footer/>
+      <Footer />
     </div>
   );
 }
