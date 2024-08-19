@@ -5,13 +5,16 @@ import './community.css';
 import Footer from '../Compo/Footer.js';
 
 function Community() {
-  const [boards, setBoards] = useState([]);
+  const [boards, setBoards] = useState([]); //이거는 정렬 안한, 상태 관리를 위한 '원본' 게시글 관리 상태 변수
   const [user, setUser] = useState(null); // 로그인된 사용자 정보를 상태로 저장
   const [loading, setLoading] = useState(true);
   const [loginMessage, setLoginMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState(''); // 에러 메시지 상태 추가
-  const navigate = useNavigate();
+  const [currentPage, setCurrentPage] = useState(1); // 현재 페이지 상태
+  const itemsPerPage = 10; // 페이지당 항목 수
 
+  const navigate = useNavigate();
+  
   const checkSession = async () => {
     try {
       const response = await fetch('http://localhost:8080/checkSession', {
@@ -113,6 +116,17 @@ function Community() {
     }
   }
 
+  //보드들을 역순으로 정렬하고 정렬된걸 페이징함
+  const sortedBoards = [...boards].sort((a, b) => new Date(b.createDate) - new Date(a.createDate));
+  const totalPages = Math.ceil(sortedBoards.length / itemsPerPage);
+  const paginatedBoards = sortedBoards.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+
+  const handlePageChange = (pageNumber) => {
+    if (pageNumber > 0 && pageNumber <= totalPages) {
+      setCurrentPage(pageNumber);
+    }
+  };
+
   return (
     <div className="flex flex-col h-screen">
       <div className="fixed left-0 top-0 w-1/6 h-full z-10">
@@ -137,11 +151,13 @@ function Community() {
             </tr>
           </thead>
           <tbody>
-            {boards.map((board, index) => {
+            {paginatedBoards.map((board, index) => {
               const { date, time } = formatDate(board.createDate);
+              // 게시글의 번호를 전체 게시글에서의 순서로 계산
+              const boardNumber = sortedBoards.length - (currentPage - 1) * itemsPerPage - index;
               return (
                 <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700" key={board.boardId}>
-                  <td className="text-center">{index + 1}</td>
+                  <td className="text-center">{boardNumber}</td>
                   <td className="cursor-pointer" onClick={() => handleBoardClick(board.boardId)}>
                     {board.title}
                   </td>
@@ -182,8 +198,34 @@ function Community() {
             글쓰기
           </button>
         </div>
+        {/* Pagination Controls */}
+        <div className="flex justify-center mt-4 space-x-2">
+          <button
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+            className={`px-4 py-2 text-sm font-medium ${currentPage === 1 ? 'text-gray-400 cursor-not-allowed' : 'text-blue-500 hover:underline'}`}
+          >
+            Previous
+          </button>
+          {[...Array(totalPages)].map((_, index) => (
+            <button
+              key={index + 1}
+              onClick={() => handlePageChange(index + 1)}
+              className={`px-4 py-2 text-sm font-medium ${currentPage === index + 1 ? 'text-blue-500 underline' : 'text-gray-500 hover:underline'}`}
+            >
+              {index + 1}
+            </button>
+          ))}
+          <button
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+            className={`px-4 py-2 text-sm font-medium ${currentPage === totalPages ? 'text-gray-400 cursor-not-allowed' : 'text-blue-500 hover:underline'}`}
+          >
+            Next
+          </button>
+        </div>
       </div>
-      <Footer/>
+      <Footer />
     </div>
   );
 }

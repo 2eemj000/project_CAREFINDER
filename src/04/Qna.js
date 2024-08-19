@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Left from '../Compo/Left';
-import './qna.css'; 
+import './qna.css';
 import Footer from '../Compo/Footer.js';
 
 function Qna() {
@@ -10,6 +10,9 @@ function Qna() {
   const [loading, setLoading] = useState(true);
   const [loginMessage, setLoginMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState(''); // 에러 메시지 상태 추가
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 10; // 페이지당 항목 수
+
   const navigate = useNavigate();
 
   const checkSession = async () => {
@@ -94,7 +97,7 @@ function Qna() {
 
   const handleQnaClick = (qnaId) => {
     if (qnaId) {
-      navigate(`/qna/${qnaId}`); 
+      navigate(`/qna/${qnaId}`);
     } else {
       console.error('Invalid qna ID');
     }
@@ -112,6 +115,18 @@ function Qna() {
       }
     }
   }
+
+  //페이징 관한 부분
+  const sortedQnas = [...qnas].sort((a, b) => new Date(b.createDate) - new Date(a.createDate));
+  const totalPages = Math.ceil(sortedQnas.length / itemsPerPage);
+  const paginatedQnas = sortedQnas.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+
+  const handlePageChange = (pageNumber) => {
+    if (pageNumber > 0 && pageNumber <= totalPages) {
+      setCurrentPage(pageNumber);
+    }
+  };
+
 
   return (
     <div className="flex flex-col h-screen">
@@ -137,18 +152,19 @@ function Qna() {
             </tr>
           </thead>
           <tbody>
-            {qnas.map((qna, index) => {
-              const { date, time } = formatDate(qna.createDate);
-              return (
-                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700" key={qna.qnaId}>
-                  <td className="text-center">{index + 1}</td>
-                  <td className="cursor-pointer" onClick={() => handleQnaClick(qna.qnaId)}>
-                    {qna.title}
-                  </td>
-                  <td className="text-center">{qna.member.username}</td>
-                  <td className="text-center">
-                    <div>{date}</div>
-                    <div>{time}</div>
+            {paginatedQnas.map((qna, index) => {
+               const { date, time } = formatDate(qna.createDate);
+               const qnasNumber = sortedQnas.length - (currentPage - 1) * itemsPerPage - index;
+               return (
+                 <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700" key={qna.qnaId}>
+                   <td className="text-center">{qnasNumber}</td>
+                   <td className="cursor-pointer" onClick={() => handleQnaClick(qna.qnaId)}>
+                     {qna.title}
+                   </td>
+                   <td className="text-center">{qna.member.username}</td>
+                   <td className="text-center">
+                     <div>{date}</div>
+                     <div>{time}</div>
                   </td>
                 </tr>
               );
@@ -182,8 +198,34 @@ function Qna() {
             질문하기
           </button>
         </div>
+                {/* Pagination Controls */}
+                <div className="flex justify-center mt-4 space-x-2">
+          <button
+            onClick={() => handlePageChange(currentPage - 1)}
+            disabled={currentPage === 1}
+            className={`px-4 py-2 text-sm font-medium ${currentPage === 1 ? 'text-gray-400 cursor-not-allowed' : 'text-blue-500 hover:underline'}`}
+          >
+            Previous
+          </button>
+          {[...Array(totalPages)].map((_, index) => (
+            <button
+              key={index + 1}
+              onClick={() => handlePageChange(index + 1)}
+              className={`px-4 py-2 text-sm font-medium ${currentPage === index + 1 ? 'text-blue-500 underline' : 'text-gray-500 hover:underline'}`}
+            >
+              {index + 1}
+            </button>
+          ))}
+          <button
+            onClick={() => handlePageChange(currentPage + 1)}
+            disabled={currentPage === totalPages}
+            className={`px-4 py-2 text-sm font-medium ${currentPage === totalPages ? 'text-gray-400 cursor-not-allowed' : 'text-blue-500 hover:underline'}`}
+          >
+            Next
+          </button>
+        </div>
       </div>
-      <Footer/>
+      <Footer />
     </div>
   );
 }
