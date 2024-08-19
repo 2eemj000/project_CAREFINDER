@@ -18,7 +18,7 @@ import Footer from './Compo/Footer.js';
 function App() {
   return (
     <BrowserRouter>
-      <div className='app-container' style={{ marginLeft: '100px', padding: '1rem', flex: '1' }}>
+      <div className='app-container'>
         <Routes>
           <Route path="/" element={<MainApp />} />
           <Route path="/find" element={<Find />} />
