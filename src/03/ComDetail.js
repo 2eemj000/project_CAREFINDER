@@ -85,119 +85,132 @@ function ComDetail() {
     fetchData();
   }, [id]);
 
-  // 게시글 삭제 함수
-  const handleDelete = async () => {
-    if (!user) {
-      alert("로그인이 필요합니다.");
-      return;
-    }
-
-    if (user !== author) {
-      alert("해당 게시글의 작성자만 게시글 삭제가 가능합니다.");
-      return;
-    }
-
-    try {
-      const response = await fetch(`http://localhost:8080/community/${id}`, {
-        method: 'DELETE',
-        credentials: 'include',
-      });
-      if (response.ok) {
-        navigate('/community');
-      } else {
-        console.error('게시글 삭제 실패');
-        const errorText = await response.text();
-        console.error('서버 응답:', errorText);
-      }
-    } catch (error) {
-      console.error('게시글 삭제 중 오류 발생:', error);
-    }
-  };
-
   // 댓글 작성 함수
-  const handleCommentSubmit = async () => {
-    if (!user) {
-      alert("로그인이 필요합니다.");
-      return;
-    }
+const handleCommentSubmit = async () => {
+  const sessionData = await checkSession(); // 최신 로그인 정보 가져오기
+  setUser(sessionData.loggedIn ? sessionData.username : null);
 
-    if (newComment.trim() === "") {
-      alert("댓글 내용을 입력해주세요.");
-      return;
-    }
+  if (!sessionData.loggedIn) {
+    alert("로그인이 필요합니다.");
+    return;
+  }
 
-    try {
-      const response = await fetch(`http://localhost:8080/community/reply/write/${id}`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ content: newComment }),
-        credentials: 'include',
-      });
+  if (newComment.trim() === "") {
+    alert("댓글 내용을 입력해주세요.");
+    return;
+  }
 
-      if (response.ok) {
-        setNewComment("");
-        await fetchData(); // 최신 상태를 가져오기 위해 전체 데이터 갱신
-      } else {
-        console.error('댓글 작성 실패');
-      }
-    } catch (error) {
-      console.error('댓글 작성 중 오류 발생:', error);
-    }
-  };
+  try {
+    const response = await fetch(`http://localhost:8080/community/reply/write/${id}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ content: newComment }),
+      credentials: 'include',
+    });
 
-  // 수정 모드 토글 함수
-  const handleEditToggle = () => {
-    if (!user) {
-      alert("로그인이 필요합니다.");
-      return;
-    }
-
-    if (user === author) {
-      setIsEditing(!isEditing);
-      if (!isEditing) {
-        setTimeout(() => {
-          textareaRef.current?.focus();
-        }, 0);
-      }
+    if (response.ok) {
+      setNewComment("");
+      await fetchData(); // 최신 상태를 가져오기 위해 전체 데이터 갱신
     } else {
-      alert("해당 게시글의 작성자만 게시글 수정이 가능합니다.");
+      console.error('댓글 작성 실패');
     }
-  };
+  } catch (error) {
+    console.error('댓글 작성 중 오류 발생:', error);
+  }
+};
 
-  // 게시글 수정 함수
-  const handleEditSubmit = async () => {
-    if (!user) {
-      alert("로그인이 필요합니다.");
-      return;
-    }
+// 수정 모드 토글 함수
+const handleEditToggle = async () => {
+  const sessionData = await checkSession(); // 최신 로그인 정보 가져오기
+  setUser(sessionData.loggedIn ? sessionData.username : null);
 
-    if (user !== author) {
-      alert("해당 게시글의 작성자만 게시글 수정이 가능합니다.");
-      return;
-    }
+  if (!sessionData.loggedIn) {
+    alert("로그인이 필요합니다.");
+    return;
+  }
 
-    if (editedContent.trim() === "") {
-      alert("내용을 입력해주세요.");
-      return;
+  if (sessionData.username === author) {
+    setIsEditing(!isEditing);
+    if (!isEditing) {
+      setTimeout(() => {
+        textareaRef.current?.focus();
+      }, 0);
     }
+  } else {
+    alert("해당 게시글의 작성자만 게시글 수정이 가능합니다.");
+  }
+};
 
-    try {
-      const response = await fetch(`http://localhost:8080/community/${id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ content: editedContent }),
-        credentials: 'include',
-      });
-      if (response.ok) {
-        setIsEditing(false);
-        setBoard(prevBoard => ({ ...prevBoard, content: editedContent }));
-      } else {
-        console.error('게시글 수정 실패');
-      }
-    } catch (error) {
-      console.error('게시글 수정 중 오류 발생:', error);
+// 게시글 수정 함수
+const handleEditSubmit = async () => {
+  const sessionData = await checkSession(); // 최신 로그인 정보 가져오기
+  setUser(sessionData.loggedIn ? sessionData.username : null);
+
+  if (!sessionData.loggedIn) {
+    alert("로그인이 필요합니다.");
+    return;
+  }
+
+  if (sessionData.username !== author) {
+    alert("해당 게시글의 작성자만 게시글 수정이 가능합니다.");
+    return;
+  }
+
+  if (editedContent.trim() === "") {
+    alert("내용을 입력해주세요.");
+    return;
+  }
+
+  try {
+    const response = await fetch(`http://localhost:8080/community/${id}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ content: editedContent }),
+      credentials: 'include',
+    });
+    if (response.ok) {
+      setIsEditing(false);
+      setBoard(prevBoard => ({ ...prevBoard, content: editedContent }));
+    } else {
+      console.error('게시글 수정 실패');
     }
-  };
+  } catch (error) {
+    console.error('게시글 수정 중 오류 발생:', error);
+  }
+};
+
+// 게시글 삭제 함수
+const handleDelete = async () => {
+  const sessionData = await checkSession(); // 최신 로그인 정보 가져오기
+  setUser(sessionData.loggedIn ? sessionData.username : null);
+
+  if (!sessionData.loggedIn) {
+    alert("로그인이 필요합니다.");
+    return;
+  }
+
+  if (sessionData.username !== author) {
+    alert("해당 게시글의 작성자만 게시글 삭제가 가능합니다.");
+    return;
+  }
+
+  try {
+    const response = await fetch(`http://localhost:8080/community/${id}`, {
+      method: 'DELETE',
+      credentials: 'include',
+    });
+    if (response.ok) {
+      navigate('/community');
+    } else {
+      console.error('게시글 삭제 실패');
+      const errorText = await response.text();
+      console.error('서버 응답:', errorText);
+    }
+  } catch (error) {
+    console.error('게시글 삭제 중 오류 발생:', error);
+  }
+};
+
 
   if (!board) {
     return <div>로딩 중...</div>;

@@ -88,12 +88,16 @@ function QnaDetail() {
 
   // 질문 삭제 함수
   const handleDelete = async () => {
-    if (!user) {
+    const sessionData = await checkSession(); // 최신 로그인 정보 가져오기
+    setUser(sessionData.loggedIn ? sessionData.username : null);
+    setUserRole(sessionData.loggedIn ? sessionData.role : null);
+
+    if (!sessionData.loggedIn) {
       alert("로그인이 필요합니다.");
       return;
     }
 
-    if (userRole !== "admin") {
+    if (sessionData.role !== "admin") {
       alert("관리자만 게시글을 삭제할 수 있습니다.");
       return;
     }
@@ -115,12 +119,16 @@ function QnaDetail() {
 
   // 답변 작성 함수
   const handleReplySubmit = async () => {
-    if (!user) {
+    const sessionData = await checkSession(); // 최신 로그인 정보 가져오기
+    setUser(sessionData.loggedIn ? sessionData.username : null);
+    setUserRole(sessionData.loggedIn ? sessionData.role : null);
+
+    if (!sessionData.loggedIn) {
       alert("로그인이 필요합니다.");
       return;
     }
 
-    if (userRole !== "admin") {
+    if (sessionData.role !== "admin") {
       alert("관리자만 질문에 답변할 수 있습니다.");
       return;
     }
