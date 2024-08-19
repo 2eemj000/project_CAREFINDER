@@ -39,7 +39,7 @@ function ComDetail() {
     };
   };
 
-  // 세션 확인 함수
+  // fetchSession 함수에서 user 정보가 올바르게 설정되었는지 확인하는 부분 추가
   const fetchSession = async () => {
     try {
       const response = await fetch('http://localhost:8080/checkSession', {
@@ -49,6 +49,7 @@ function ComDetail() {
       if (response.ok) {
         const data = await response.json();
         setUser(data.username); // 세션 정보에서 사용자 이름을 가져옴
+        console.log("Logged in user:", data.username); // 로그인된 사용자 정보 확인
       } else {
         setUser(null);
       }
@@ -70,7 +71,14 @@ function ComDetail() {
       const boardData = await boardResponse.json();
       setBoard(boardData);
       setEditedContent(boardData.content);
-      setAuthor(boardData.username); // 게시글 작성자 정보 저장
+
+      // member 안의 username에 접근
+      if (boardData.member && boardData.member.username) {
+        setAuthor(boardData.member.username); // 게시글 작성자 정보 저장
+        console.log("Author of the post:", boardData.member.username);
+      } else {
+        console.error('작성자 정보가 없습니다.');
+      }
 
       const commentsResponse = await fetch(`http://localhost:8080/community/reply/${id}`);
       if (!commentsResponse.ok) {
@@ -162,6 +170,9 @@ function ComDetail() {
       alert("로그인이 필요합니다.");
       return;
     }
+
+    console.log("User trying to edit:", user);
+    console.log("Author of the post:", author);
 
     if (user === author) {
       setIsEditing(!isEditing);
