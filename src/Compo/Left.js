@@ -102,17 +102,17 @@ function NavigationBar() {
           Q & A
         </li>
         {/* 로그인 및 회원가입 버튼 추가 */}
-        <div className="auth-buttons">
+        <div className="buttons">
           {!isLoggedIn ? (
             <>
               <button
-                className="sign-button"
+                className="left-button"
                 onClick={() => setShowLoginModal(true)}
               >
                 로그인
               </button>
               <button
-                className="sign-button"
+                className="left-button"
                 onClick={() => setShowSignup(true)}
               >
                 회원가입
@@ -122,13 +122,13 @@ function NavigationBar() {
             <>
               <p2 className="welcome-message">{loginMessage}</p2>
               <button
-                className="sign-button"
+                className="left-button"
                 onClick={handleMyPageClick}
               >
                 마이페이지
               </button>
               <button
-                className="sign-button"
+                className="left-button"
                 onClick={handleLogout}
               >
                 로그아웃

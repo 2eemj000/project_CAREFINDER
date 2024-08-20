@@ -5,7 +5,7 @@
   margin: 0; 
   height: 100%;
   width: 240px; 
-  background-color: rgb(43, 116, 181);
+  background-color: rgb(54, 126, 190);
   color: white;
   position: fixed; /* 화면에 고정 */
   top: 0; /* 상단에 고정 */
@@ -16,7 +16,7 @@
 }
 
 /* 버튼을 고정된 너비로 설정 */
-.auth-buttons {
+.buttons {
   margin-top: auto; /* 버튼을 하단으로 이동 */
   padding: 2rem; 
   width: 100%;
@@ -26,8 +26,8 @@
   align-items: center;
 }
 
-.sign-button {
-  font-size: 0.8rem; /* 글자 크기 줄이기 */
+.left-button {
+  font-size: 0.8rem;
   color: white !important;
   cursor: pointer;
   width: 150px;
@@ -40,10 +40,9 @@
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* hover 효과 */
-.sign-button:hover {
-  background-color: white !important; /* 흰색 배경 */
-  color: rgb(43, 116, 181) !important; /* 글씨 색상 변경 */
+.left-button:hover {
+  background-color: white !important; 
+  color: rgb(43, 116, 181) !important;
 }
 
 .welcome-message {
@@ -58,7 +57,6 @@
   text-align: left;
   cursor: pointer;
   padding: 10px; 
-  border-bottom: 1px solid #ddd;
   display: block; /* 전체 너비 차지 */
   transition: background-color 0.3s ease, color 0.3s ease;
   margin-left: 1rem;
@@ -86,6 +84,6 @@
 }
 
 .nav-list li:hover {
-  background-color: #87c1f1; /* 하늘색 배경 */
+  background-color: #37668d; /* 하늘색 배경 */
   font-weight: bold; /* 텍스트 두껍게 */
 }  
