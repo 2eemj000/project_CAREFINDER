@@ -223,7 +223,7 @@ function QnaDetail() {
             placeholder="답변을 작성하세요."
           />
         </div>
-        <div className="flex justify-between mt-6">
+        <div className="flex justify-between mt-6 w-">
           {userRole === "admin" && (
           <button className="action-button comment-button mt-2" onClick={handleReplySubmit} style={{ fontSize: '0.9rem' }}>
             답변 등록하기
