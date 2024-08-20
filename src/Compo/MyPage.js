@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { checkSession } from '../utils/authUtils'; // 세션 확인 유틸리티
 import Left from './Left.js';
+import { FaHeart } from 'react-icons/fa';
+import { PiPhoneCallBold } from "react-icons/pi";
 
 function MyPage({ onClose }) {
   const [userInfo, setUserInfo] = useState({ username: '', email: '' });
@@ -67,39 +69,49 @@ function MyPage({ onClose }) {
     return formattedDate;
   };
 
+  const handleRemoveFavorite = (id) => {
+    const updatedFavorites = favoriteHospitals.filter(hospital => hospital.id !== id);
+    setFavoriteHospitals(updatedFavorites);
+    localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
+  };
 
   return (
-    <div className="flex flex-col h-screen bg-gray-100">
-      <div className="fixed left-0 top-0 w-1/6 h-fullshadow-md">
+    <div className="flex flex-col h-screen">
+      <div className="fixed left-0 top-0 w-1/6 h-full" style={{ borderRight: 'none' }}>
         <Left />
       </div>
-      <div className="flex-1 ml-[15%] mr-[10%] p-10 z-0" style={{ marginLeft: "350px" }}>
-        <h1 className="font-bold text-2xl mt-6 mb-10" style={{ fontSize: '2rem', color: "rgb(32, 49, 59)" }}>MyPage</h1>
-        <div className="p-6 bg-white shadow-lg rounded-lg border border-gray-200 mb-8">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-2">
+      <div className="flex-1 ml-[30%] mr-[15%] p-10 z-0" style={{ marginLeft: "350px" }}>
+        <div className="p-6 bg-white rounded-lg border border-gray-200 mb-8">
+          <h2 className="text-xl font-semibold text-gray-800 mb-2">
             {userInfo ? `안녕하세요, ${userInfo.username}님!` : 'Loading...'}
           </h2>
-          <p className="text-gray-600 text-lg">
+          <p className="text-gray-600">
             {userInfo ? `${userInfo.email}` : 'Loading...'}
           </p>
         </div>
         
         {/* 내가 찜한 병원 보기 섹션 추가 */}
-        <div className="bg-white shadow-md rounded-lg p-6 mb-8">
+        <div className="bg-white rounded-lg p-6 mb-8">
           <h3 className="font-bold mb-6" style={{ fontSize: '1.5rem', color: "rgb(32, 49, 59)" }}>내가 찜한 병원</h3>
           {favoriteHospitals.length > 0 ? (
             <ul className="space-y-3">
               {favoriteHospitals.map(hospital => (
-                <li key={hospital.id} className="p-4 bg-gray-100 rounded-lg shadow-sm border border-gray-300 hover:bg-gray-200 transition-colors">
+                <li key={hospital.id} className="relative p-4 bg-gray-100 rounded-lg shadow-sm border border-gray-300 hover:bg-gray-200 transition-colors">
                   <Link to={`/find/card/${hospital.id}`} className="block text-blue-600 hover:underline">
                     {hospital.name}
                   </Link>
-                  <div className="text-gray-500 text-sm">
+                  <div className="flex items-center mt-2 text-gray-500 text-sm">
+                    <PiPhoneCallBold className="mr-2 text-blue-500" />
                     {hospital.phone}
                   </div>
-                  <div className="text-gray-500 text-sm">
-                    간호등급: {hospital.level}
-                  </div>
+                  <button
+                    onClick={() => handleRemoveFavorite(hospital.id)}
+                    className="absolute top-2 right-2 p-1 rounded-full bg-gray-200 hover:bg-gray-300"
+                  >
+                    {favoriteHospitals.some(h => h.id === hospital.id) && (
+                      <FaHeart className="text-lg text-red-400" />
+                    )}
+                  </button>
                 </li>
               ))}
             </ul>
@@ -109,7 +121,7 @@ function MyPage({ onClose }) {
         </div>
 
         {/* 내가 작성한 글 보기 섹션 */}
-        <div className="bg-white shadow-md rounded-lg p-6 mb-8">
+        <div className="bg-white rounded-lg p-6 mb-8">
           <h3 className="font-bold mb-6" style={{ fontSize: '1.5rem', color: "rgb(32, 49, 59)" }}>내가 작성한 글</h3>
 
           {/* Board Section */}
@@ -122,7 +134,7 @@ function MyPage({ onClose }) {
                     <Link to={`/community/${post.boardId}`} className="block text-blue-600 hover:underline">
                       {post.title}
                     </Link>
-                    <div className="text-gray-500 text-sm">
+                    <div className="text-gray-500 text-sm mt-2">
                       {formatDate(post.createDate)}
                     </div>
                   </li>
@@ -143,7 +155,7 @@ function MyPage({ onClose }) {
                     <Link to={`/qna/${post.qnaId}`} className="block text-blue-600 hover:underline">
                       {post.title}
                     </Link>
-                    <div className="text-gray-500 text-sm">
+                    <div className="text-gray-500 text-sm mt-2">
                       {formatDate(post.createDate)}
                     </div>
                   </li>

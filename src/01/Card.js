@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { FaPhoneAlt } from 'react-icons/fa'
+import { PiPhoneCallBold } from "react-icons/pi";
 
 export default function Card({ id, name, phone, onClick, level }) {
     return (
@@ -10,12 +10,12 @@ export default function Card({ id, name, phone, onClick, level }) {
         >
             <h5 className="text-lg font-semibold mb-2 text-left">{name}</h5>
             <div className="flex items-center text-sm text-gray-700 mb-3">
-                <FaPhoneAlt className="mr-1 text-blue-500" />
+                <PiPhoneCallBold  className="mr-1 text-blue-500" />&nbsp;&nbsp;
                 <p>{phone}</p>
             </div>
-            <div className="flex items-center mb-4">
+            <div className="flex items-center">
                 <p className="text-sm font-medium text-gray-600 mr-2">간호등급</p>
-                <span className="bg-gray-200 rounded-full px-3 py-1 text-xs font-semibold text-gray-700">
+                <span className="bg-blue-100 rounded-full px-3 py-1 text-xs font-semibold text-gray-700">
                     {level}
                 </span>
             </div>
