@@ -135,39 +135,6 @@ function NavigationBar() {
             </>
           )}
         </div>
-  {!isLoggedIn ? (
-    <>
-      <button
-        className="sign-button"
-        onClick={() => setShowLoginModal(true)}
-      >
-        로그인
-      </button>
-      <button
-        className="sign-button"
-        onClick={() => setShowSignup(true)}
-      >
-        회원가입
-      </button>
-    </>
-  ) : (
-    <>
-      <p2 className="welcome-message">{loginMessage}</p2>
-      <button
-        className="sign-button"
-        onClick={handleMyPageClick}
-      >
-        마이페이지
-      </button>
-      <button
-        className="sign-button"
-        onClick={handleLogout}
-      >
-        로그아웃
-      </button>
-    </>
-  )}
-</div>
       </ul>
 
       {showLoginModal && <LoginForm onClose={() => setShowLoginModal(false)} onLoginSuccess={handleLoginSuccess} />}
