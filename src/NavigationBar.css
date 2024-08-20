@@ -27,11 +27,12 @@
 }
 
 .sign-button {
+  font-size: 0.8rem; /* 글자 크기 줄이기 */
   color: white !important;
   cursor: pointer;
   width: 150px;
   text-align: center;
-  margin-bottom: 6px;
+  margin-bottom: 10px;
   border: 1.5px solid white;
   padding: 4px !important;
   border-radius: 7px !important;

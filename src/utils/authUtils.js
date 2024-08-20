@@ -16,7 +16,7 @@ export const checkSession = async () => {
           email: data.email,
           role: data.role,
           message: (
-            <span style={{ display: 'inline-flex', alignItems: 'center' }}>
+            <span style={{ display: 'inline-flex', alignItems: 'center', color: 'white', fontSize: '0.9rem'  }}>
             {data.username}님, 반갑습니다!
             <FaRegSmile style={{ marginLeft: '0.6rem' }} />
           </span>

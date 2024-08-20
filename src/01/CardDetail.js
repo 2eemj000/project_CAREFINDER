@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Left from '../Compo/Left.js';
-import { FaPhoneAlt, FaHeart, FaRegHeart } from 'react-icons/fa'; // 하트 아이콘 추가
+import { FaHeart, FaRegHeart } from 'react-icons/fa'; 
+import { PiPhoneCallBold } from "react-icons/pi";
 
 export default function CardDetail() {
     const { cardId } = useParams();
@@ -97,18 +98,20 @@ export default function CardDetail() {
             <div className="flex-1 ml-[15%] mr-[10%] p-10 z-0" style={{ marginLeft: "350px" }}>
                 <div style={{ padding: '20px', fontFamily: 'Roboto, sans-serif', color: '#333' }}>
                     <div style={{ borderBottom: '1px solid #e0e0e0', paddingBottom: '25px', marginBottom: '20px' }}>
-                        <h1 className="text-3xl font-bold text-gray-700 mb-2">{cardDetails.name}</h1>
+                        <div className="flex items-center justify-between mb-2">
+                            <h1 className="text-3xl font-bold text-gray-700">{cardDetails.name}</h1>
+                            <button
+                                onClick={handleFavoriteToggle}
+                                className={`mr-10  mt-6 py-2 px-5 rounded-lg text-white ${isFavorite ? 'bg-red-400' : 'bg-gray-400'} text-sm`}
+                            >
+                                {isFavorite ? <FaHeart className="inline mr-1" /> : <FaRegHeart className="inline mr-1" />}
+                                {isFavorite ? '찜 해제' : '찜하기'}
+                            </button>
+                        </div>
                         <p className="text-lg text-gray-600 flex items-center">
-                            <FaPhoneAlt className="mr-2 text-blue-500" />
+                            <PiPhoneCallBold className="mr-2 text-blue-500" />
                             {cardDetails.phone}
                         </p>
-                        <button
-                            onClick={handleFavoriteToggle}
-                            className={`mt-4 py-2 px-4 rounded-lg text-white ${isFavorite ? 'bg-red-500' : 'bg-gray-500'}`}
-                        >
-                            {isFavorite ? <FaHeart className="inline mr-2" /> : <FaRegHeart className="inline mr-2" />}
-                            {isFavorite ? '찜 해제' : '찜하기'}
-                        </button>
                     </div>
                     <div style={{ borderBottom: '1px solid #e0e0e0', marginBottom: '30px', paddingBottom: '30px' }}>
                         <h2 className="text-xl font-semibold text-gray-700 mb-4">전문의 진료과목</h2>
