@@ -80,28 +80,42 @@ function MyPage({ onClose }) {
       <div className="fixed left-0 top-0 w-1/6 h-full" style={{ borderRight: 'none' }}>
         <Left />
       </div>
-      <div className="flex-1 ml-[30%] mr-[15%] p-10 z-0" style={{ marginLeft: "350px" }}>
-        <div className="p-6 bg-white rounded-lg border border-gray-200 mb-8">
-          <h2 className="text-xl font-semibold text-gray-800 mb-2">
-            {userInfo ? `안녕하세요, ${userInfo.username}님!` : 'Loading...'}
+      <div className="flex-1 ml-[15%] mr-[10%] p-6 z-0 mt-10" style={{ marginLeft: "350px" }}>
+        <div className="p-6 bg-white rounded-lg border border-gray-200 shadow-md mb-8 w-2/3 ml-5">
+          <h2 className="text-2xl font-bold text-gray-800 mb-4">
+            회원정보
           </h2>
-          <p className="text-gray-600">
-            {userInfo ? `${userInfo.email}` : 'Loading...'}
-          </p>
+          <hr className="border-t-2 border-gray-200 mb-4" />
+          <div className="flex items-center text-gray-600 mb-3">
+            <span className="mr-2">
+              <svg className="w-5 h-5 text-sky-800" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M6 2a1 1 0 00-1 1v1H2a1 1 0 000 2h1v5H2a1 1 0 000 2h1v2a1 1 0 001 1h12a1 1 0 001-1v-2h1a1 1 0 000-2h-1V6h1a1 1 0 000-2h-3V3a1 1 0 00-1-1H6zM4 6V4h12v2H4zm11 2v6H5V8h10z" />
+              </svg>
+            </span>
+            <span> 닉네임 : {userInfo ? `${userInfo.username}` : 'Loading...'}</span>
+          </div>
+          <div className="flex items-center text-gray-600 mb-3">
+            <span className="mr-2">
+              <svg className="w-5 h-5 text-sky-800" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M2.94 4.94A2.5 2.5 0 015.5 4h9a2.5 2.5 0 012.56 2.5l-.03.26L10 10.38 2.5 6.76l-.03-.26A2.5 2.5 0 012.94 4.94zm.56 2.31l7.12 3.58a.5.5 0 00.76 0l7.12-3.58A2.5 2.5 0 0115.5 14h-9a2.5 2.5 0 01-2.5-2.5v-5a.5.5 0 01.5-.5h11a.5.5 0 01.5.5v5a2.5 2.5 0 01-2.5 2.5h-9a2.5 2.5 0 01-2.5-2.5v-5a.5.5 0 01.5-.5h11a.5.5 0 01.5.5v5z" />
+              </svg>
+            </span>
+            <span> e-mail : {userInfo ? `${userInfo.email}` : 'Loading...'}</span>
+          </div>
         </div>
-        
+
         {/* 내가 찜한 병원 보기 섹션 추가 */}
         <div className="bg-white rounded-lg p-6 mb-8">
           <h3 className="font-bold mb-6" style={{ fontSize: '1.5rem', color: "rgb(32, 49, 59)" }}>내가 찜한 병원</h3>
           {favoriteHospitals.length > 0 ? (
-            <ul className="space-y-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
               {favoriteHospitals.map(hospital => (
-                <li key={hospital.id} className="relative p-4 bg-gray-100 rounded-lg shadow-sm border border-gray-300 hover:bg-gray-200 transition-colors">
-                  <Link to={`/find/card/${hospital.id}`} className="block text-blue-600 hover:underline">
+                <div key={hospital.id} className="relative p-5 bg-gray-100 rounded-lg shadow-sm border border-gray-300 hover:bg-gray-200 transition-colors">
+                  <Link to={`/find/card/${hospital.id}`} className="block text-gray-800 font-semibold ">
                     {hospital.name}
                   </Link>
                   <div className="flex items-center mt-2 text-gray-500 text-sm">
-                    <PiPhoneCallBold className="mr-2 text-blue-500" />
+                    <PiPhoneCallBold className="mr-2 text-blue-700" />
                     {hospital.phone}
                   </div>
                   <button
@@ -112,9 +126,9 @@ function MyPage({ onClose }) {
                       <FaHeart className="text-lg text-red-400" />
                     )}
                   </button>
-                </li>
+                </div>
               ))}
-            </ul>
+            </div>
           ) : (
             <p className="text-center text-gray-500">찜한 병원이 없습니다.</p>
           )}
@@ -131,7 +145,7 @@ function MyPage({ onClose }) {
               {boardPosts.length > 0 ? (
                 boardPosts.map(post => (
                   <li key={post.boardId} className="p-4 bg-gray-100 rounded-lg shadow-sm border border-gray-300 hover:bg-gray-200 transition-colors">
-                    <Link to={`/community/${post.boardId}`} className="block text-blue-600 hover:underline">
+                    <Link to={`/community/${post.boardId}`} className="block  text-gray-800 font-semibold hover:underline">
                       {post.title}
                     </Link>
                     <div className="text-gray-500 text-sm mt-2">
@@ -152,7 +166,7 @@ function MyPage({ onClose }) {
               {qnaPosts.length > 0 ? (
                 qnaPosts.map(post => (
                   <li key={post.qnaId} className="p-4 bg-gray-100 rounded-lg shadow-sm border border-gray-300 hover:bg-gray-200 transition-colors">
-                    <Link to={`/qna/${post.qnaId}`} className="block text-blue-600 hover:underline">
+                    <Link to={`/qna/${post.qnaId}`} className="block text-gray-800 font-semibold hover:underline">
                       {post.title}
                     </Link>
                     <div className="text-gray-500 text-sm mt-2">
