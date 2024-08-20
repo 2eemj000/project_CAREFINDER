@@ -138,7 +138,7 @@ function Community() {
             value={searchCategory}
             onChange={(e) => setSearchCategory(e.target.value)}
             className="p-1 text-sm border border-gray-300 rounded-md"
-            style={{ width: '120px' }} // 셀렉트 박스의 너비 조정
+            style={{ width: '120px' }} 
           >
             <option value="title">제목</option>
             <option value="author">작성자</option>
@@ -151,7 +151,7 @@ function Community() {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="p-1 text-sm border border-gray-300 rounded-md"
-            style={{ width: '200px' }} // 입력 필드의 너비 조정
+            style={{ width: '200px' }} 
           />
         </div>
 
