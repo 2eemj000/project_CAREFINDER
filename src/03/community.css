@@ -28,7 +28,6 @@ tbody tr {
 /* 기본 셀 스타일 */
 tbody td {
   padding: 0.75rem;
-  text-align: center; /* 텍스트 가운데 정렬 */
   border-bottom: 1px solid #ddd;
   min-width: 100px; /* 열의 최소 너비를 설정 */
   /* 추가적인 속성 확인 */
@@ -43,7 +42,7 @@ tbody tr:hover {
 }
 
 th:nth-child(1), td:nth-child(1) {
-  width: 1%; /* 번호 열의 최소 너비를 조정 */
+  width: 10%; /* 번호 열의 최소 너비를 조정 */
 }
 
 th:nth-child(2), td:nth-child(2) {

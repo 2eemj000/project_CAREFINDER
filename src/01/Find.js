@@ -112,6 +112,7 @@ export default function Find() {
                     <h1 style={{ fontSize: '0.9rem' }}>- 검색 조건을 선택하세요.</h1>
                     <h1 style={{ fontSize: '0.9rem' }}>- 각 섹션에서 조건을 선택하면 해당 조건에 맞는 병원 목록이 나타납니다.</h1>
                 </div>
+                <div className="border-b border-gray-300 mt-5"></div>
                 <div>
                     {/* 지역 섹션 */}
                     <div className="mb-6">

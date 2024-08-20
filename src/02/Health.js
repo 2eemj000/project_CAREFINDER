@@ -41,6 +41,7 @@ export default function Health() {
         </div>
         <div className='mt-6 mb-10'>
           <h1 style={{ fontSize: '0.9rem' }}>- 아는 만큼 건강해집니다! 자세한 정보를 보시려면 클릭하세요.</h1>
+          <div className="border-b border-gray-300 mt-5"></div>
         </div>
 
         {/* 뉴스 카드 그리드 레이아웃 */}
