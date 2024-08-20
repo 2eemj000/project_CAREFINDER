@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { FaPhoneAlt } from 'react-icons/fa'
 
-export default function Card({ name, phone, onClick, level }) {
+export default function Card({ id, name, phone, onClick, level }) {
     return (
         <div
             onClick={onClick}
@@ -13,16 +13,18 @@ export default function Card({ name, phone, onClick, level }) {
                 <FaPhoneAlt className="mr-1 text-blue-500" />
                 <p>{phone}</p>
             </div>
-            <div className="flex items-center">
+            <div className="flex items-center mb-4">
                 <p className="text-sm font-medium text-gray-600 mr-2">간호등급</p>
                 <span className="bg-gray-200 rounded-full px-3 py-1 text-xs font-semibold text-gray-700">
-             {level}</span>
+                    {level}
+                </span>
             </div>
         </div>
     );
 }
 
 Card.propTypes = {
+    id: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     phone: PropTypes.string.isRequired,
     onClick: PropTypes.func.isRequired,

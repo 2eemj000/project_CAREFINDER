@@ -76,6 +76,7 @@ export default function List() {
                     {cards.map(card => (
                         <Card
                             key={card.id}
+                            id={card.id} 
                             name={card.name}
                             phone={card.phone}
                             onClick={() => handleCardClick(card.id)} // 클릭 시 상세 페이지로 이동

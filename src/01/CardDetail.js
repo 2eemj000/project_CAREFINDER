@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import Left from '../Compo/Left.js'
+import Left from '../Compo/Left.js';
+import { FaPhoneAlt, FaHeart, FaRegHeart } from 'react-icons/fa'; // 하트 아이콘 추가
 
 export default function CardDetail() {
     const { cardId } = useParams();
     const [cardDetails, setCardDetails] = useState(null);
-    const [mapLoaded, setMapLoaded] = useState(false); //api를 두개 부르다보니, 동시에 부르면 충돌이 있어서 순서를 정해주기로 함
+    const [isFavorite, setIsFavorite] = useState(false);
 
+    // 카드 세부 정보 가져오기
     async function fetchCardDetails() {
         try {
             const response = await fetch(`http://localhost:8080/find/card/${cardId}`);
@@ -21,11 +23,35 @@ export default function CardDetail() {
         fetchCardDetails();
     }, [cardId]);
 
+    // 찜하기 버튼 핸들러
+    const handleFavoriteToggle = () => {
+        const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+        const isCurrentlyFavorite = favorites.some(fav => fav.id === cardId);
+
+        if (isCurrentlyFavorite) {
+            const updatedFavorites = favorites.filter(fav => fav.id !== cardId);
+            localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
+            setIsFavorite(false);
+        } else {
+            const newFavorite = { id: cardId, name: cardDetails.name, phone: cardDetails.phone, level: cardDetails.level };
+            favorites.push(newFavorite);
+            localStorage.setItem('favorites', JSON.stringify(favorites));
+            setIsFavorite(true);
+        }
+    };
+
+    useEffect(() => {
+        if (cardDetails) {
+            const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+            setIsFavorite(favorites.some(fav => fav.id === cardId));
+        }
+    }, [cardDetails, cardId]);
+
     useEffect(() => {
         if (cardDetails && cardDetails.locx && cardDetails.locy) {
             const initializeMap = () => {
                 const { kakao } = window;
-    
+
                 if (kakao && kakao.maps) {
                     try {
                         const mapContainer = document.getElementById('map');
@@ -33,19 +59,19 @@ export default function CardDetail() {
                             center: new kakao.maps.LatLng(cardDetails.locy, cardDetails.locx),
                             level: 3
                         };
-    
+
                         const map = new kakao.maps.Map(mapContainer, mapOption);
-    
+
                         const markerPosition = new kakao.maps.LatLng(cardDetails.locy, cardDetails.locx);
                         const marker = new kakao.maps.Marker({
                             position: markerPosition,
-                            map: map, // map 객체를 여기서 바로 설정
+                            map: map,
                         });
-    
+
                         // 마커 좌표 확인 로그
                         console.log("Marker Position:", markerPosition);
                         console.log("Map:", map);
-    
+
                     } catch (error) {
                         console.error("Error initializing Kakao Map: ", error);
                     }
@@ -53,8 +79,7 @@ export default function CardDetail() {
                     console.error("Kakao Maps API is not available.");
                 }
             };
-    
-            // 맵 초기화
+
             initializeMap();
         }
     }, [cardDetails]);
@@ -69,14 +94,21 @@ export default function CardDetail() {
                 <Left />
             </div>
 
-            <div className="flex-1 ml-[15%] mr-[10%] p-10 z-0"  style={{ marginLeft: "350px"}}>
+            <div className="flex-1 ml-[15%] mr-[10%] p-10 z-0" style={{ marginLeft: "350px" }}>
                 <div style={{ padding: '20px', fontFamily: 'Roboto, sans-serif', color: '#333' }}>
                     <div style={{ borderBottom: '1px solid #e0e0e0', paddingBottom: '25px', marginBottom: '20px' }}>
                         <h1 className="text-3xl font-bold text-gray-700 mb-2">{cardDetails.name}</h1>
                         <p className="text-lg text-gray-600 flex items-center">
-                            <i className="fa fa-phone mr-2 text-blue-500"></i>
+                            <FaPhoneAlt className="mr-2 text-blue-500" />
                             {cardDetails.phone}
                         </p>
+                        <button
+                            onClick={handleFavoriteToggle}
+                            className={`mt-4 py-2 px-4 rounded-lg text-white ${isFavorite ? 'bg-red-500' : 'bg-gray-500'}`}
+                        >
+                            {isFavorite ? <FaHeart className="inline mr-2" /> : <FaRegHeart className="inline mr-2" />}
+                            {isFavorite ? '찜 해제' : '찜하기'}
+                        </button>
                     </div>
                     <div style={{ borderBottom: '1px solid #e0e0e0', marginBottom: '30px', paddingBottom: '30px' }}>
                         <h2 className="text-xl font-semibold text-gray-700 mb-4">전문의 진료과목</h2>
@@ -88,7 +120,8 @@ export default function CardDetail() {
                     </div>
                     <div>
                         <h2 className="text-xl font-semibold text-gray-700 mb-4">병원 위치 및 주소</h2>
-                        <p className="text-base text-gray-600 mb-4">{cardDetails.address}</p>                        <div id="map" style={{ width: '100%', height: '400px', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', marginTop: '20px' }}></div>
+                        <p className="text-base text-gray-600 mb-4">{cardDetails.address}</p>
+                        <div id="map" style={{ width: '100%', height: '400px', borderRadius: '10px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', marginTop: '20px' }}></div>
                     </div>
                 </div>
             </div>
