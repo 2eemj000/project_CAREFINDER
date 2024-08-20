@@ -90,10 +90,10 @@ function ComWrite() {
               required
             />
           </div>
-          <div className="flex justify-center mt-6">
-            <button type="submit" className="submit-button mb-16">
-              등록하기
-            </button>
+          <div className="form-footer">
+              <button type="submit" className="csubmit-button">
+                  등록하기
+              </button>
           </div>
         </form>
       </div>

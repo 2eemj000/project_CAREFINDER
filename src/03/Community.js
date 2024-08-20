@@ -155,7 +155,7 @@ function Community() {
           />
         </div>
 
-        <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+        <table className="w-full text-base text-left rtl:text-right text-gray-700 dark:text-gray-400">
           <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
             <tr>
               <th scope="col" className="text-center px-6 py-3">번호</th>
@@ -189,36 +189,16 @@ function Community() {
         <div className="mt-10 mb-5 flex justify-end w-full">
           <button
             onClick={handleWriteClick}
-            style={{
-              fontSize: 'medium',
-              textDecoration: 'none',
-              padding: '0.5rem',
-              width: '20%',
-              borderRadius: '20px',
-              cursor: 'pointer',
-              backgroundColor: '#929292',
-              transition: 'background-color 0.3s ease, color 0.3s ease',
-              fontWeight: 'bold',
-              color: 'white'
-            }}
-            onMouseOver={(e) => {
-              e.target.style.backgroundColor = '#686767';
-              e.target.style.color = 'white';
-            }}
-            onMouseOut={(e) => {
-              e.target.style.backgroundColor = '#929292';
-              e.target.style.color = 'white';
-            }}
+            className="cwrite-button"
           >
             글쓰기
           </button>
         </div>
-        {/* Pagination Controls */}
         <div className="flex justify-center mt-4 space-x-2">
           <button
             onClick={() => handlePageChange(currentPage - 1)}
             disabled={currentPage === 1}
-            className={`px-4 py-2 text-sm font-medium ${currentPage === 1 ? 'text-gray-400 cursor-not-allowed' : 'text-blue-500 hover:underline'}`}
+            className={`px-4 py-2 text-sm font-medium ${currentPage === 1 ? 'text-gray-600 cursor-not-allowed' : 'text-sky-700 hover:underline'}`}
           >
             Previous
           </button>
@@ -226,7 +206,7 @@ function Community() {
             <button
               key={index + 1}
               onClick={() => handlePageChange(index + 1)}
-              className={`px-4 py-2 text-sm font-medium ${currentPage === index + 1 ? 'text-blue-500 underline' : 'text-gray-500 hover:underline'}`}
+              className={`px-4 py-2 text-sm font-medium ${currentPage === index + 1 ? 'text-sky-700 underline' : 'text-gray-600 hover:underline'}`}
             >
               {index + 1}
             </button>
@@ -234,7 +214,7 @@ function Community() {
           <button
             onClick={() => handlePageChange(currentPage + 1)}
             disabled={currentPage === totalPages}
-            className={`px-4 py-2 text-sm font-medium ${currentPage === totalPages ? 'text-gray-400 cursor-not-allowed' : 'text-blue-500 hover:underline'}`}
+            className={`px-4 py-2 text-sm font-medium ${currentPage === totalPages ? 'text-gray-600 cursor-not-allowed' : 'text-sky-700 hover:underline'}`}
           >
             Next
           </button>

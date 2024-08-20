@@ -217,8 +217,8 @@ const handleDelete = async () => {
       </div>
       <div className="flex-1 ml-[15%] mr-[10%] p-10 z-0"  style={{ marginLeft: "350px"}}>
         <div className="mt-6">
-          <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+          <table className="w-full text-base text-left rtl:text-right text-gray-700 dark:text-gray-400">
+            <thead className="text-sm text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
               <tr>
                 <th className="bg-[#f2f2f2] font-bold p-4" style={{ fontSize: '1.0rem' }}>{board.title}</th>
               </tr>
@@ -243,7 +243,7 @@ const handleDelete = async () => {
         </div>
         <div className="comment-header m-3 mt-10 font-bold" style={{ fontSize: '1.2rem' }}> 댓글</div>
         <div className="comment-section">
-          <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+          <table className="w-full text-base text-left rtl:text-right text-gray-700 dark:text-gray-400">
             <thead className="text-sm text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
               <tr>
                 <th scope="col" className="text-center px-6 py-3">작성자</th>
@@ -282,17 +282,17 @@ const handleDelete = async () => {
             placeholder="댓글을 작성하세요."
           />
         </div>
-        <div className="flex justify-between mt-6">
-          <button className="action-button comment-button mt-2" onClick={handleCommentSubmit} style={{ fontSize: '0.9rem' }}>
+        <div className="flex justify-end mt-6 gap-2">
+          <button className="cdetail-button" onClick={handleCommentSubmit}>
             댓글 등록
           </button>
-          <button className="action-button edit-button" onClick={isEditing ? handleEditSubmit : handleEditToggle} style={{ fontSize: '0.9rem' }}>
+          <button className="cdetail-button" onClick={isEditing ? handleEditSubmit : handleEditToggle}>
             {isEditing ? '수정 완료' : '글 수정하기'}
           </button>
-          <button className="action-button delete-button" onClick={handleDelete} style={{ fontSize: '0.9rem' }}>
+          <button className="cdetail-button" onClick={handleDelete}>
             글 삭제
           </button>
-          <button className="action-button list-button" onClick={() => navigate("/community")} style={{ fontSize: '0.9rem' }}>
+          <button className="cdetail-button" onClick={() => navigate("/community")}>
             목록으로
           </button>
         </div>

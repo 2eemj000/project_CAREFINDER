@@ -43,11 +43,11 @@ tbody tr:hover {
 }
 
 th:nth-child(1), td:nth-child(1) {
-  width: 10%; /* 번호 열의 최소 너비를 조정 */
+  width: 1%; /* 번호 열의 최소 너비를 조정 */
 }
 
 th:nth-child(2), td:nth-child(2) {
-  width: 40%; /* 제목 열의 최소 너비를 조정 */
+  width: 49%; /* 제목 열의 최소 너비를 조정 */
 }
 
 th:nth-child(3), td:nth-child(3) {
@@ -60,4 +60,23 @@ th:nth-child(4), td:nth-child(4) {
 
 th:nth-child(5), td:nth-child(5) {
   width: 15%; /* 조회수 열의 최소 너비를 조정 */
+}
+
+/* 글쓰기 버튼 스타일 */
+.cwrite-button {
+  font-size: medium;
+  text-decoration: none;
+  padding: 0.5rem;
+  width: 10%;
+  cursor: pointer;
+  background-color: #ababab;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  font-weight: bold;
+  color: white;
+  text-align: center;
+}
+
+.cwrite-button:hover {
+  background-color: #939191;
+  color: white;
 }
