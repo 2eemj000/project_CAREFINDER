@@ -104,7 +104,7 @@ export default function Find() {
             </div>
 
             {/* 메인부분 */}
-            <div className="flex-1 ml-[15%] mr-[10%] p-10 z-0" style={{ marginLeft: "350px"}}>
+            <div className="flex-1 ml-[15%] mr-[10%] p-10 z-0" style={{ marginLeft: "350px" }}>
                 <div className="font-bold mt-6" style={{ fontSize: '2rem' }}>
                     내 맘에 쏙 병원찾기
                 </div>
@@ -206,31 +206,47 @@ export default function Find() {
                     {/* 검색과 초기화 버튼 */}
                     <div className="flex space-x-4 justify-center">
                         <button
-                            onClick={handleSearch}
-                            className="bg-blue-500 text-white font-bold px-5 py-2 rounded-lg"
+                            onClick={handleReset}
+                            className="flex items-center justify-center border-2 border-blue-500 text-blue-500 font-bold px-5 py-2 
+                            rounded-lg transition duration-200 hover:bg-blue-500 hover:text-white"
                             style={{
-                                borderRadius: '20px',
-                                fontSize: '0.9rem', 
-                                width: '200px' 
+                                borderRadius: '6px',
+                                borderStyle: 'bold',
+                                fontSize: '1.0rem',
+                                width: '120px',
+                                height: '50px'
+                            }}
+                        >
+                            <span>초기화</span>
+                            <svg
+                                className="ml-2 w-5 h-5 text-bg-blue-600"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582M4 4h5M4 4l5 5M20 20v-5h-.582M20 20h-5M20 20l-5-5"></path>
+                            </svg>
+                        </button>
+                        <button
+                            onClick={handleSearch}
+                            className="flex items-center justify-center border-2 border-blue-500 bg-blue-500 text-white font-bold px-5 py-2 rounded-lg  
+                            transition duration-200 hover:bg-white  hover:text-blue-500"
+                            style={{
+                                borderRadius: '6px',
+                                borderStyle: 'bold',
+                                fontSize: '1.0rem',
+                                width: '160px',
+                                height: '50px'
                             }}
                         >
                             검색
                         </button>
-                        <button
-                            onClick={handleReset}
-                            className="bg-gray-500 text-white font-bold px-5 py-2 rounded-lg"
-                            style={{
-                                borderRadius: '20px',
-                                fontSize: '0.9rem', 
-                                width: '200px' 
-                            }}
-                        >
-                            초기화
-                        </button>
                     </div>
                 </div>
             </div>
-            <Footer/>
+            <Footer />
         </div >
     );
 }
