@@ -102,6 +102,41 @@ function NavigationBar() {
         </li>
         {/* 로그인 및 회원가입 버튼 추가 */}
         <div className="auth-buttons">
+<<<<<<<<< Temporary merge branch 1
+  {!isLoggedIn ? (
+    <>
+      <button
+        className="sign-button"
+        onClick={() => setShowLoginModal(true)}
+      >
+        로그인
+      </button>
+      <button
+        className="sign-button"
+        onClick={() => setShowSignup(true)}
+      >
+        회원가입
+      </button>
+    </>
+  ) : (
+    <>
+      <p2 className="welcome-message">{loginMessage}</p2>
+      <button
+        className="sign-button"
+        onClick={handleMyPageClick}
+      >
+        마이페이지
+      </button>
+      <button
+        className="sign-button"
+        onClick={handleLogout}
+      >
+        로그아웃
+      </button>
+    </>
+  )}
+</div>
+=========
           {!isLoggedIn ? (
             <>
               <button
@@ -135,6 +170,7 @@ function NavigationBar() {
             </>
           )}
         </div>
+>>>>>>>>> Temporary merge branch 2
       </ul>
 
       {showLoginModal && <LoginForm onClose={() => setShowLoginModal(false)} onLoginSuccess={handleLoginSuccess} />}

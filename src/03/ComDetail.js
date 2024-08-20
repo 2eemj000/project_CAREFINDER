@@ -220,7 +220,7 @@ const handleDelete = async () => {
           <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
               <tr>
-                <th className="bg-[#f2f2f2] font-bold p-4" style={{ fontSize: '0.9rem' }}>{board.title}</th>
+                <th className="bg-[#f2f2f2] font-bold p-4" style={{ fontSize: '1.0rem' }}>{board.title}</th>
               </tr>
             </thead>
             <tbody>
@@ -241,37 +241,39 @@ const handleDelete = async () => {
             </tbody>
           </table>
         </div>
-        <div className="m-3 mt-10 font-bold" style={{ fontSize: '0.9rem' }}> 댓글</div>
-        <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-            <tr>
-              <th scope="col" className="text-center px-6 py-3">작성자</th>
-              <th scope="col" className="text-center px-6 py-3">내용</th>
-              <th scope="col" className="text-center px-6 py-3">작성 날짜</th>
-            </tr>
-          </thead>
-          <tbody>
-            {boardRe.length > 0 ? (
-              boardRe.map(comment => {
-                const date = formatDate(comment.createDate);
-                return (
-                  <tr key={comment.boardReId}>
-                    <td className="reply text-center">{comment.username}</td>
-                    <td className="pl-3 pr-3">{comment.content}</td>
-                    <td className="text-center">
-                    <div>{date}</div>
-                  </td>
-                  </tr>
-                );
-              })
-            ) : (
-              <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                <td colSpan="3" className="text-center">댓글이 없습니다.</td>
+        <div className="comment-header m-3 mt-10 font-bold" style={{ fontSize: '1.2rem' }}> 댓글</div>
+        <div className="comment-section">
+          <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+            <thead className="text-sm text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+              <tr>
+                <th scope="col" className="text-center px-6 py-3">작성자</th>
+                <th scope="col" className="text-center px-6 py-3">내용</th>
+                <th scope="col" className="text-center px-6 py-3">작성 날짜</th>
               </tr>
-            )}
-          </tbody>
-        </table>
-        <div className="mt-6">
+            </thead>
+            <tbody>
+              {boardRe.length > 0 ? (
+                boardRe.map(comment => {
+                  const date = formatDate(comment.createDate);
+                  return (
+                    <tr key={comment.boardReId}>
+                      <td className="reply text-center">{comment.username}</td>
+                      <td className="pl-3 pr-3">{comment.content}</td>
+                      <td className="text-center">
+                        <div>{date}</div>
+                      </td>
+                    </tr>
+                  );
+                })
+              ) : (
+                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                  <td colSpan="3" className="text-center">댓글이 없습니다.</td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+        <div className="mt-6 comment-section">
           <textarea
             className="w-full p-2 border border-gray-300"
             rows="3"

@@ -42,7 +42,7 @@ function QnaWrite() {
       <div className="fixed left-0 top-0 w-1/6 h-full z-10">
         <Left />
       </div>
-      <div className="flex-1 ml-[15%] mr-[10%] p-10 z-0"  style={{ marginLeft: "350px"}}>
+      <div className="flex-1 ml-[25%] mr-[15%] p-10 z-0"  style={{ marginLeft: "350px"}}>
         <div className="font-bold text-2xl mt-6" style={{ fontSize: '1.2rem' }}>
           질문 작성
         </div>
@@ -70,7 +70,7 @@ function QnaWrite() {
             />
           </div>
           <div className="flex justify-center mt-6">
-            <button type="submit" className="sign-button mb-16">
+            <button type="submit" className="submit-button mb-16">
               등록하기
             </button>
           </div>
