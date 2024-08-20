@@ -253,7 +253,7 @@ const handleDelete = async () => {
           <tbody>
             {boardRe.length > 0 ? (
               boardRe.map(comment => {
-                const date = formatDate(board.createDate);
+                const date = formatDate(comment.createDate);
                 return (
                   <tr key={comment.boardReId}>
                     <td className="reply text-center">{comment.username}</td>
