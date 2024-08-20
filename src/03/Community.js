@@ -4,6 +4,8 @@ import Left from '../Compo/Left';
 import './community.css';
 import Footer from '../Compo/Footer.js';
 import { checkSession } from '../utils/authUtils'; // 유틸리티 함수 가져오기
+import { MdOutlineKeyboardDoubleArrowLeft } from "react-icons/md";
+import { MdOutlineKeyboardDoubleArrowRight } from "react-icons/md";
 
 function Community() {
   const [boards, setBoards] = useState([]);
@@ -207,7 +209,7 @@ function Community() {
             disabled={currentPage === 1}
             className={`px-4 py-2 text-sm font-medium ${currentPage === 1 ? 'text-gray-600 cursor-not-allowed' : 'text-sky-700 hover:underline'}`}
           >
-            Previous
+            <MdOutlineKeyboardDoubleArrowLeft />
           </button>
           {[...Array(totalPages)].map((_, index) => (
             <button
@@ -223,7 +225,7 @@ function Community() {
             disabled={currentPage === totalPages}
             className={`px-4 py-2 text-sm font-medium ${currentPage === totalPages ? 'text-gray-600 cursor-not-allowed' : 'text-sky-700 hover:underline'}`}
           >
-            Next
+            <MdOutlineKeyboardDoubleArrowRight />
           </button>
         </div>
       </div>
