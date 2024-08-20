@@ -4,6 +4,8 @@ import Left from '../Compo/Left';
 import Footer from '../Compo/Footer.js';
 import './qna.css';
 import { checkSession } from '../utils/authUtils'; // 유틸리티 함수 가져오기
+import { MdOutlineKeyboardDoubleArrowLeft } from "react-icons/md";
+import { MdOutlineKeyboardDoubleArrowRight } from "react-icons/md";
 
 function Qna() {
   const [qnas, setQnas] = useState([]);
@@ -243,7 +245,7 @@ function Qna() {
             disabled={currentPage === 1}
             className={`px-4 py-2 text-sm font-medium ${currentPage === 1 ? 'text-gray-600 cursor-not-allowed' : 'text-sky-700 hover:underline'}`}
           >
-            Previous
+            <MdOutlineKeyboardDoubleArrowLeft />
           </button>
           {[...Array(totalPages)].map((_, index) => (
             <button
@@ -259,7 +261,7 @@ function Qna() {
             disabled={currentPage === totalPages}
             className={`px-4 py-2 text-sm font-medium ${currentPage === totalPages ? 'text-gray-600 cursor-not-allowed' : 'text-sky-700 hover:underline'}`}
           >
-            Next
+            <MdOutlineKeyboardDoubleArrowRight />
           </button>
         </div>
       </div>
