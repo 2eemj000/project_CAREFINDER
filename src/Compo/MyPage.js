@@ -80,8 +80,8 @@ function MyPage({ onClose }) {
       <div className="fixed left-0 top-0 w-1/6 h-full" style={{ borderRight: 'none' }}>
         <Left />
       </div>
-      <div className="flex-1 ml-[15%] mr-[10%] p-6 z-0 mt-10" style={{ marginLeft: "350px" }}>
-        <div className="p-6 bg-white rounded-lg border border-gray-200 shadow-md mb-8 w-2/3 ml-5">
+      <div className="flex-1 ml-[15%] mr-[10%] items-center p-6 z-0 mt-10" style={{ marginLeft: "350px" }}>
+        <div className="p-6 bg-white rounded-lg border border-gray-200 shadow-md mb-8 w-4/12 ml-5" >
           <h2 className="text-2xl font-bold text-gray-800 mb-4">
             회원정보
           </h2>

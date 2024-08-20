@@ -155,6 +155,8 @@ function Qna() {
           <h1 style={{ fontSize: '0.9rem' }}>- 로그인 후, 게시글을 작성할 수 있습니다.</h1>
           <h1 style={{ fontSize: '0.9rem' }}>- 게시글은 관리자 외 답변하기 및 삭제하기가 불가합니다. </h1>
         </div>
+        <div className="border-b border-gray-300 mt-5"></div>
+
 
         {/* 검색 카테고리 셀렉트 박스 추가 */}
         <div className="mb-4 flex justify-end space-x-2 items-center">
@@ -162,7 +164,9 @@ function Qna() {
             value={searchCategory}
             onChange={(e) => setSearchCategory(e.target.value)}
             className="p-1 text-sm border border-gray-300 rounded-md"
-            style={{ width: '120px' }} // 셀렉트 박스의 너비 조정
+            style={{ width: '120px',
+                    marginTop : '2rem'
+                    }} 
           >
             <option value="title">제목</option>
             <option value="author">작성자</option>
@@ -175,7 +179,9 @@ function Qna() {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="p-1 text-sm border border-gray-300 rounded-md"
-            style={{ width: '200px' }} // 입력 필드의 너비 조정
+            style={{ width: '200px' ,
+                    marginTop : '2rem'
+                  }} 
           />
         </div>
 
