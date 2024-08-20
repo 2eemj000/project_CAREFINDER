@@ -7,11 +7,9 @@ import { checkSession } from '../utils/authUtils'; // 유틸리티 함수 가져
 
 function Qna() {
   const [qnas, setQnas] = useState([]);
-
   const [filteredQnas, setFilteredQnas] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [searchCategory, setSearchCategory] = useState("title"); // 검색 카테고리 상태 추가
-
   const [user, setUser] = useState(null); // 로그인된 사용자 정보를 상태로 저장
   const [loading, setLoading] = useState(true);
   const [loginMessage, setLoginMessage] = useState('');
@@ -181,72 +179,53 @@ function Qna() {
           />
         </div>
 
-        <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-          <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-            <tr>
-              <th scope="col" className="text-center px-6 py-3">번호</th>
-              <th scope="col" className="text-center px-6 py-3">제목</th>
-              <th scope="col" className="text-center px-6 py-3">작성자</th>
-              <th scope="col" className="text-center px-6 py-3">작성일</th>
-            </tr>
-          </thead>
-          <tbody>
-            {paginatedQnas.map((qna, index) => {
-              const date = formatDate(qna.createDate); // 날짜만 반환
-              const qnasNumber = sortedQnas.length - (currentPage - 1) * itemsPerPage - index;
+        <table className="w-full text-base text-left rtl:text-right text-gray-700 dark:text-gray-400">
+        <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+          <tr>
+            <th scope="col" className="text-center px-2 py-3 w-3">번호</th> {/* 너비를 조정 */}
+            <th scope="col" className="text-center px-6 py-3">제목</th>
+            <th scope="col" className="text-center px-6 py-3">작성자</th>
+            <th scope="col" className="text-center px-6 py-3">작성일</th>
+          </tr>
+        </thead>
+        <tbody>
+          {paginatedQnas.map((qna, index) => {
+            const date = formatDate(qna.createDate); // 날짜만 반환
+            const qnasNumber = sortedQnas.length - (currentPage - 1) * itemsPerPage - index;
 
-              return (
-                <React.Fragment key={qna.qnaId}>
-                  <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                    <td className="text-center">{qnasNumber}</td>
-                    <td className="cursor-pointer" onClick={() => handleQnaClick(qna.qnaId)}>
-                      {qna.title}
-                    </td>
-                    <td className="text-center">{qna.member.username}</td>
-                    <td className="text-center">{date}</td>
-                  </tr>
-                  {qna.replies.map((reply, replyIndex) => {
-                    const replyDate = formatDate(reply.createDate); // 날짜만 반환
-                    return (
-                      <tr key={`reply-${qna.qnaId}-${replyIndex}`} className="bg-gray-100">
-                        <td colSpan="4" className="text-left pl-6">
-                          <div className="flex items-center">
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className="text-blue-500 mr-2">→</span>
-                            &nbsp;&nbsp;&nbsp; {reply.content.length > 50 ? `${reply.content.substring(0, 50)}...` : reply.content}
-                          </div>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </React.Fragment>
-              );
-            })}
-          </tbody>
+            return (
+              <React.Fragment key={qna.qnaId}>
+                <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                  <td className="text-center w-12">{qnasNumber}</td> {/* 너비를 조정 */}
+                  <td className="cursor-pointer" onClick={() => handleQnaClick(qna.qnaId)}>
+                    {qna.title}
+                  </td>
+                  <td className="text-center">{qna.member.username}</td>
+                  <td className="text-center">{date}</td>
+                </tr>
+                {qna.replies.map((reply, replyIndex) => {
+                  const replyDate = formatDate(reply.createDate); // 날짜만 반환
+                  return (
+                    <tr key={`reply-${qna.qnaId}-${replyIndex}`} className="bg-gray-100">
+                      <td colSpan="4" className="text-left pl-6">
+                        <div className="flex items-center text-sm">
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className="text-blue-500 mr-2">→</span>
+                          &nbsp;&nbsp;&nbsp; {reply.content.length > 50 ? `${reply.content.substring(0, 50)}...` : reply.content}
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </React.Fragment>
+            );
+          })}
+        </tbody>
 
         </table>
         <div className="mt-10 mb-5 flex justify-end w-full">
-          <button
+        <button
             onClick={handleWriteClick}
-            style={{
-              fontSize: 'medium',
-              textDecoration: 'none',
-              padding: '0.5rem',
-              width: '20%',
-              borderRadius: '20px',
-              cursor: 'pointer',
-              backgroundColor: '#929292',
-              transition: 'background-color 0.3s ease, color 0.3s ease',
-              fontWeight: 'bold',
-              color: 'white'
-            }}
-            onMouseOver={(e) => {
-              e.target.style.backgroundColor = '#686767';
-              e.target.style.color = 'white';
-            }}
-            onMouseOut={(e) => {
-              e.target.style.backgroundColor = '#929292';
-              e.target.style.color = 'white';
-            }}
+            className="qwrite-button"
           >
             질문하기
           </button>
@@ -256,7 +235,7 @@ function Qna() {
           <button
             onClick={() => handlePageChange(currentPage - 1)}
             disabled={currentPage === 1}
-            className={`px-4 py-2 text-sm font-medium ${currentPage === 1 ? 'text-gray-400 cursor-not-allowed' : 'text-blue-500 hover:underline'}`}
+            className={`px-4 py-2 text-sm font-medium ${currentPage === 1 ? 'text-gray-600 cursor-not-allowed' : 'text-sky-700 hover:underline'}`}
           >
             Previous
           </button>
@@ -264,7 +243,7 @@ function Qna() {
             <button
               key={index + 1}
               onClick={() => handlePageChange(index + 1)}
-              className={`px-4 py-2 text-sm font-medium ${currentPage === index + 1 ? 'text-blue-500 underline' : 'text-gray-500 hover:underline'}`}
+              className={`px-4 py-2 text-sm font-medium ${currentPage === index + 1 ? 'text-sky-700 underline' : 'text-gray-600 hover:underline'}`}
             >
               {index + 1}
             </button>
@@ -272,7 +251,7 @@ function Qna() {
           <button
             onClick={() => handlePageChange(currentPage + 1)}
             disabled={currentPage === totalPages}
-            className={`px-4 py-2 text-sm font-medium ${currentPage === totalPages ? 'text-gray-400 cursor-not-allowed' : 'text-blue-500 hover:underline'}`}
+            className={`px-4 py-2 text-sm font-medium ${currentPage === totalPages ? 'text-gray-600 cursor-not-allowed' : 'text-sky-700 hover:underline'}`}
           >
             Next
           </button>

@@ -177,7 +177,7 @@ function QnaDetail() {
       <div className="flex-1 ml-[15%] mr-[10%] p-10 z-0" style={{ marginLeft: "350px" }}>
         {/* QnA 제목과 내용 표시 */}
         <div className="mt-6">
-          <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+          <table className="w-full text-base text-left rtl:text-right text-gray-700 dark:text-gray-400">
             <thead className="text-sm text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
               <tr>
                 <th className="bg-[#f2f2f2] font-bold p-4" style={{ fontSize: '1.0rem' }}>{qna.title}</th>
@@ -223,16 +223,16 @@ function QnaDetail() {
             placeholder="답변을 작성하세요."
           />
         </div>
-        <div className="flex justify-between mt-6 w-">
+        <div className="flex justify-end mt-6 gap-2">
           {userRole === "admin" && (
-          <button className="action-button comment-button mt-2" onClick={handleReplySubmit} style={{ fontSize: '0.9rem' }}>
+          <button className="qdetail-button" onClick={handleReplySubmit} style={{ fontSize: '0.9rem' }}>
             답변 등록하기
           </button>
           )}
-            <button className="action-button delete-button" onClick={handleDelete} style={{ fontSize: '0.9rem' }}>
+            <button className="qdetail-button" onClick={handleDelete} style={{ fontSize: '0.9rem' }}>
               글삭제
             </button>
-          <button className="action-button list-button" onClick={() => navigate("/qna")} style={{ fontSize: '0.9rem' }}>
+          <button className="qdetail-button" onClick={() => navigate("/qna")} style={{ fontSize: '0.9rem' }}>
             목록으로
           </button>
         </div>

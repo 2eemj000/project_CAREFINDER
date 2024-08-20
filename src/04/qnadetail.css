@@ -11,18 +11,23 @@ th:nth-child(3), td:nth-child(3) {
   width: 23%;
 }
 
-.comment-button { background-color: #1187cf; }
-.comment-button:hover { background-color: #125f8f; font-weight: bold;}
+.qdetail-button {
+  font-size: medium;
+  text-decoration: none;
+  padding: 0.5rem;
+  width: 10%;
+  cursor: pointer;
+  background-color: #ababab;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  font-weight: bold;
+  color: white;
+  text-align: center;
+}
 
-.edit-button { background-color: #5d6dbe; }
-.edit-button:hover {  background-color: #3a4eb4; font-weight: bold;}
-
-
-.delete-button { background-color: #2fa599; }
-.delete-button:hover { background-color: #227f75; font-weight: bold;}
-
-.list-button { background-color: #9e9e9e; }
-.list-button:hover {background-color: #6c6c6c; font-weight: bold;}
+.qdetail-button:hover {
+  background-color: #939191;
+  color: white;
+}
 
 .reply{
   background-color: #f2f2f2;

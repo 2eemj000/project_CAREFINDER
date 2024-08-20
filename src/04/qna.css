@@ -41,11 +41,11 @@ tbody tr:hover {
 
 /* 각 열 너비 설정 */
 th:nth-child(1), td:nth-child(1) {
-  width: 7%;
+  width: 1%;
 }
 
 th:nth-child(2), td:nth-child(2) {
-  width: 50%;
+  width: 56%;
 }
 
 th:nth-child(3), td:nth-child(3) {
@@ -78,4 +78,23 @@ th:nth-child(4), td:nth-child(4) {
   margin-left: auto; /* Push date to the far right */
   font-size: 0.8rem;
   color: #6b7280; /* Gray color for the date */
+}
+
+/* 글쓰기 버튼 스타일 */
+.qwrite-button {
+  font-size: medium;
+  text-decoration: none;
+  padding: 0.5rem;
+  width: 10%;
+  cursor: pointer;
+  background-color: #ababab;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  font-weight: bold;
+  color: white;
+  text-align: center;
+}
+
+.qwrite-button:hover {
+  background-color: #939191;
+  color: white;
 }
