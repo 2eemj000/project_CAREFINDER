@@ -131,6 +131,8 @@ function Community() {
           <h1 style={{ fontSize: '0.9rem' }}>- 로그인 후, 게시글을 작성할 수 있습니다.</h1>
           <h1 style={{ fontSize: '0.9rem' }}>- 게시글의 작성자 본인 및 관리자만 해당 게시글을 수정 및 삭제할 수 있습니다.</h1>
         </div>
+        <div className="border-b border-gray-300 mt-5"></div>
+
 
         {/* 검색 카테고리 셀렉트 박스 추가 */}
         <div className="mb-4 flex justify-end space-x-2 items-center">
@@ -138,7 +140,9 @@ function Community() {
             value={searchCategory}
             onChange={(e) => setSearchCategory(e.target.value)}
             className="p-1 text-sm border border-gray-300 rounded-md"
-            style={{ width: '120px' }} 
+            style={{ width: '120px',
+                    marginTop : '2rem'
+             }} 
           >
             <option value="title">제목</option>
             <option value="author">작성자</option>
@@ -151,7 +155,10 @@ function Community() {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="p-1 text-sm border border-gray-300 rounded-md"
-            style={{ width: '200px' }} 
+            style={{ width: '200px',
+              marginTop : '2rem'
+
+             }} 
           />
         </div>
 

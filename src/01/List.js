@@ -70,6 +70,8 @@ export default function List() {
                 <p className="text-gray-700">
                     - 자세한 정보를 보시려면 카드를 클릭하세요.
                 </p>
+                <div className="border-b border-gray-300 mt-5"></div>
+
             </div>
             {cards.length > 0 ? (
                 <div className="grid grid-cols-3 gap-6">
