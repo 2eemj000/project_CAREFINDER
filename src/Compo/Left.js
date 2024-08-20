@@ -107,44 +107,39 @@ function NavigationBar() {
         </li>
         {/* 로그인 및 회원가입 버튼 추가 */}
         <div className="auth-buttons">
-          {!isLoggedIn ? (
-            <>
-              <button
-                className="sign-button"
-                style={{ backgroundColor: 'rgb(43, 116, 181)', color: 'white', fontSize: "0.8rem" }}
-                onClick={() => setShowLoginModal(true)}
-              >
-                로그인
-              </button>
-              <button
-                className="sign-button"
-                style={{ backgroundColor: 'rgb(43, 116, 181)', color: 'white', fontSize: "0.8rem" }}
-                onClick={() => setShowSignup(true)}
-              >
-                회원가입
-              </button>
-            </>
-          ) : (
-            <>
-              <p2 className="welcome-message"
-                style={{ backgroundColor: 'rgb(43, 116, 181)', color: 'white', fontSize: "0.8rem" }}>{loginMessage}</p2>
-              <button
-                className="sign-button"
-                style={{ backgroundColor: 'rgb(43, 116, 181)', color: 'white', fontSize: "0.8rem" }}
-                onClick={handleMyPageClick}
-              >
-                마이페이지
-              </button>
-              <button
-                className="sign-button"
-                style={{ backgroundColor: 'rgb(43, 116, 181)', color: 'white', fontSize: "0.8rem" }}
-                onClick={handleLogout}
-              >
-                로그아웃
-              </button>
-            </>
-          )}
-        </div>
+  {!isLoggedIn ? (
+    <>
+      <button
+        className="sign-button"
+        onClick={() => setShowLoginModal(true)}
+      >
+        로그인
+      </button>
+      <button
+        className="sign-button"
+        onClick={() => setShowSignup(true)}
+      >
+        회원가입
+      </button>
+    </>
+  ) : (
+    <>
+      <p2 className="welcome-message">{loginMessage}</p2>
+      <button
+        className="sign-button"
+        onClick={handleMyPageClick}
+      >
+        마이페이지
+      </button>
+      <button
+        className="sign-button"
+        onClick={handleLogout}
+      >
+        로그아웃
+      </button>
+    </>
+  )}
+</div>
       </ul>
 
       {showLoginModal && <LoginForm onClose={() => setShowLoginModal(false)} onLoginSuccess={handleLoginSuccess} />}
