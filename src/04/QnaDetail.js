@@ -178,9 +178,9 @@ function QnaDetail() {
         {/* QnA 제목과 내용 표시 */}
         <div className="mt-6">
           <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-            <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <thead className="text-sm text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
               <tr>
-                <th className="bg-[#f2f2f2] font-bold p-4" style={{ fontSize: '0.9rem' }}>{qna.title}</th>
+                <th className="bg-[#f2f2f2] font-bold p-4" style={{ fontSize: '1.0rem' }}>{qna.title}</th>
               </tr>
             </thead>
             <tbody>
@@ -193,7 +193,7 @@ function QnaDetail() {
           </table>
         </div>
         {/* 답변 섹션 */}
-        <div className="m-3 mt-10 font-bold" style={{ fontSize: '0.9rem' }}> 답변</div>
+        <div className="m-3 mt-10 font-bold" style={{ fontSize: '1.2rem' }}> 답변</div>
         <div className="space-y-4">
           {qnaReplies.length > 0 ? (
             qnaReplies.map(reply => {

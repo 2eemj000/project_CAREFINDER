@@ -12,11 +12,9 @@ function NavigationBar() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
   const [showLoginModal, setShowLoginModal] = useState(false);
-  const [showMyPageModal, setShowMyPageModal] = useState(false); // MyPage 모달 상태 추가
   const [loginMessage, setLoginMessage] = useState('');
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
-
 
   // 세션 확인 및 사용자 정보 로딩
   useEffect(() => {
@@ -56,6 +54,9 @@ function NavigationBar() {
         setUsername('');
         setEmail('');
         setLoginMessage('로그아웃 되었습니다.');
+
+        navigate('/');  // 홈 페이지나 로그인 페이지로 이동
+
       } else {
         console.error('로그아웃 실패');
         alert('로그아웃에 실패했습니다.');
@@ -66,14 +67,8 @@ function NavigationBar() {
     }
   };
 
-  // 마이페이지 모달 열기
   const handleMyPageClick = () => {
-    setShowMyPageModal(true);
-  };
-
-  // 마이페이지 모달 닫기
-  const closeMyPageModal = () => {
-    setShowMyPageModal(false);
+    navigate('/mypage'); // '/mypage' 경로로 이동
   };
 
   return (
@@ -107,6 +102,39 @@ function NavigationBar() {
         </li>
         {/* 로그인 및 회원가입 버튼 추가 */}
         <div className="auth-buttons">
+          {!isLoggedIn ? (
+            <>
+              <button
+                className="sign-button"
+                onClick={() => setShowLoginModal(true)}
+              >
+                로그인
+              </button>
+              <button
+                className="sign-button"
+                onClick={() => setShowSignup(true)}
+              >
+                회원가입
+              </button>
+            </>
+          ) : (
+            <>
+              <p2 className="welcome-message">{loginMessage}</p2>
+              <button
+                className="sign-button"
+                onClick={handleMyPageClick}
+              >
+                마이페이지
+              </button>
+              <button
+                className="sign-button"
+                onClick={handleLogout}
+              >
+                로그아웃
+              </button>
+            </>
+          )}
+        </div>
   {!isLoggedIn ? (
     <>
       <button
@@ -144,7 +172,6 @@ function NavigationBar() {
 
       {showLoginModal && <LoginForm onClose={() => setShowLoginModal(false)} onLoginSuccess={handleLoginSuccess} />}
       {showSignup && <Signup onClose={() => setShowSignup(false)} />}
-      {showMyPageModal && <MyPage onClose={closeMyPageModal} />}
     </div>
   );
 }

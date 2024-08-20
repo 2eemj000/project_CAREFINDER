@@ -41,3 +41,13 @@
     background-color: #f2f2f2;
     text-align: center;
   }
+
+  .comment-section {
+    margin-bottom: 0.5rem; /* 댓글 입력 영역과 댓글 테이블 간의 간격을 줄임 */
+  }
+
+  .comment-header {
+    margin-bottom: -2rem;
+  }
+
+  

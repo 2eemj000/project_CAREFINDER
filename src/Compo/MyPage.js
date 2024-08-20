@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { checkSession } from '../utils/authUtils'; // 세션 확인 유틸리티
-import './MyPage.css'; 
+import Left from './Left.js';
 
 function MyPage({ onClose }) {
-  const [userInfo, setUserInfo] = useState(null);
-  const [userPosts, setUserPosts] = useState([]);
+  const [userInfo, setUserInfo] = useState({ username: '', email: '' });
+  const [qnaPosts, setQnaPosts] = useState([]);
+  const [boardPosts, setBoardPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -19,14 +20,15 @@ function MyPage({ onClose }) {
             email: sessionData.email
           });
 
-          const response = await fetch('http://localhost:8080/user/posts', {
+          const response = await fetch('http://localhost:8080/checkSession/mypage', {
             method: 'GET',
             credentials: 'include',
           });
 
           if (response.ok) {
-            const posts = await response.json();
-            setUserPosts(posts);
+            const data = await response.json(); // 데이터 응답을 data 변수에 할당
+            setQnaPosts(data.qna || []);       // QNA 데이터 설정
+            setBoardPosts(data.board || []);   // Board 데이터 설정
           } else {
             console.error('게시글 로딩 실패');
             alert('게시글 로딩에 실패했습니다.');
@@ -45,47 +47,88 @@ function MyPage({ onClose }) {
     fetchData();
   }, [navigate]);
 
+  const formatDate = (dateStr) => {
+    const dateObj = new Date(dateStr);
+    if (isNaN(dateObj.getTime())) {
+      return 'Unknown Date';
+    }
+
+    // YYYY.MM.DD 형식으로 포맷팅
+    const formattedDate = dateObj.toLocaleDateString('ko-KR', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit'
+    }).replace(/\. /g, '.').slice(0, -1); // 년.월.일 형식으로 변경
+
+    return formattedDate;
+  };
+
+
   return (
-     <div className="modal-overlay">
-       <div className="modal-content">
-         <button className="close-button" onClick={onClose}>×</button>
-         <div className="font-[sans-serif] relative">
-           <div className="relative m-4">
-             <div className="bg-white max-w-xl w-full mx-auto shadow-[0_2px_10px_-3px_rgba(6,81,237,0.3)] p-8 rounded-2xl">
-               {loading ? (
-                 <p className="text-center text-gray-500">로딩 중...</p>
-               ) : userInfo ? (
-                 <>
-                   <div className="text-center mb-6">
-                     <h2 className="text-2xl font-semibold text-gray-800 mb-2">안녕하세요, {userInfo.username}님!</h2>
-                     <p className="text-gray-600">이메일: {userInfo.email}</p>
-                   </div>
-                   <div>
-                     <h3 className="text-xl font-semibold text-gray-800 mb-4">내가 작성한 게시글</h3>
-                     <ul className="space-y-3">
-                       {userPosts.length > 0 ? (
-                         userPosts.map(post => (
-                           <li key={post.id} className="p-4 bg-gray-100 rounded-lg shadow-sm border border-gray-300 hover:bg-gray-200 transition-colors">
-                             <a href={`/post/${post.id}`} className="text-blue-600 hover:underline">
-                               {post.title}
-                             </a>
-                           </li>
-                         ))
-                       ) : (
-                         <p className="text-center text-gray-500">작성한 게시글이 없습니다.</p>
-                       )}
-                     </ul>
-                   </div>
-                 </>
-               ) : (
-                 <p className="text-center text-gray-500">정보를 불러오는 중 오류가 발생했습니다.</p>
-               )}
-             </div>
-           </div>
-         </div>
-       </div>
-     </div>
-   );
- }
- 
- export default MyPage;
+    <div className="flex flex-col h-screen bg-gray-100">
+      <div className="fixed left-0 top-0 w-1/6 h-fullshadow-md">
+        <Left />
+      </div>
+      <div className="flex-1 ml-[15%] mr-[10%] p-10 z-0" style={{ marginLeft: "350px" }}>
+      <h1 className="font-bold text-2xl mt-6 mb-10" style={{ fontSize: '2rem', color:"rgb(32, 49, 59)" }}>MyPage</h1>
+        <div className="p-6 bg-white shadow-lg rounded-lg border border-gray-200 mb-8">
+          <h2 className="text-2xl font-semibold text-gray-800 mb-2">
+            {userInfo ? `안녕하세요, ${userInfo.username}님!` : 'Loading...'}
+          </h2>
+          <p className="text-gray-600 text-lg">
+            {userInfo ? `${userInfo.email}` : 'Loading...'}
+          </p>
+        </div>
+
+        {/* 내가 작성한 글 보기 섹션 */}
+        <div className="bg-white shadow-md rounded-lg p-6 mb-8">
+          <h3 className="font-bold mb-6" style={{ fontSize: '1.5rem', color:"rgb(32, 49, 59)" }}>내가 작성한 글</h3>
+
+          {/* Board Section */}
+          <div className="mb-8">
+            <h4 className="font-semibold mb-4" style={{ fontSize: '1.1rem', color:"rgb(32, 49, 59)" }}>* 너도 아파? 나도 아파!</h4>
+            <ul className="space-y-3">
+              {boardPosts.length > 0 ? (
+                boardPosts.map(post => (
+                  <li key={post.boardId} className="p-4 bg-gray-100 rounded-lg shadow-sm border border-gray-300 hover:bg-gray-200 transition-colors">
+                    <Link to={`/community/${post.boardId}`} className="block text-blue-600 hover:underline">
+                      {post.title}
+                    </Link>
+                    <div className="text-gray-500 text-sm">
+                      {formatDate(post.createDate)}
+                    </div>
+                  </li>
+                ))
+              ) : (
+                <p className="text-center text-gray-500">작성한 Board 게시글이 없습니다.</p>
+              )}
+            </ul>
+          </div>
+
+          {/* QNA Section */}
+          <div>
+            <h4 className="font-semibold mb-4" style={{ fontSize: '1.1rem', color:"rgb(32, 49, 59)" }}>* QNA</h4>
+            <ul className="space-y-3">
+              {qnaPosts.length > 0 ? (
+                qnaPosts.map(post => (
+                  <li key={post.qnaId} className="p-4 bg-gray-100 rounded-lg shadow-sm border border-gray-300 hover:bg-gray-200 transition-colors">
+                    <Link to={`/qna/${post.qnaId}`} className="block text-blue-600 hover:underline">
+                      {post.title}
+                    </Link>
+                    <div className="text-gray-500 text-sm">
+                      {formatDate(post.createDate)}
+                    </div>
+                  </li>
+                ))
+              ) : (
+                <p className="text-center text-gray-500">작성한 QNA 게시글이 없습니다.</p>
+              )}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default MyPage;
