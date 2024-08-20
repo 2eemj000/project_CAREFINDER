@@ -11,19 +11,6 @@ th:nth-child(3), td:nth-child(3) {
   width: 23%;
 }
 
-.action-button {
-  flex: 1; /* 버튼이 동일한 너비를 가지도록 설정 */
-  margin: 1rem 0.5rem; /* 버튼 사이에 마진 추가 */
-  padding: 0.5rem;
-  border-radius: 20px; /* 버튼 모서리 둥글게 */
-  background-color: #929292;
-  color: white;
-  font-weight: bold;
-  text-align: center;
-  cursor: pointer;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
 .comment-button { background-color: #1187cf; }
 .comment-button:hover { background-color: #125f8f; font-weight: bold;}
 
