@@ -224,14 +224,14 @@ function QnaDetail() {
           />
         </div>
         <div className="flex justify-between mt-6">
+          {userRole === "admin" && (
           <button className="action-button comment-button mt-2" onClick={handleReplySubmit} style={{ fontSize: '0.9rem' }}>
             답변 등록하기
           </button>
-          {userRole === "admin" && (
+          )}
             <button className="action-button delete-button" onClick={handleDelete} style={{ fontSize: '0.9rem' }}>
               글삭제
             </button>
-          )}
           <button className="action-button list-button" onClick={() => navigate("/qna")} style={{ fontSize: '0.9rem' }}>
             목록으로
           </button>
