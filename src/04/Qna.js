@@ -217,7 +217,7 @@ function Qna() {
                     <tr key={`reply-${qna.qnaId}-${replyIndex}`} className="bg-gray-100">
                       <td colSpan="4" className="text-left pl-6">
                         <div className="flex items-center text-sm">
-                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className="text-blue-500 mr-2">→</span>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span className="text-blue-500 pl-20 mr-2">↪</span>
                           &nbsp;&nbsp;&nbsp; {reply.content.length > 50 ? `${reply.content.substring(0, 50)}...` : reply.content}
                         </div>
                       </td>
