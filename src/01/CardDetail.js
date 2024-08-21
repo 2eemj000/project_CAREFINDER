@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import Left from '../Compo/Left.js';
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { PiPhoneCallBold } from "react-icons/pi";
+import { checkSession } from '../utils/authUtils';
 
 export default function CardDetail() {
     const { cardId } = useParams();
@@ -53,16 +54,24 @@ export default function CardDetail() {
     }, [cardDetails]);
 
     const handleFavoriteToggle = async () => {
+        // 로그인 세션 확인
+        const sessionData = await checkSession();
+        
+        if (!sessionData.loggedIn) {
+            alert("로그인 후 찜하기가 가능합니다."); // 로그인 필요 경고 메시지
+            return;
+        }
+    
         if (!cardDetails || !cardDetails.id) {
             console.error('Card details or ID is missing');
             return;
         }
-    
+        
         const apiUrl = isFavorite
             ? `http://localhost:8080/favorites/remove?cardId=${cardDetails.id}`
             : `http://localhost:8080/favorites/add?cardId=${cardDetails.id}`;
         const method = isFavorite ? 'DELETE' : 'POST';
-    
+        
         try {
             const response = await fetch(apiUrl, {
                 method: method,
@@ -71,7 +80,7 @@ export default function CardDetail() {
                 },
                 credentials: 'include'
             });
-    
+        
             if (response.ok) {
                 setIsFavorite(!isFavorite);
                 // 상태를 최신으로 유지하기 위한 추가 fetch
@@ -91,7 +100,7 @@ export default function CardDetail() {
             console.error('Failed to toggle favorite', error);
         }
     };
-
+    
     useEffect(() => {
         if (cardDetails && cardDetails.locx && cardDetails.locy) {
             const initializeMap = () => {
@@ -111,6 +120,12 @@ export default function CardDetail() {
                         const marker = new kakao.maps.Marker({
                             position: markerPosition,
                             map: map,
+                        });
+
+                        // 마커 클릭 이벤트 추가
+                        kakao.maps.event.addListener(marker, 'click', function () {
+                            const directionsUrl = `https://map.kakao.com/link/to/${encodeURIComponent(cardDetails.name)},${cardDetails.locy},${cardDetails.locx}`;
+                            window.open(directionsUrl, '_blank');
                         });
 
                         // 마커 좌표 확인 로그
@@ -138,7 +153,6 @@ export default function CardDetail() {
             <div className="fixed left-0 top-0 w-1/6 h-full z-10">
                 <Left />
             </div>
-
             <div className="flex-1 ml-[15%] mr-[10%] p-10 z-0" style={{ marginLeft: "350px" }}>
                 <div style={{ padding: '20px', fontFamily: 'Roboto, sans-serif', color: '#333' }}>
                     <div style={{ borderBottom: '1px solid #e0e0e0', paddingBottom: '25px', marginBottom: '20px' }}>
