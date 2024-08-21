@@ -188,6 +188,13 @@ const handleDelete = async () => {
     return;
   }
 
+  // 삭제 확인 메시지 띄우기
+  const isConfirmed = window.confirm("정말로 삭제하시겠습니까?");
+  if (!isConfirmed) {
+    // 사용자가 '아니오'를 선택한 경우
+    return;
+  }
+
   try {
     const response = await fetch(`http://localhost:8080/community/${id}`, {
       method: 'DELETE',
@@ -204,6 +211,7 @@ const handleDelete = async () => {
     console.error('게시글 삭제 중 오류 발생:', error);
   }
 };
+
 
 
   if (!board) {

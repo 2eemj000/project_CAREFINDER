@@ -91,17 +91,24 @@ function QnaDetail() {
     const sessionData = await checkSession(); // 최신 로그인 정보 가져오기
     setUser(sessionData.loggedIn ? sessionData.username : null);
     setUserRole(sessionData.loggedIn ? sessionData.role : null);
-
+  
     if (!sessionData.loggedIn) {
       alert("로그인이 필요합니다.");
       return;
     }
-
+  
     if (sessionData.role !== "admin") {
       alert("관리자만 게시글을 삭제할 수 있습니다.");
       return;
     }
-
+  
+    // 삭제 확인 메시지 띄우기
+    const isConfirmed = window.confirm("정말로 삭제하시겠습니까?");
+    if (!isConfirmed) {
+      // 사용자가 '아니오'를 선택한 경우
+      return;
+    }
+  
     try {
       const response = await fetch(`http://localhost:8080/qna/${id}`, {
         method: 'DELETE',
@@ -116,7 +123,7 @@ function QnaDetail() {
       console.error('질문 삭제 중 오류 발생:', error);
     }
   };
-
+  
   // 답변 작성 함수
   const handleReplySubmit = async () => {
     const sessionData = await checkSession(); // 최신 로그인 정보 가져오기
