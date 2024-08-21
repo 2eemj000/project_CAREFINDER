@@ -81,10 +81,11 @@ function MyPage({ onClose }) {
         <Left />
       </div>
       <div className="flex-1 ml-[15%] mr-[10%] items-center p-6 z-0 mt-10" style={{ marginLeft: "350px" }}>
-        <div className="p-6 bg-white rounded-lg border border-gray-200 shadow-md mb-8 w-4/12 ml-5" >
-          <h2 className="text-2xl font-bold text-gray-800 mb-4">
-            회원정보
-          </h2>
+      <div className="flex justify-center p-6">
+        <div className="p-6 bg-white rounded-lg border border-gray-200 shadow-md mb-8 w-5/12" >
+        <h2 className="text-2xl font-bold text-gray-800 mb-4 text-center">
+          '{userInfo.username}' <span className="text-xl">님의 마이페이지</span>
+        </h2>
           <hr className="border-t-2 border-gray-200 mb-4" />
           <div className="flex items-center text-gray-600 mb-3">
             <span className="mr-2">
@@ -103,10 +104,12 @@ function MyPage({ onClose }) {
             <span> e-mail : {userInfo ? `${userInfo.email}` : 'Loading...'}</span>
           </div>
         </div>
+        </div>
 
         {/* 내가 찜한 병원 보기 섹션 추가 */}
         <div className="bg-white rounded-lg p-6 mb-8">
-          <h3 className="font-bold mb-6" style={{ fontSize: '1.5rem', color: "rgb(32, 49, 59)" }}>내가 찜한 병원</h3>
+          <h3 className="font-bold mb-5" style={{ fontSize: '1.5rem', color: "rgb(32, 49, 59)" }}>내가 찜한 병원</h3>
+          <span className="mb-4 block">하트를 누르면 해당 병원의 찜이 해제됩니다.</span>
           {favoriteHospitals.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
               {favoriteHospitals.map(hospital => (
