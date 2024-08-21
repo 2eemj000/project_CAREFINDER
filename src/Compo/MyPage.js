@@ -36,9 +36,8 @@ function MyPage({ onClose }) {
             console.error('게시글 로딩 실패');
             alert('게시글 로딩에 실패했습니다.');
           }
-          // 찜한 병원 목록 로드
-          const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
-          setFavoriteHospitals(favorites);
+          fetchFavorites();
+
         } else {
           navigate('/login'); // 로그인되지 않은 경우 로그인 페이지로 이동
         }
@@ -52,6 +51,44 @@ function MyPage({ onClose }) {
 
     fetchData();
   }, [navigate]);
+
+  const fetchFavorites = async () => {
+    try {
+      const response = await fetch('http://localhost:8080/favorites', {
+        method: 'GET',
+        credentials: 'include',
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        const favorites = Object.values(data["1"] || []);
+        setFavoriteHospitals(favorites);
+      } else {
+        console.error('Failed to fetch favorites', response.statusText);
+      }
+    } catch (error) {
+      console.error('Failed to fetch favorites', error);
+    }
+  };
+
+  const handleRemoveFavorite = async (hospitalId) => {
+    try {
+      const response = await fetch(`http://localhost:8080/favorites/remove?cardId=${hospitalId}`, {
+        method: 'DELETE',
+        credentials: 'include',
+      });
+
+      if (response.ok) {
+        // 찜 목록 업데이트
+        await fetchFavorites();
+      } else {
+        console.error('Failed to remove favorite', response.statusText);
+      }
+    } catch (error) {
+      console.error('Failed to remove favorite', error);
+    }
+  };
+
 
   const formatDate = (dateStr) => {
     const dateObj = new Date(dateStr);
@@ -69,41 +106,35 @@ function MyPage({ onClose }) {
     return formattedDate;
   };
 
-  const handleRemoveFavorite = (id) => {
-    const updatedFavorites = favoriteHospitals.filter(hospital => hospital.id !== id);
-    setFavoriteHospitals(updatedFavorites);
-    localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
-  };
-
   return (
     <div className="flex flex-col h-screen">
       <div className="fixed left-0 top-0 w-1/6 h-full" style={{ borderRight: 'none' }}>
         <Left />
       </div>
       <div className="flex-1 ml-[15%] mr-[10%] items-center p-6 z-0 mt-10" style={{ marginLeft: "350px" }}>
-      <div className="flex justify-center p-6">
-        <div className="p-6 bg-white rounded-lg border border-gray-200 shadow-md mb-8 w-5/12" >
-        <h2 className="text-2xl font-bold text-gray-800 mb-4 text-center">
-          '{userInfo.username}' <span className="text-xl">님의 마이페이지</span>
-        </h2>
-          <hr className="border-t-2 border-gray-200 mb-4" />
-          <div className="flex items-center text-gray-600 mb-3">
-            <span className="mr-2">
-              <svg className="w-5 h-5 text-sky-800" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M6 2a1 1 0 00-1 1v1H2a1 1 0 000 2h1v5H2a1 1 0 000 2h1v2a1 1 0 001 1h12a1 1 0 001-1v-2h1a1 1 0 000-2h-1V6h1a1 1 0 000-2h-3V3a1 1 0 00-1-1H6zM4 6V4h12v2H4zm11 2v6H5V8h10z" />
-              </svg>
-            </span>
-            <span> 닉네임 : {userInfo ? `${userInfo.username}` : 'Loading...'}</span>
+        <div className="flex justify-center p-6">
+          <div className="p-6 bg-white rounded-lg border border-gray-200 shadow-md mb-8 w-5/12" >
+            <h2 className="text-2xl font-bold text-gray-800 mb-4 text-center">
+              '{userInfo.username}' <span className="text-xl">님의 마이페이지</span>
+            </h2>
+            <hr className="border-t-2 border-gray-200 mb-4" />
+            <div className="flex items-center text-gray-600 mb-3">
+              <span className="mr-2">
+                <svg className="w-5 h-5 text-sky-800" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M6 2a1 1 0 00-1 1v1H2a1 1 0 000 2h1v5H2a1 1 0 000 2h1v2a1 1 0 001 1h12a1 1 0 001-1v-2h1a1 1 0 000-2h-1V6h1a1 1 0 000-2h-3V3a1 1 0 00-1-1H6zM4 6V4h12v2H4zm11 2v6H5V8h10z" />
+                </svg>
+              </span>
+              <span> 닉네임 : {userInfo ? `${userInfo.username}` : 'Loading...'}</span>
+            </div>
+            <div className="flex items-center text-gray-600 mb-3">
+              <span className="mr-2">
+                <svg className="w-5 h-5 text-sky-800" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M2.94 4.94A2.5 2.5 0 015.5 4h9a2.5 2.5 0 012.56 2.5l-.03.26L10 10.38 2.5 6.76l-.03-.26A2.5 2.5 0 012.94 4.94zm.56 2.31l7.12 3.58a.5.5 0 00.76 0l7.12-3.58A2.5 2.5 0 0115.5 14h-9a2.5 2.5 0 01-2.5-2.5v-5a.5.5 0 01.5-.5h11a.5.5 0 01.5.5v5a2.5 2.5 0 01-2.5 2.5h-9a2.5 2.5 0 01-2.5-2.5v-5a.5.5 0 01.5-.5h11a.5.5 0 01.5.5v5z" />
+                </svg>
+              </span>
+              <span> e-mail : {userInfo ? `${userInfo.email}` : 'Loading...'}</span>
+            </div>
           </div>
-          <div className="flex items-center text-gray-600 mb-3">
-            <span className="mr-2">
-              <svg className="w-5 h-5 text-sky-800" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M2.94 4.94A2.5 2.5 0 015.5 4h9a2.5 2.5 0 012.56 2.5l-.03.26L10 10.38 2.5 6.76l-.03-.26A2.5 2.5 0 012.94 4.94zm.56 2.31l7.12 3.58a.5.5 0 00.76 0l7.12-3.58A2.5 2.5 0 0115.5 14h-9a2.5 2.5 0 01-2.5-2.5v-5a.5.5 0 01.5-.5h11a.5.5 0 01.5.5v5a2.5 2.5 0 01-2.5 2.5h-9a2.5 2.5 0 01-2.5-2.5v-5a.5.5 0 01.5-.5h11a.5.5 0 01.5.5v5z" />
-              </svg>
-            </span>
-            <span> e-mail : {userInfo ? `${userInfo.email}` : 'Loading...'}</span>
-          </div>
-        </div>
         </div>
 
         {/* 내가 찜한 병원 보기 섹션 추가 */}

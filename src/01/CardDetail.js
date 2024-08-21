@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Left from '../Compo/Left.js';
-import { FaHeart, FaRegHeart } from 'react-icons/fa'; 
+import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { PiPhoneCallBold } from "react-icons/pi";
 
 export default function CardDetail() {
     const { cardId } = useParams();
     const [cardDetails, setCardDetails] = useState(null);
-    const [isFavorite, setIsFavorite] = useState(false);
+    const [isFavorite, setIsFavorite] = useState(false); //찜 상태관리
 
     // 카드 세부 정보 가져오기
     async function fetchCardDetails() {
@@ -24,29 +24,73 @@ export default function CardDetail() {
         fetchCardDetails();
     }, [cardId]);
 
-    // 찜하기 버튼 핸들러
-    const handleFavoriteToggle = () => {
-        const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
-        const isCurrentlyFavorite = favorites.some(fav => fav.id === cardId);
+    useEffect(() => {
+        const fetchFavorites = async () => {
+            try {
+                const response = await fetch('http://localhost:8080/favorites', {
+                    method: 'GET',
+                    credentials: 'include',
+                });
+    
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log('Fetched Favorites:', data); // 데이터 구조 확인을 위한 로그 추가
+    
+                    // 데이터가 객체일 경우 구조 확인 후 처리
+                    const favorites = Object.values(data["1"] || []);
+                    setIsFavorite(favorites.some(fav => fav.id === cardDetails.id));
+                } else {
+                    console.error('Failed to fetch favorites', response.statusText);
+                }
+            } catch (error) {
+                console.error('Failed to fetch favorites', error);
+            }
+        };
+    
+        if (cardDetails) {
+            fetchFavorites();
+        }
+    }, [cardDetails]);
 
-        if (isCurrentlyFavorite) {
-            const updatedFavorites = favorites.filter(fav => fav.id !== cardId);
-            localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
-            setIsFavorite(false);
-        } else {
-            const newFavorite = { id: cardId, name: cardDetails.name, phone: cardDetails.phone, level: cardDetails.level };
-            favorites.push(newFavorite);
-            localStorage.setItem('favorites', JSON.stringify(favorites));
-            setIsFavorite(true);
+    const handleFavoriteToggle = async () => {
+        if (!cardDetails || !cardDetails.id) {
+            console.error('Card details or ID is missing');
+            return;
+        }
+    
+        const apiUrl = isFavorite
+            ? `http://localhost:8080/favorites/remove?cardId=${cardDetails.id}`
+            : `http://localhost:8080/favorites/add?cardId=${cardDetails.id}`;
+        const method = isFavorite ? 'DELETE' : 'POST';
+    
+        try {
+            const response = await fetch(apiUrl, {
+                method: method,
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include'
+            });
+    
+            if (response.ok) {
+                setIsFavorite(!isFavorite);
+                // 상태를 최신으로 유지하기 위한 추가 fetch
+                const updatedFavoritesResponse = await fetch('http://localhost:8080/favorites', {
+                    method: 'GET',
+                    credentials: 'include'
+                });
+                if (updatedFavoritesResponse.ok) {
+                    const favorites = await updatedFavoritesResponse.json();
+                    const favoritesArray = Object.values(favorites["1"] || []);
+                    setIsFavorite(favoritesArray.some(fav => fav.id === cardDetails.id));
+                }
+            } else {
+                console.error('Failed to toggle favorite', response.statusText);
+            }
+        } catch (error) {
+            console.error('Failed to toggle favorite', error);
         }
     };
-
-    useEffect(() => {
-        if (cardDetails) {
-            const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
-            setIsFavorite(favorites.some(fav => fav.id === cardId));
-        }
-    }, [cardDetails, cardId]);
 
     useEffect(() => {
         if (cardDetails && cardDetails.locx && cardDetails.locy) {
