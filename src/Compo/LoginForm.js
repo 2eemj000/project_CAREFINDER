@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import logoImage from '../Img/Logo.png';
-import { FcGoogle } from "react-icons/fc";
-import { SiNaver, SiKakaotalk } from "react-icons/si";
 import './LoginForm.css'; 
 
 export default function LoginForm({ onClose, onLoginSuccess }) {
@@ -124,17 +122,6 @@ export default function LoginForm({ onClose, onLoginSuccess }) {
                 {loginErrorMessage  && <div className="mt-4 text-green-500">{loginErrorMessage }</div>}
               </div>
             </form>
-            <div className="oauth-buttons mt-8">
-              <button className="oauth-button" style={{ backgroundColor: '#c2c2c2' }}>
-                <FcGoogle className="icon" /> 구글 계정으로 로그인
-              </button>
-              <button className="oauth-button" style={{ backgroundColor: '#34e85b' }}>
-                <SiNaver className="icon" /> 네이버 계정으로 로그인
-              </button>
-              <button className="oauth-button" style={{ backgroundColor: '#ffec1b' }}>
-                <SiKakaotalk className="icon" /> 카카오 계정으로 로그인
-              </button>
-            </div>
           </div>
         </div>
       </div>
