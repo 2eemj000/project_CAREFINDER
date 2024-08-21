@@ -214,6 +214,7 @@ function QnaDetail() {
         </div>
         {/* 답변 작성 및 관리 버튼들 */}
         <div className="mt-6">
+        {userRole === "admin" && (
           <textarea
             ref={textareaRef}
             className="w-full p-2 border border-gray-300 rounded-md"
@@ -221,7 +222,7 @@ function QnaDetail() {
             value={newReply}
             onChange={(e) => setNewReply(e.target.value)}
             placeholder="답변을 작성하세요."
-          />
+          />)}
         </div>
         <div className="flex justify-end mt-6 gap-2">
           {userRole === "admin" && (
