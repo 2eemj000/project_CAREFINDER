@@ -99,8 +99,9 @@ function Community() {
     if (user) {
       navigate("/community/write");
     } else {
-      const loggedIn = await checkSession(); // 로그인 상태를 다시 확인
-      if (loggedIn) {
+      const sessionData = await checkSession(); // 로그인 상태를 다시 확인
+      if (sessionData.loggedIn) {
+        setUser(sessionData.username);
         navigate("/community/write"); // 세션 확인 후 바로 글쓰기 페이지로 이동
       } else {
         alert("로그인 후에 게시글을 작성할 수 있습니다.");
