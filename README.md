@@ -57,7 +57,7 @@
  
 |Home|검색|병원 리스트|병원 정보|
 |---|---|---|---|
-|![image](![image](https://github.com/user-attachments/assets/9b9edf92-73c9-4a6b-b944-daa79babfd22)|![image](https://github.com/user-attachments/assets/7946195f-34f4-4349-ae17-09cc8a6caf22)|![image](https://github.com/user-attachments/assets/d7277665-9476-4182-8f4c-a78d07f37adf)|![image](https://github.com/user-attachments/assets/70c3a9a8-3d26-43ec-b0c9-edf7c2e23b54)|
+|![image](https://github.com/user-attachments/assets/9b9edf92-73c9-4a6b-b944-daa79babfd22)|![image](https://github.com/user-attachments/assets/7946195f-34f4-4349-ae17-09cc8a6caf22)|![image](https://github.com/user-attachments/assets/d7277665-9476-4182-8f4c-a78d07f37adf)|![image](https://github.com/user-attachments/assets/70c3a9a8-3d26-43ec-b0c9-edf7c2e23b54)|
 |버튼 클릭 Link 연결|사용자 선택|선택에 따른 병원 리스트|세부정보, 지도, 찜하기|
 
 |건강백과사전|커뮤니티 게시판|QnA 게시판|마이페이지|
