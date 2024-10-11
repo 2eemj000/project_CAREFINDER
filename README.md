@@ -66,8 +66,8 @@
 |건강 정보 출력|게시글 CRUD 및 댓글 작성|관리자 권한 답변 작성|개인정보 및 찜한 병원(해제) 작성글|
 
 
-[![Watch the video](https://img.youtube.com/vi/ccOyTW125Is/maxresdefault.jpg)]([https://www.youtube.com/watch?v=drF5rMgZzB0])
-
+[![Watch the video](https://img.youtube.com/vi/ccOyTW125Is/maxresdefault.jpg)]
+([https://www.youtube.com/watch?v=drF5rMgZzB0])
 CAREFINDER 웹 페이지 시연 영상입니다.
 
 
